@@ -9,7 +9,7 @@ const myModule = require('../myModule/myModule');
 
 const User = require('../models/10_User');
 const Case = require('../models/20_Case');
-const SRMtrl = require('../models/30_srMtrl');
+const SRMtrl = require('../models/30_SRMtrl');
 const QuoHead = require('../models/40_QuoHead');
 const QuoForm = require('../models/41_QuoForm');
 
