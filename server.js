@@ -34,6 +34,7 @@ app.use(express.json({ extended: false, limit: '50mb' }));
 // });
 
 //EndPoint
+//Do not delete this code, you need this code when not setting the code "L75 @Server static assets in production", you don't need it when you push it to heroku.
 // app.get('/', (req, res) =>
 //   res.json({
 //     msg:
@@ -71,7 +72,7 @@ app.use('/api/purchase', require('./routes/50_pur'));
 // Query cases of Purchase
 app.use('/api/purchase/query', require('./routes/51_queryPur'));
 
-/// Server static assets in production
+/// @Server static assets in production
 if (process.env.NODE_ENV === 'production') {
   //Set static folder
   app.use(express.static('client/build'));
