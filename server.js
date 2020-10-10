@@ -34,12 +34,12 @@ app.use(express.json({ extended: false, limit: '50mb' }));
 // });
 
 //EndPoint
-app.get('/', (req, res) =>
-  res.json({
-    msg:
-      "Welcome to the World Steve, I'm so exciting for this wonderful project",
-  })
-);
+// app.get('/', (req, res) =>
+//   res.json({
+//     msg:
+//       "Welcome to the World Steve, I'm so exciting for this wonderful project",
+//   })
+// );
 
 // Defines Routes ---------------------------------------------------------------
 // Authentication -------------------------

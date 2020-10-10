@@ -6,7 +6,7 @@ const { check, validationResult } = require('express-validator');
 
 const User = require('../models/10_User');
 const Case = require('../models/20_Case');
-const SRMtrl = require('../models/30_srMtrl');
+const SRMtrl = require('../models/30_SRMtrl');
 
 // @route   GET api/case/
 // @desc    Read the user's cases from database
