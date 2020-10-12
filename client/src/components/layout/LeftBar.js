@@ -252,11 +252,11 @@ const LeftBar = ({ currentPath }) => {
           });
         });
 
-        Promise.all([insertArr]).then(() => {
+        Promise.all([insertArr]).then(async () => {
           console.log('the resultSheet', resultSheet);
           const JSONRows = JSON.stringify(resultSheet);
           console.log('the json JSONRows', JSONRows);
-          getM_list(JSONRows).then(()=>{
+         await getM_list(JSONRows).then(()=>{
             toggleLoading()
           });
         });
