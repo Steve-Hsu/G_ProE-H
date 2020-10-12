@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import CasesContext from '../../context/cases/casesContext';
 import QuoContext from '../../context/quo/quoContext';
 import PurContext from '../../context/pur/purContext';
+import PopoverContext from '../../context/popover/popoverContext'
 import SearchBar from './SearchBar';
 // import Papa from 'papaparse';
 import readXlsxFile from 'read-excel-file';
@@ -15,6 +16,7 @@ const LeftBar = ({ currentPath }) => {
   const casesContext = useContext(CasesContext);
   const quoContext = useContext(QuoContext);
   const purContext = useContext(PurContext);
+  const popoverContext = useContext(PopoverContext)
   const {
     addCaseValue,
     mtrls,
@@ -41,6 +43,7 @@ const LeftBar = ({ currentPath }) => {
   } = quoContext;
 
   const { openPage, toggleConfirmDate, currentPo } = purContext;
+  const {toggleLoading} = popoverContext
 
   const theCase = quotation.theCase;
 
@@ -198,6 +201,7 @@ const LeftBar = ({ currentPath }) => {
     console.log('the inputValue', inputValue);
 
     if (inputValue) {
+      toggleLoading()
       const styleName = inputValue
         .slice(12)
         .replace('.xlsx', '')
@@ -252,7 +256,9 @@ const LeftBar = ({ currentPath }) => {
           console.log('the resultSheet', resultSheet);
           const JSONRows = JSON.stringify(resultSheet);
           console.log('the json JSONRows', JSONRows);
-          getM_list(JSONRows);
+          getM_list(JSONRows).then(()=>{
+            toggleLoading()
+          });
         });
       });
     } else {
