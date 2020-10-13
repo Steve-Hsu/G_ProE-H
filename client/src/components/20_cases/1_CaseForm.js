@@ -51,6 +51,9 @@ const CaseForm = ({ props }) => {
     addMtrlValue,
     poDate,
     osNo,
+    merchandiser,
+    lastUpdateBy,
+    updateDate,
   } = casesContext;
   const { comName, comSymbol } = authUserContext;
   const { updateSrMtrlByMtrl } = srMtrlContext;
@@ -216,7 +219,8 @@ const CaseForm = ({ props }) => {
                       />
                     )}
                   </div>
-
+                  <div className='v-center-content'>Merchandiser : </div>
+                  <div>{cNo === null ? '' : merchandiser}</div>
                   <div className='v-center-content'>Style</div>
                   <input
                     id='caseStyle'
@@ -265,6 +269,12 @@ const CaseForm = ({ props }) => {
                     })}
                   </select>
                 </div>
+                {cNo? (
+                  <div className='grid-1-5 my-1'>
+                      <div className='v-center-content'>Last Update : </div>
+                      <div>{`${lastUpdateBy},  Date : ${updateDate}`}</div>      
+                  </div>
+                ): null}
                 {osNo ? (
                   <LockedBadge
                     labels={[

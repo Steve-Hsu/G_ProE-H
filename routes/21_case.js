@@ -7,6 +7,7 @@ const { check, validationResult } = require('express-validator');
 const User = require('../models/10_User');
 const Case = require('../models/20_Case');
 const SRMtrl = require('../models/30_SRMtrl');
+const c = require('config');
 
 // @route   GET api/case/
 // @desc    Read the user's cases from database
@@ -76,6 +77,7 @@ router.get('/user', authUser, async (req, res) => {
     const cases = await Case.find({ user: req.user.id }, { company: 0 }).sort({
       date: -1,
     });
+    console.log('yes')
     res.json(cases);
   } catch (err) {
     console.error(err.message);
@@ -103,12 +105,10 @@ router.get('/company', authUser, async (req, res) => {
 // @access  Private
 router.get('/existingcase/:id', authUser, async (req, res) => {
   try {
-    const userName = await User.findOne({ _id: req.user.id }).name;
-    const cases = await Case.find({ _id: req.params.id }, { company: 0 });
-    cases.merchandiser = userName
-    console.log("userName",userName)
-    console.log("merchandiser",cases.merchandiser)
+    const cases = await Case.findOne({ _id: req.params.id }, { company: 0 });
     res.json(cases);
+  
+
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
@@ -135,6 +135,7 @@ router.post(
     }
     console.log('The upload newcase is called in backend'); // Test Code
 
+    const userName = user.name;
     const {
       cNo,
       caseType,
@@ -459,6 +460,8 @@ router.post(
               gQtys,
               mtrls,
               isImportedExcel,
+              lastUpdateBy : userName,
+              updateDate: Date.now(),
             };
             console.log('The Finall PromiseAll');
             // if (!cases){}
@@ -556,6 +559,9 @@ router.post(
             gQtys,
             mtrls,
             isImportedExcel,
+            merchandiser : userName,
+            lastUpdateBy : userName,
+            updateDate: Date.now(),
           });
           // name variable "case" will cause problem, so here name it "nCase"
           const nCase = await newCase.save();

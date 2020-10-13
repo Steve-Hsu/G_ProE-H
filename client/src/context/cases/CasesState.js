@@ -70,6 +70,9 @@ const CasesState = (props) => {
     isImportedExcel: false,
     inputFileName: 'Select a File...',
     showMtrlCard: false,
+    merchandiser: null,
+    lastUpdateBy: null,
+    updateDate: null,
   };
 
   const generateId = () => {
@@ -953,7 +956,7 @@ const CasesState = (props) => {
       const res = await axios.get(`/api/case/existingcase/${id}`, config);
 
       console.log('Download succeed!');
-      dispatch({ type: CASE_DOWNLOAD, payload: res.data[0] });
+      dispatch({ type: CASE_DOWNLOAD, payload: res.data });
     } catch (err) {
       console.log('Download new case faild, server problems');
     }
@@ -1271,6 +1274,9 @@ const CasesState = (props) => {
         osNo: state.osNo,
         poDate: state.poDate,
         showMtrlCard: state.showMtrlCard,
+        merchandiser: state.merchandiser,
+        lastUpdateBy: state.lastUpdateBy,
+        updateDate: state.updateDate,
         addCaseValue,
         addcWay,
         updatecWay,

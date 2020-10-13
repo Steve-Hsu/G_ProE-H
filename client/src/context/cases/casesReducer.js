@@ -150,6 +150,9 @@ export default (state, action) => {
         poDate: null,
         isImportedExcel: false,
         showMtrlCard: false,
+        merchandiser: null,
+        lastUpdateBy: null,
+        updateDate: null,
       };
     case CASENO_CLEAR:
       return {

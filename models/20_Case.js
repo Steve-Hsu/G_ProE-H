@@ -49,13 +49,22 @@ const CaseSchema = mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  authorizedUser: [
-    {
-      // The user generate this case can draw in other users, so they can update this case.
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'users',
-    },
-  ],
+  merchandiser:{
+    type:String,
+  },
+  lastUpdateBy: {
+    type:String,
+  },
+  updateDate: {
+    type:Date,
+  },
+  // authorizedUser: [
+  //   {
+  //     // The user generate this case can draw in other users, so they can update this case.
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: 'users',
+  //   },
+  // ],
   bomDate: {
     // The date, all material be established. As long as the material info is changed, this date will be dupdate.
     type: Date,
