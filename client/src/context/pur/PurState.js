@@ -414,6 +414,11 @@ const PurState = (props) => {
     }
   };
 
+  const clearOsError = () => {
+    dispatch({type: UPDATE_ERROR, payload: null});
+  };
+
+
   return (
     <PurContext.Provider
       value={{
@@ -441,6 +446,7 @@ const PurState = (props) => {
         evenMoq,
         enterHsCode,
         uploadHsCode,
+        clearOsError,
       }}
     >
       {props.children}

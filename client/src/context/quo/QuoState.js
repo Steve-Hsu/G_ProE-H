@@ -341,9 +341,6 @@ const QuoState = (props) => {
     dispatch({ type: CURRETQUOFORM_UPDATE, payload: quoForm });
   };
 
-  const clearOsError = () => {
-    dispatch({type: UPDATE_ERROR, payload: null});
-  };
 
   return (
     <QuoContext.Provider
@@ -366,7 +363,6 @@ const QuoState = (props) => {
         updateQuoSize,
         updateQuocWay,
         updateCurrentQuoForm,
-        clearOsError,
       }}
     >
       {props.children}

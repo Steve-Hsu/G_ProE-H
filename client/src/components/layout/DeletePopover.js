@@ -159,9 +159,9 @@ const DeletePopover = () => {
             </div>
           </div>
         ) : osError !== null || caseError !== null || srMtrlError !== null ? (<div className='popup-container bd-light bd-radius-s bg-cp-2'>
-            <div className='h-10 w-100 p-1 h-scatter-content'>
-              <div><i className="fas fa-exclamation-triangle"> Notice : </i></div>
-              <div><DeleteBtnSmallNoWarning onClick={osError !== null ? clearOsError : caseError !== null ? clearCaseError : srMtrlError !== null ? clearSrMtrlError : null}/></div>
+            <div className='h-10 w-100 h-scatter-content'>
+              <div className='h-10 p-1'><i className="fas fa-exclamation-triangle"> Notice : </i></div>
+              <div><DeleteBtnSmallNoWarning className='mr-05' onClick={osError !== null ? clearOsError : caseError !== null ? clearCaseError : srMtrlError !== null ? clearSrMtrlError : null}/></div>
             </div>
             <div className='center-content h-80 w-100'>
               {osError || caseError || srMtrlError} 
