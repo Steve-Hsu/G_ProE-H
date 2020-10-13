@@ -21,6 +21,7 @@ const Purchase = (props) => {
     switchPage,
     selectedCases,
     createOrderSummary,
+    osError,
   } = purContext;
   const currentPath = props.location.pathname;
 
@@ -53,7 +54,7 @@ const Purchase = (props) => {
 
   return (
     <Fragment>
-      {popover === true || isLoading === true ? (
+      {popover === true || isLoading === true || osError !== null ? (
         <DeletePopover key='purchasePagePopover' current={current} />
       ) : null}
       {/* Grid-1 */}

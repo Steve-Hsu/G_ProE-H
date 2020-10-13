@@ -33,7 +33,6 @@ const CaseForm = ({ props }) => {
     caseType,
     style,
     client,
-    formIsHalfFilledOut,
     cWays,
     sizes,
     gQtys,
@@ -60,7 +59,6 @@ const CaseForm = ({ props }) => {
   const {
     popover,
     isLoading,
-    current,
     togglePopover,
     toggleLoading,
   } = popoverContext;

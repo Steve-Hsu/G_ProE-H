@@ -22,10 +22,14 @@ router.get('/ordersummary', authUser, async (req, res) => {
     return res.status(400).json({ msg: 'Out of authority' });
   }
   const comId = req.user.company;
-  let osList = await OS.find({ company: comId }, { company: 0 });
+  const osList = await OS.find({ company: comId }, { company: 0 });
+  console.log('the osList', osList)
   if (osList.length === 0) {
-    return res.status(400).json({ msg: 'No order summary found' });
+    console.log('No os Found')
+ 
+    return res.json([])
   } else {
+    console.log('osList is returned')
     return res.json(osList);
   }
 });

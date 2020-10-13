@@ -27,7 +27,7 @@ const Quotation = (props) => {
     openQuoForm,
     // getCaseList,
   } = quoContext;
-  const { popover, current } = popoverContext;
+  const { popover, current, isLoading, toggleLoading } = popoverContext;
   const currentPath = props.location.pathname;
 
   // const onClick = (e) => {
@@ -42,6 +42,7 @@ const Quotation = (props) => {
     // console.log('yes the submit is hit'); // Test code
     e.preventDefault();
     const body = [];
+    toggleLoading(true)
     await srMtrls.map((srMtrl) => {
       body.push({
         id: srMtrl._id,
@@ -50,14 +51,16 @@ const Quotation = (props) => {
       });
     });
     if (currentPath === '/api/quogarment') {
-      updateMPricesQuotation(body);
+      updateMPricesQuotation(body).then(()=>{
+        toggleLoading(false)
+      });
     }
   };
 
   return (
     <Fragment>
       {/* {popover ? <DeletePopover key={current.id} current={current} /> : null} */}
-      {popover ? <DeletePopover key={current._id} current={current} /> : null}
+      {popover === true || isLoading === true ? <DeletePopover key='quotationpopover' current={current} /> : null}
       <div className='grid-1-4'>
         {/* Grid-1 */}
         <LeftBar currentPath={currentPath} />

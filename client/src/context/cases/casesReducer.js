@@ -24,6 +24,7 @@ import {
   TOGGLE_DISPALYTITALES,
   INPUTTAG_FILE_NAME,
   CASE_MTRL_CARD,
+  UPDATE_ERROR,
 } from '../types';
 
 export default (state, action) => {
@@ -141,7 +142,7 @@ export default (state, action) => {
           },
         ],
         formIsHalfFilledOut: true,
-        error: action.type === CASE_CLEAR ? null : action.payload,
+        caseError: null,
         isUpdated: null,
         isEditingCase: false,
         isBoardMode: false,
@@ -166,6 +167,7 @@ export default (state, action) => {
         poData: null,
         isImportedExcel: false,
         showMtrlCard: false,
+        caseError: null,
       };
     case TOGGLE_ISUPDATE:
       return {
@@ -198,6 +200,11 @@ export default (state, action) => {
         ...state,
         showMtrlCard: !state.showMtrlCard,
       };
+    case UPDATE_ERROR:
+      return {
+        ...state,
+        caseError: action.payload,
+      }
     default:
   }
 };

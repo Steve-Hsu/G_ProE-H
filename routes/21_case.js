@@ -36,6 +36,7 @@ router.get('/', authUser, async (req, res) => {
   ]).sort({ date: -1 });
 
   let insertList = await new Promise((resolve, reject) => {
+    if(caseList.length > 0){
     let n = 0;
 
     caseList.map(async (c) => {
@@ -56,12 +57,19 @@ router.get('/', authUser, async (req, res) => {
           }
         });
     });
+  } else {
+    resolve()
+  }
   });
 
   try {
     Promise.all([caseList, insertList]).then(async () => {
-      console.log('caseList is sent out', caseList);
-      return res.json(caseList);
+      if(caseList.length === 0 ){
+        return res.json([])
+      } else {
+        console.log('caseList is sent out', caseList);
+        return res.json(caseList);
+      }
     });
   } catch (err) {
     console.error(err.message);

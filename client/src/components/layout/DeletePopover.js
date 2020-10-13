@@ -17,8 +17,8 @@ const DeletePopover = () => {
   const purContext = useContext(PurContext);
   const quoContext = useContext(QuoContext);
   const userContext = useContext(UserContext);
-  const { _id, cNo, deleteMtrl, deletecWayOrgSize, deleteCase } = casesContext;
-  const { deleteSRMtrlByMtrl, deleteSrMtrlPrice } = srMtrlContext;
+  const { _id, cNo, deleteMtrl, deletecWayOrgSize, deleteCase, caseError } = casesContext;
+  const { deleteSRMtrlByMtrl, deleteSrMtrlPrice, srMtrlError } = srMtrlContext;
   const { comName, comSymbol } = authUserContext;
   const {
     togglePopover,
@@ -29,7 +29,7 @@ const DeletePopover = () => {
     addDoubleCheckValue,
   } = popoverContext;
   const { deleteQuoForm, deletemQuo, switchQuoForm } = quoContext;
-  const { deleteOs } = purContext;
+  const { deleteOs, osError } = purContext;
   const { deleteUser, clearCurrent } = userContext;
   // }
   const onChangeDelete = async (e) => {
@@ -150,7 +150,20 @@ const DeletePopover = () => {
   return (
     <div className='popup'>
       <div className='popup-inner bd-radius-s'>
-        {isLoading === false ? (
+        {isLoading === true ? (
+          <div className='popup-container bd-light bd-radius-s bg-cp-2'>
+            <div className='h-10 w-100 p-1'><i className="fas fa-code-branch"> Server is working...</i></div>
+
+            <div className='center-content h-80 w-100'>
+              <Spinner />
+            </div>
+          </div>
+        ) : osError !== null || caseError !== null || srMtrlError !== null ? (<div className='popup-container bd-light bd-radius-s bg-cp-2'>
+            <div className='h-10 w-100 p-1'><i className="fas fa-exclamation-triangle"> Notice : </i></div>
+            <div className='center-content h-80 w-100'>
+              {osError || caseError || srMtrlError} 
+            </div>
+          </div>) : (
           <div className='popup-container bd-light bd-radius-s bg-cp-2'>
             <div className='p-2 h-20'>Delete this {`${words()}`}</div>
             <div className='center-content h-40'>
@@ -189,15 +202,7 @@ const DeletePopover = () => {
               </div>
             </div>
           </div>
-        ) : (
-          <div className='popup-container bd-light bd-radius-s bg-cp-2'>
-            <div className='h-10 w-100 p-1'>Server is working...</div>
-
-            <div className='center-content h-80 w-100'>
-              <Spinner />
-            </div>
-          </div>
-        )}
+        ) }
       </div>
     </div>
   );

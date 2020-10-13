@@ -11,6 +11,7 @@ import Table from '../elements/table/Table';
 import Board from '../elements/board/Board';
 import GoBackBtn from '../elements/btns/GoBackBtn';
 import SqToggleSwitchL from '../elements/btns/SqToggleSwitchL';
+import DeletePopover from '../layout/DeletePopover';
 
 export const ItemSelector = ({ props, purpose, currentPath }) => {
   const caseContext = useContext(CaseContext);
@@ -25,11 +26,12 @@ export const ItemSelector = ({ props, purpose, currentPath }) => {
     caseList,
     defaultCase,
     isBoardMode,
+    caseError,
   } = caseContext;
-  const { srMtrls, getSrMtrls, openSrMtrl, editingList } = srMtrlContext;
+  const { srMtrls, getSrMtrls, openSrMtrl, editingList, srMtrlError } = srMtrlContext;
   const { switchQuoFormSelector, quotation, switchQuoForm } = quoContext;
   const { selectCase, selectedCases, switchPage } = purContext;
-  const { toggleLoading } = popoverContext;
+  const {isLoading, toggleLoading } = popoverContext;
   useEffect(() => {
     switch (purpose) {
       case 'srMtrlSelector':
@@ -146,6 +148,9 @@ export const ItemSelector = ({ props, purpose, currentPath }) => {
 
   return (
     <Fragment>
+    {caseError !== null || srMtrlError !== null || isLoading === true ? (
+        <DeletePopover key={`casepopover`} />
+      ) : null}
       {/* <div style={{ paddingTop: '50px' }} className='p-1 container'> */}
       <div
         className=' container container-with-navbar'

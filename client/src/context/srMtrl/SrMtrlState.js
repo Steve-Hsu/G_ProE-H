@@ -10,6 +10,7 @@ import {
   SRMTRL_CLEAR,
   UPDATE_EDITING_LIST,
   TOGGLE_MAINPRICE,
+  UPDATE_ERROR,
 } from '../types';
 
 const SrMtrlState = (props) => {
@@ -18,6 +19,7 @@ const SrMtrlState = (props) => {
     srMtrls: [],
     isUpdated: false,
     editingList: [],
+    srMtrlError:null,
   };
 
   const [state, dispatch] = useReducer(SrMtrlReducer, initialState);
@@ -50,10 +52,17 @@ const SrMtrlState = (props) => {
   const getSrMtrls = async () => {
     const srMtrls = await axios.get('/api/srmtrl');
     // Now matter what you return in the router, the axios will return a object in format that have head and data, you need to put foo.data to the payload, or you will get exatra datas like head.
-    dispatch({
-      type: SRMTRL_DOWNLOAD,
-      payload: srMtrls.data,
-    });
+    if(srMtrls.data.length > 0 ){
+        dispatch({
+          type: SRMTRL_DOWNLOAD,
+          payload: srMtrls.data,
+        });
+    } else {
+      dispatch({type: UPDATE_ERROR, payload: 'No material is found'});
+      setTimeout(()=>{
+        dispatch({type: UPDATE_ERROR, payload: null});
+      },3500)
+    }
   };
 
   const getSpecificSrMtrl = async (obj) => {
@@ -329,6 +338,7 @@ const SrMtrlState = (props) => {
         isUpdated: state.isUpdated,
         editingList: state.editingList,
         mainPrice: state.mainPrice,
+        srMtrlError: state.srMtrlError,
         getSrMtrls,
         updateSrMtrlByMtrl,
         deleteSRMtrlByMtrl,

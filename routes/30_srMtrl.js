@@ -27,11 +27,10 @@ router.get('/', authUser, async (req, res) => {
     date: -1,
   });
 
-  try {
+  if(srMtrls.length > 0){
     res.json(srMtrls);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
+  } else {
+    res.json([])
   }
 });
 

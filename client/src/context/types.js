@@ -1,3 +1,6 @@
+//@ Common type -----------------------------------------------------------
+export const UPDATE_ERROR = 'UPDATE_ERROR';
+
 //@ Company -----------------------------------------------------------
 export const ADD_COMPANY = 'ADD_COMPANY';
 export const DELETE_COMPANY = 'DELETE_COMPANY';
@@ -121,4 +124,5 @@ export const OS_DELETE = 'OS_DELETE';
 export const UPDATE_SUPPLIERS = 'UPDATE_SUPPLIERS';
 export const UPDATE_MOQPOQTY = 'UPDATE_MOQPOQTY';
 export const UPDATE_HSCODE = 'UPDATE_HSCODE';
+
 // export const UPDATE_CASEMTRL = 'UPDATE_CASEMTRL';

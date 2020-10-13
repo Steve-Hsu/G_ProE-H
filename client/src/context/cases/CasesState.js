@@ -29,6 +29,7 @@ import {
   INPUTTAG_FILE_NAME,
   CASE_LIST_DOWNLOAD,
   CASE_MTRL_CARD,
+  UPDATE_ERROR,
 } from '../types';
 
 const CasesState = (props) => {
@@ -63,7 +64,7 @@ const CasesState = (props) => {
     poDate: null,
     osNo: null,
     formIsHalfFilledOut: true,
-    error: null,
+    caseError: null,
     isEditingCase: false,
     isUpdated: null,
     isBoardMode: false,
@@ -946,19 +947,15 @@ const CasesState = (props) => {
 
   //Download Existing Case
   const downloadCase = async (id) => {
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
-
-    try {
+    if(id !='emptycase'){
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
       const res = await axios.get(`/api/case/existingcase/${id}`, config);
-
       console.log('Download succeed!');
       dispatch({ type: CASE_DOWNLOAD, payload: res.data });
-    } catch (err) {
-      console.log('Download new case faild, server problems');
     }
   };
 
@@ -1231,7 +1228,15 @@ const CasesState = (props) => {
     };
     const res = await axios.get('/api/case/', config);
     // console.log('download succeed!', res.data); // Test Code
-    dispatch({ type: CASE_LIST_DOWNLOAD, payload: res.data });
+    if(res.data.length > 0 ){
+      dispatch({ type: CASE_LIST_DOWNLOAD, payload: res.data });
+    } else {
+      dispatch({ type: UPDATE_ERROR, payload: 'No case found.' });
+      setTimeout(()=>{
+        dispatch({ type: UPDATE_ERROR, payload: null });
+      }, 3500);
+    }
+  
   };
 
   const deleteCase = async (caseId) => {
@@ -1277,6 +1282,7 @@ const CasesState = (props) => {
         merchandiser: state.merchandiser,
         lastUpdateBy: state.lastUpdateBy,
         updateDate: state.updateDate,
+        caseError: state.caseError,
         addCaseValue,
         addcWay,
         updatecWay,

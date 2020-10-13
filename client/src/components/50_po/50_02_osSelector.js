@@ -1,11 +1,13 @@
 import React, { useContext, useEffect } from 'react';
 import PurContext from '../../context/pur/purContext';
 import Table from '../elements/table/Table';
+import PopoverContext from '../../context/popover/popoverContext'
 //@ Child component
 // import OsItem from './50_02_01_osItem';
 
 const OsSelector = () => {
   const purContext = useContext(PurContext);
+  const popoverContext = useContext(PopoverContext)
   const {
     osList,
     getOsList,
@@ -14,9 +16,14 @@ const OsSelector = () => {
     switchPage,
   } = purContext;
 
+  const { toggleLoading } = popoverContext
+
   useEffect(() => {
     // alert('Try get os List');
-    getOsList();
+    toggleLoading(true)
+    getOsList().then(()=>{
+       toggleLoading(false)
+    });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [openPage]);

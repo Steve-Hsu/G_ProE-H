@@ -11,6 +11,7 @@ import {
   UPDATE_SUPPLIERS,
   UPDATE_MOQPOQTY,
   UPDATE_HSCODE,
+  UPDATE_ERROR,
   // UPDATE_CASEMTRL,
 } from '../types';
 
@@ -106,6 +107,11 @@ export default (state, action) => {
           }),
         },
       };
+    case UPDATE_ERROR:
+      return {
+        ...state,
+        osError: action.payload,
+      }
     // case UPDATE_CASEMTRL:
     //   return {
     //     ...state,

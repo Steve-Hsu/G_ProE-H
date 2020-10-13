@@ -17,6 +17,7 @@ import {
   UPDATE_SUPPLIERS,
   UPDATE_MOQPOQTY,
   UPDATE_HSCODE,
+  UPDATE_ERROR
   // UPDATE_CASEMTRL,
 } from '../types';
 
@@ -28,6 +29,7 @@ const PurState = (props) => {
     currentOrderSummary: null,
     currentPo: null,
     currentPoPriceList: [],
+    osError:null,
   };
   const [state, dispatch] = useReducer(PurReducer, initialState);
   const { caseList, openPage, currentOrderSummary, currentPo } = state;
@@ -146,9 +148,20 @@ const PurState = (props) => {
   };
 
   const getOsList = async () => {
-    const res = await axios.get('/api/purchase/ordersummary');
-    console.log('download succeed!');
-    dispatch({ type: OS_LIST_DOWNLOAD, payload: res.data });
+      console.log('I triggered here !!!')
+      const res = await axios.get('/api/purchase/ordersummary');
+      // console.log("the res ",res) // test code
+  
+      if(res.data.length > 0){
+        console.log('download succeed!');
+        dispatch({ type: OS_LIST_DOWNLOAD, payload: res.data });
+      } else {
+        console.log('No order summary found!');
+        dispatch({type: UPDATE_ERROR, payload: 'No Order summary found'})
+        setTimeout(() => {
+            dispatch({type: UPDATE_ERROR, payload: null})
+        }, 3500);
+      }
   };
 
   const switchOsCurrent = (osItem) => {
@@ -411,6 +424,7 @@ const PurState = (props) => {
         currentOrderSummary: state.currentOrderSummary,
         currentPo: state.currentPo,
         currentPoPriceList: state.currentPoPriceList,
+        osError: state.osError,
         searchCaseList,
         selectCase,
         createOrderSummary,

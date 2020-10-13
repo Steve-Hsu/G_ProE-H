@@ -6,6 +6,7 @@ import {
   SRMTRL_CLEAR,
   UPDATE_EDITING_LIST,
   TOGGLE_MAINPRICE,
+  UPDATE_ERROR,
 } from '../types';
 
 export default (state, action) => {
@@ -63,6 +64,11 @@ export default (state, action) => {
           return sr;
         }),
       };
+    case UPDATE_ERROR:
+      return {
+        ...state,
+        srMtrlError: action.payload,
+      }
     default:
   }
 };
