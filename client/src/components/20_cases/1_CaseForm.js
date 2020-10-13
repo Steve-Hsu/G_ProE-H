@@ -137,20 +137,20 @@ const CaseForm = ({ props }) => {
       // update the state of mPrice
       // console.log('uploadNewCase is called'); // Test Code
 
-      toggleLoading();
+      toggleLoading(true);
       updatedCases = await uploadCase(cases).then((result) => {
         if (result) {
-          toggleLoading();
+          toggleLoading(false);
           return result;
         }
       });
     } else {
       //Delete the refs of srMtrls from database, that deleted in UI by user
 
-      toggleLoading();
+      toggleLoading(true);
       updatedCases = await uploadCase(cases, _id).then((result) => {
         if (result) {
-          toggleLoading();
+          toggleLoading(false);
           return result;
         }
       });

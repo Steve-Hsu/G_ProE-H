@@ -34,17 +34,17 @@ export const ItemSelector = ({ props, purpose, currentPath }) => {
     switch (purpose) {
       case 'srMtrlSelector':
       case 'quoSrMtrlSelector':
-        toggleLoading();
+        toggleLoading(true);
         getSrMtrls().then(() => {
-          toggleLoading();
+          toggleLoading(false);
         });
         break;
       case 'CaseSelector':
       case 'quoCaseSelector':
       case 'purCaseSelector':
-        toggleLoading();
+        toggleLoading(true);
         getCaseList().then(() => {
-          toggleLoading();
+          toggleLoading(false);
         });
         break;
       default:
@@ -72,9 +72,9 @@ export const ItemSelector = ({ props, purpose, currentPath }) => {
       switch (purpose) {
         case 'CaseSelector':
           const aFunc = async (id) => {
-            toggleLoading();
+            toggleLoading(true);
             await downloadCase(id).then(() => {
-              toggleLoading();
+              toggleLoading(false);
             });
           };
           attributes = [aFunc, addCaseValue];
@@ -85,9 +85,9 @@ export const ItemSelector = ({ props, purpose, currentPath }) => {
         case 'quoCaseSelector':
           const quoFunc = async (cNo) => {
             console.log('hit hit ');
-            toggleLoading();
+            toggleLoading(true);
             await switchQuoFormSelector(cNo).then(() => {
-              toggleLoading();
+              toggleLoading(false);
             });
           };
           attributes = quoFunc;

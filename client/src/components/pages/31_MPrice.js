@@ -18,7 +18,7 @@ export const MPrice = (props) => {
   const onSubmitSrMtrl = async (e) => {
     console.log('yes the submit is hit');
     e.preventDefault();
-    toggleLoading();
+    toggleLoading(true);
     const body = [];
     await srMtrls.map((srMtrl) => {
       body.push({
@@ -29,7 +29,7 @@ export const MPrice = (props) => {
     });
     if (currentPath === '/api/case/mprice') {
       await updateMPrices(body).then(() => {
-        toggleLoading();
+        toggleLoading(false);
       });
     }
   };

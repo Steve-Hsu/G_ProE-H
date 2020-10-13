@@ -73,7 +73,7 @@ router.get('/', authUser, async (req, res) => {
 // @access  Private
 router.get('/user', authUser, async (req, res) => {
   try {
-    const cases = await Case.find({ user: req.user.id }).sort({
+    const cases = await Case.find({ user: req.user.id }, { company: 0 }).sort({
       date: -1,
     });
     res.json(cases);
@@ -103,7 +103,11 @@ router.get('/company', authUser, async (req, res) => {
 // @access  Private
 router.get('/existingcase/:id', authUser, async (req, res) => {
   try {
-    const cases = await Case.find({ _id: req.params.id });
+    const userName = await User.findOne({ _id: req.user.id }).name;
+    const cases = await Case.find({ _id: req.params.id }, { company: 0 });
+    cases.merchandiser = userName
+    console.log("userName",userName)
+    console.log("merchandiser",cases.merchandiser)
     res.json(cases);
   } catch (err) {
     console.error(err.message);

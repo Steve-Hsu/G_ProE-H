@@ -201,7 +201,7 @@ const LeftBar = ({ currentPath }) => {
     console.log('the inputValue', inputValue);
 
     if (inputValue) {
-      toggleLoading()
+      toggleLoading(true)
       const styleName = inputValue
         .slice(12)
         .replace('.xlsx', '')
@@ -257,7 +257,7 @@ const LeftBar = ({ currentPath }) => {
           const JSONRows = JSON.stringify(resultSheet);
           console.log('the json JSONRows', JSONRows);
          await getM_list(JSONRows).then(()=>{
-            toggleLoading()
+            toggleLoading(false)
           });
         });
       });

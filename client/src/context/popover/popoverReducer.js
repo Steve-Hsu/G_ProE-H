@@ -27,7 +27,7 @@ export default (state, action) => {
     case TOGGLE_LOADING:
       return {
         ...state,
-        isLoading: !state.isLoading,
+        isLoading: action.payload,
       };
     case ADD_DOUBLECHECK_VALUE:
       return {

@@ -77,14 +77,14 @@ const QuoForm = () => {
     // console.log('here triggered'); // Test Code
     e.preventDefault();
     // uploadQuoForm(isQuotating, true);
-    toggleLoading();
+    toggleLoading(true);
     await uploadQuoForm(isQuotating, false, currentQuoForm)
       .then(() => {
         console.log('QuoForm is updated');
       })
       .then(() => {
         switchQuoForm(_id);
-        toggleLoading();
+        toggleLoading(false);
       });
   };
 

@@ -88,8 +88,9 @@ const PopoverState = (props) => {
     dispatch({ type: CURRENT_DELETE });
   };
 
-  const toggleLoading = () => {
-    dispatch({ type: TOGGLE_LOADING });
+  const toggleLoading = (value) => {
+    console.log(value)
+    dispatch({ type: TOGGLE_LOADING, payload: value });
   };
 
   const addDoubleCheckValue = (e) => {

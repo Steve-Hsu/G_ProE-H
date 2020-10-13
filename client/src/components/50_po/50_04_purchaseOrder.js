@@ -52,9 +52,9 @@ const PurchaseOrder = () => {
 
   const submit = async (e) => {
     e.preventDefault();
-    toggleLoading();
+    toggleLoading(true);
     await uploadPO(_id, currentPo).then(() => {
-      toggleLoading();
+      toggleLoading(false);
     });
   };
 

@@ -33,10 +33,10 @@ const Purchase = (props) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    toggleLoading();
+    toggleLoading(true);
     console.log('order summary is triggered');
     await createOrderSummary(selectedCases).then(() => {
-      toggleLoading();
+      toggleLoading(false);
     });
   };
 

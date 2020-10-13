@@ -62,9 +62,9 @@ const DeletePopover = () => {
         switchQuoForm(null);
         break;
       case 'deleteOs':
-        toggleLoading();
+        toggleLoading(true);
         await deleteOs(current._id).then(() => {
-          toggleLoading();
+          toggleLoading(false);
         });
         break;
       case 'deleteMPrice':
@@ -81,9 +81,9 @@ const DeletePopover = () => {
         break;
       default:
     }
-    toggleLoading(e);
+    toggleLoading(true);
     setTimeout(() => {
-      toggleLoading();
+      toggleLoading(false);
       togglePopover(e);
     }, 1500);
   };
