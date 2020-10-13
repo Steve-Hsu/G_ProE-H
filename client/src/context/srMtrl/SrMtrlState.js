@@ -319,6 +319,9 @@ const SrMtrlState = (props) => {
     dispatch({ type: TOGGLE_MAINPRICE, payload: ids });
   };
 
+  const clearSrMtrlError = () => {
+    dispatch({type: UPDATE_ERROR, payload : null})
+  }
   // const deletePrice = async (srMtrlId, mPriceId) => {
   //   const config = {
   //     headers: {
@@ -352,6 +355,7 @@ const SrMtrlState = (props) => {
         clearSrMtrl,
         openSrMtrl,
         toggleMainPrice,
+        clearSrMtrlError,
         // mtrlColorOption,
         // sizeSPECOption,
         // deletePrice,

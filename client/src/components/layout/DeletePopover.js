@@ -7,7 +7,7 @@ import QuoContext from '../../context/quo/quoContext';
 import PurContext from '../../context/pur/purContext';
 import Spinner from '../../components/layout/Spinner';
 import UserContext from '../../context/user/userContext';
-import userContext from '../../context/user/userContext';
+import DeleteBtnSmallNoWarning from '../elements/btns/DeleteBtnSmallNoWarning'
 
 const DeletePopover = () => {
   const casesContext = useContext(CasesContext);
@@ -17,8 +17,8 @@ const DeletePopover = () => {
   const purContext = useContext(PurContext);
   const quoContext = useContext(QuoContext);
   const userContext = useContext(UserContext);
-  const { _id, cNo, deleteMtrl, deletecWayOrgSize, deleteCase, caseError } = casesContext;
-  const { deleteSRMtrlByMtrl, deleteSrMtrlPrice, srMtrlError } = srMtrlContext;
+  const { _id, cNo, deleteMtrl, deletecWayOrgSize, deleteCase, caseError, clearCaseError } = casesContext;
+  const { deleteSRMtrlByMtrl, deleteSrMtrlPrice, srMtrlError, clearSrMtrlError } = srMtrlContext;
   const { comName, comSymbol } = authUserContext;
   const {
     togglePopover,
@@ -29,7 +29,7 @@ const DeletePopover = () => {
     addDoubleCheckValue,
   } = popoverContext;
   const { deleteQuoForm, deletemQuo, switchQuoForm } = quoContext;
-  const { deleteOs, osError } = purContext;
+  const { deleteOs, osError, clearOsError } = purContext;
   const { deleteUser, clearCurrent } = userContext;
   // }
   const onChangeDelete = async (e) => {
@@ -159,7 +159,10 @@ const DeletePopover = () => {
             </div>
           </div>
         ) : osError !== null || caseError !== null || srMtrlError !== null ? (<div className='popup-container bd-light bd-radius-s bg-cp-2'>
-            <div className='h-10 w-100 p-1'><i className="fas fa-exclamation-triangle"> Notice : </i></div>
+            <div className='h-10 w-100 p-1 h-scatter-content'>
+              <div><i className="fas fa-exclamation-triangle"> Notice : </i></div>
+              <div><DeleteBtnSmallNoWarning onClick={osError !== null ? clearOsError : caseError !== null ? clearCaseError : srMtrlError !== null ? clearSrMtrlError : null}/></div>
+            </div>
             <div className='center-content h-80 w-100'>
               {osError || caseError || srMtrlError} 
             </div>

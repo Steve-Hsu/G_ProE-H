@@ -1874,6 +1874,11 @@ input[type='submit']:focus {
   transition: ease-out 0.3s;
 }
 
+.hover-darker:hover {
+  opacity: 0.1;
+  transition: ease-out 0.3s;
+}
+
 .hover-spin-90:hover {
   cursor: pointer;
   transform: rotate(90deg);
@@ -1882,7 +1887,8 @@ input[type='submit']:focus {
 
 .hover-no:hover,
 .hover-0:hover {
-  opacity: 1;
+  color: var(--cp-1_2);
+  background: var(--fade-color-dark);
 }
 
 /* @Loader */

@@ -1253,6 +1253,10 @@ const CasesState = (props) => {
     dispatch({ type: CASE_MTRL_CARD });
   };
 
+  const clearCaseError = ()=>{
+    dispatch({type: UPDATE_ERROR, payload:null});
+  }
+
   return (
     <CasesContext.Provider
       value={{
@@ -1309,6 +1313,7 @@ const CasesState = (props) => {
         getCaseList,
         deleteCase,
         toggleMtrlCard,
+        clearCaseError,
       }}
     >
       {props.children}
