@@ -39,7 +39,7 @@ const Mtrl = ({ mtrl }) => {
     transform: 'translate(-0.2rem, -0.7rem)',
   };
   // Expand Panel class
-  const expandPanelClass = 'grid-1-5 bg-cp-2-light pt-1 round-card bd-light';
+  const expandPanelClass = 'grid-1-5 bg-cp-1 pt-1 round-card bd-light-2px';
 
   // const unitList = [
   //   'Select a Unit',
@@ -65,7 +65,7 @@ const Mtrl = ({ mtrl }) => {
       // borderBottom: '1px solid var(--primary - color)',
       background: 'var(--cp-1_2)',
       color: 'var(--cp-1_4)',
-      border: '2px solid var(--cp - 1_3)',
+      border: '2px solid var(--cp-1_3)',
       opacity: '1',
     };
     switch (subject) {

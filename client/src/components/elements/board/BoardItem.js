@@ -6,6 +6,7 @@ import SrMtrl from '../../30_srMtrl/30_01_srMtrl';
 import Mtrl from '../../20_cases/1_6_Mtrl';
 import LockedBadge from '../badge/LockedBadge';
 
+
 const BoardItem = ({
   id,
   purpose,
@@ -72,68 +73,77 @@ const BoardItem = ({
       {purpose === '1_CaseForm' && isEditingMtrl == true ? (
         <Mtrl key={subject.id} mtrl={subject} />
       ) : (purpose === 'srMtrlSelector' &&
-          toggleItemAttributes[1].includes(id)) ||
+        toggleItemAttributes[1].includes(id)) ||
         (purpose === 'quoSrMtrlSelector' &&
           toggleItemAttributes[1].includes(id)) ? (
-        <SrMtrl srMtrl={subject} currentPath={currentPath} />
-      ) : purpose === 'purchaseOrder' ? (
-        <div
-          className='boardChild round-card bg-cp-elem bd-light hover-cp-2'
-          style={{ position: 'relative' }}
-          onClick={onClick}
-        >
-          <div>
-            No.
-            {idx + 1}
-          </div>
-          <div>{subject.supplier}</div>
-          {subject.poConfirmDate ? (
+            <SrMtrl srMtrl={subject} currentPath={currentPath} />
+          ) : purpose === 'purchaseOrder' ? (
             <div
-              className='flexBox w-100'
-              style={{
-                position: 'absolute',
-                bottom: '0.5rem',
-                marginLeft: '-1rem',
-                paddingLeft: '1rem',
-                paddingRight: '1rem',
-              }}
+              className='boardChild round-card bg-cp-elem bd-light hover-cp-2 p-03'
+              style={{ position: 'relative' }}
+              onClick={onClick}
             >
-              <LockedBadge
-                id={id}
-                key={`confirmedBadge${id}`}
-                labels={[<i className='fas fa-check-circle'> Confirmed</i>]}
-                className='center-content mt-0'
-                style={{
-                  height: '2rem',
-                  flex: '1 1 auto',
-                }}
-              />
-            </div>
-          ) : null}
-        </div>
-      ) : (
-        <div
-          className='boardChild round-card bg-cp-elem bd-light hover-cp-2'
-          style={selectedBackGround(id)}
-          onClick={onClick}
-        >
-          <div>
-            No.
+              <div className='fs-small fc-cp-2-c'>
+                No.
             {idx + 1}
-          </div>
-          {displayTitles.map((title) => {
-            return (
-              <div
-                key={`${Object.keys(title)[0]}${
-                  subject.id ? subject.id : subject._id
-                }`}
-              >
-                {subject[Object.keys(title)[0]]}
               </div>
-            );
-          })}
-        </div>
-      )}
+              <div>{subject.supplier}</div>
+              {subject.poConfirmDate ? (
+                <div
+                  className='flexBox w-100'
+                  style={{
+                    position: 'absolute',
+                    bottom: '0.5rem',
+                    marginLeft: '-1rem',
+                    paddingLeft: '1rem',
+                    paddingRight: '1rem',
+                  }}
+                >
+                  <LockedBadge
+                    id={id}
+                    key={`confirmedBadge${id}`}
+                    labels={[<i className='fas fa-check-circle'> Confirmed</i>]}
+                    className='center-content mt-0'
+                    style={{
+                      height: '2rem',
+                      flex: '1 1 auto',
+                    }}
+                  />
+                </div>
+              ) : null}
+            </div>
+          ) : (
+              <div
+                className='boardChild round-card bg-cp-elem bd-light hover-cp-2 p-03'
+                style={selectedBackGround(id)}
+                onClick={onClick}
+              >
+                <div className='fs-small fc-cp-2-c'>
+                  No.
+                  {idx + 1}
+                </div>
+                {displayTitles.map((title) => {
+                  // console.log(title) // test Code
+                  let className = 'fs-tiny'
+                  switch (Object.keys(title)[0]) {
+                    case 'supplier':
+                      className = 'fw-bold fs-lead'
+                      break;
+                    case 'ref_no':
+                      className = 'fs-normal'
+                    default:
+                  }
+                  return (
+                    <div className={className}
+                      key={`${Object.keys(title)[0]}${subject.id ? subject.id : subject._id
+                        }`}
+                    >
+                      {subject[Object.keys(title)[0]]}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
     </Fragment>
   );
 };

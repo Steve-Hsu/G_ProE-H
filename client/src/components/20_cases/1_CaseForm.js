@@ -267,12 +267,12 @@ const CaseForm = ({ props }) => {
                     })}
                   </select>
                 </div>
-                {cNo? (
+                {cNo ? (
                   <div className='grid-1-5 my-1'>
-                      <div className='v-center-content'>Last Update : </div>
-                      <div>{`${lastUpdateBy},  Date : ${updateDate}`}</div>      
+                    <div className='v-center-content'>Last Update : </div>
+                    <div>{`${lastUpdateBy},  Date : ${updateDate}`}</div>
                   </div>
-                ): null}
+                ) : null}
                 {osNo ? (
                   <LockedBadge
                     labels={[
@@ -296,20 +296,20 @@ const CaseForm = ({ props }) => {
                 {osNo ? (
                   <div></div>
                 ) : (
-                  <SqBtnLarge
-                    label={<i className='fas fa-swatchbook'> Color ＋</i>}
-                    onClick={addcWay}
-                  />
-                )}
+                    <SqBtnLarge
+                      label={<i className='fas fa-swatchbook'> Color ＋</i>}
+                      onClick={addcWay}
+                    />
+                  )}
 
                 {osNo ? (
                   <div></div>
                 ) : (
-                  <SqBtnLarge
-                    label={<i className='fas fa-ruler'> Size ＋</i>}
-                    onClick={addSize}
-                  />
-                )}
+                    <SqBtnLarge
+                      label={<i className='fas fa-ruler'> Size ＋</i>}
+                      onClick={addSize}
+                    />
+                  )}
 
                 <div className='flexBox' style={{ gridColumn: '5/7' }}>
                   {/* <div className='lead text-primary'>Total Qty : </div>
@@ -322,7 +322,7 @@ const CaseForm = ({ props }) => {
                 </div>
               </div>
 
-              <div className='row-gap-md round-card bg-cp-1 bd-light mb-3'>
+              <div className='row-gap-md round-card bg-cp-1 bd-light'>
                 <div className='grid-1-07-6'>
                   <div></div>
                   <div></div>
@@ -380,15 +380,20 @@ const CaseForm = ({ props }) => {
                   </div>
                 </div>
               </div>
+              <div className='mb-3 h-scatter-content'>
+                <div>
+                </div>
+                <div>
+                  Total : {Number(gQtys.reduce((cur, gQty) => { cur += Number(gQty.gQty); return cur; }, 0)).toLocaleString()} Pcs
+                </div>
+              </div>
 
               {/* Material -------------------------- */}
               <div className='grid-6'>
                 {/* elem-1 */}
                 <div className='fs-lead' style={{ gridColumn: '1/2' }}>
                   Materials
-                  {/* <button className='btn btn-sq ml-1' onClick={addMtrl}>
-                  <i className='fas fa-plus'></i>
-                </button> */}
+                  <span className='fs-tiny ml-1 fc-cp-2-c'>{mtrls.length} ms</span>
                 </div>
                 <div className='ml-05'>
                   {osNo ? null : (
@@ -438,20 +443,20 @@ const CaseForm = ({ props }) => {
                     toggleItemAttributes={addMtrlValue}
                   />
                 ) : (
-                  <Table
-                    purpose='1_CaseForm'
-                    subjects={mtrls}
-                    displayTitles={displayTitles}
-                    toggleItemAttributes={addMtrlValue}
-                  />
-                )}
+                    <Table
+                      purpose='1_CaseForm'
+                      subjects={mtrls}
+                      displayTitles={displayTitles}
+                      toggleItemAttributes={addMtrlValue}
+                    />
+                  )}
               </div>
             </form>
           </div>
         </div>
       ) : (
-        <ItemSelector props={props} purpose='CaseSelector' />
-      )}
+          <ItemSelector props={props} purpose='CaseSelector' />
+        )}
     </Fragment>
   );
 };

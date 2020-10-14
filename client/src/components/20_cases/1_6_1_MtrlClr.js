@@ -6,7 +6,7 @@ const MtrlClr = ({ mtrlColor, mtrlId }) => {
   const casesContext = useContext(CasesContext);
   const { addValueMtrlColor, cWays, mtrls, osNo } = casesContext;
   const { mColor } = mtrlColor;
-  const cWayLable = cWays.find(({ id }) => id === mtrlColor.cWay).gClr;
+  const cWayLabel = cWays.find(({ id }) => id === mtrlColor.cWay).gClr;
   const multipleColor = mtrls.find(({ id }) => id === mtrlId).multipleColor;
 
   //@ Value for input
@@ -29,7 +29,7 @@ const MtrlClr = ({ mtrlColor, mtrlId }) => {
         readOnly={osNo ? true : false}
       />
       <label htmlFor={mtrlColor.id} className='MPH-input-label'>
-        {multipleColor == true ? `For ${cWayLable}` : 'For all ColorWay'}
+        {multipleColor == true ? `For ${cWayLabel.includes("Empty-ColorWay_Duplicated")? cWayLabel.slice(26) : cWayLabel}` : 'For all ColorWay'}
       </label>
     </div>
   );
