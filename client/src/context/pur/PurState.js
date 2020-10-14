@@ -29,7 +29,7 @@ const PurState = (props) => {
     currentOrderSummary: null,
     currentPo: null,
     currentPoPriceList: [],
-    osError:null,
+    osError: null,
   };
   const [state, dispatch] = useReducer(PurReducer, initialState);
   const { caseList, openPage, currentOrderSummary, currentPo } = state;
@@ -88,13 +88,23 @@ const PurState = (props) => {
         'Content-Type': 'application/json',
       },
     };
+
+    // const res = await axios.post('/api/purchase', selectedCases, config);
     try {
-      // const res = await axios.post('/api/purchase', selectedCases, config);
-      await axios.post('/api/purchase', selectedCases, config).then(() => {
-        switchPage('osSelector');
-      });
-      console.log('Upload Order Summary');
-      // dispatch({ type: CASE_LIST_DOWNLOAD, payload: res.data });
+      await axios.post('/api/purchase', selectedCases, config).then((result) => {
+        if (result[0]) {
+          const err = result[0].err
+          console.log('Multiple user login~!')
+          dispatch({ type: UPDATE_ERROR, payload: err });
+          setTimeout(() => {
+            dispatch({ type: UPDATE_ERROR, payload: null });
+          }, 3500);
+        } else {
+          switchPage('osSelector');
+          console.log('Upload Order Summary');
+        }
+        return result
+      })
     } catch (err) {
       console.log(err, 'Order Summary failed');
     }
@@ -148,20 +158,26 @@ const PurState = (props) => {
   };
 
   const getOsList = async () => {
-      console.log('I triggered here !!!')
-      const res = await axios.get('/api/purchase/ordersummary');
-      // console.log("the res ",res) // test code
-  
-      if(res.data.length > 0){
-        console.log('download succeed!');
-        dispatch({ type: OS_LIST_DOWNLOAD, payload: res.data });
-      } else {
-        console.log('No order summary found!');
-        dispatch({type: UPDATE_ERROR, payload: 'No Order summary found'})
-        setTimeout(() => {
-            dispatch({type: UPDATE_ERROR, payload: null})
-        }, 3500);
-      }
+    console.log('I triggered here !!!')
+    const res = await axios.get('/api/purchase/ordersummary');
+    // console.log("the res ",res) // test code
+    if (res.data.length === 0) {
+      console.log('No order summary found!');
+      dispatch({ type: UPDATE_ERROR, payload: 'No Order summary found' })
+      setTimeout(() => {
+        dispatch({ type: UPDATE_ERROR, payload: null })
+      }, 3500);
+    } else if (res.data[0].err) {
+      const err = res.data[0].err
+      console.log('Multiple user login~!')
+      dispatch({ type: UPDATE_ERROR, payload: err });
+      setTimeout(() => {
+        dispatch({ type: UPDATE_ERROR, payload: null });
+      }, 3500);
+    } else {
+      console.log('download succeed!');
+      dispatch({ type: OS_LIST_DOWNLOAD, payload: res.data });
+    }
   };
 
   const switchOsCurrent = (osItem) => {
@@ -192,12 +208,23 @@ const PurState = (props) => {
   };
 
   const deleteOs = async (osId) => {
-    try {
-      await axios.delete(`/api/purchase/deleteos/${osId}`);
-      dispatch({ type: OS_DELETE, payload: osId });
-    } catch (err) {
+
+    const res = await axios.delete(`/api/purchase/deleteos/${osId}`).catch((err) => {
       console.log(err);
+    });
+
+    if (res.data[0]) {
+      const err = res.data[0].err
+      console.log('Multiple user login~!')
+      dispatch({ type: UPDATE_ERROR, payload: err });
+      setTimeout(() => {
+        dispatch({ type: UPDATE_ERROR, payload: null });
+      }, 3500);
+    } else {
+      console.log('Download succeed!');
+      dispatch({ type: OS_DELETE, payload: osId });
     }
+
   };
 
   const updatePOInform = (e) => {
@@ -268,23 +295,21 @@ const PurState = (props) => {
         body,
         config
       );
-      console.log('Upload condition succeed');
-
-      const theSuppliers = res.data.suppliers;
-      // console.log(theSuppliers);
-      const subject = theSuppliers.find(({ _id }) => _id === currentPoId);
-      // console.log('The subject', subject);
-      dispatch({ type: UPDATE_SUPPLIERS, payload: theSuppliers });
-      dispatch({ type: PO_CURRENT, payload: subject });
-      dispatch({ type: OS_CURRENT, payload: res.data });
-      // const updateCaseMtrl = res.data.caseMtrls;
-      // console.log('The updateCaseMtrl', updateCaseMtrl);
-      // if (updateCaseMtrl) {
-      //   dispatch({
-      //     type: UPDATE_CASEMTRL,
-      //     payload: updateCaseMtrl,
-      //   });
-      // }
+      if (res.data[0]) {
+        const err = res.data[0].err
+        console.log('Multiple user login~!')
+        dispatch({ type: UPDATE_ERROR, payload: err });
+        setTimeout(() => {
+          dispatch({ type: UPDATE_ERROR, payload: null });
+        }, 3500);
+      } else {
+        console.log('Upload condition succeed');
+        const theSuppliers = res.data.suppliers;
+        const subject = theSuppliers.find(({ _id }) => _id === currentPoId);
+        dispatch({ type: UPDATE_SUPPLIERS, payload: theSuppliers });
+        dispatch({ type: PO_CURRENT, payload: subject });
+        dispatch({ type: OS_CURRENT, payload: res.data });
+      }
     } catch (err) {
       console.log(err.msg, 'Upload conditions failed');
     }
@@ -342,7 +367,7 @@ const PurState = (props) => {
           total =
             total +
             osMtrl.purchaseQtySumUp *
-              theMtrlPrice(osMtrl.purchaseQtySumUp, mPrice, moq, moqPrice);
+            theMtrlPrice(osMtrl.purchaseQtySumUp, mPrice, moq, moqPrice);
           if (idx + 1 === currentOrderSummary.caseMtrls.length) {
             console.log('1');
             resolve(total);
@@ -408,14 +433,23 @@ const PurState = (props) => {
         body,
         config
       );
-      console.log('Upload hs-code succeed');
+      if (res.data[0]) {
+        const err = res.data[0].err
+        console.log('Multiple user login~!')
+        dispatch({ type: UPDATE_ERROR, payload: err });
+        setTimeout(() => {
+          dispatch({ type: UPDATE_ERROR, payload: null });
+        }, 3500);
+      } else {
+        console.log('Upload hs-code succeed');
+      }
     } catch (err) {
       console.log(err.msg, 'Upload hs-code failed');
     }
   };
 
   const clearOsError = () => {
-    dispatch({type: UPDATE_ERROR, payload: null});
+    dispatch({ type: UPDATE_ERROR, payload: null });
   };
 
 

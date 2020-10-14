@@ -18,6 +18,14 @@ const OS = require('../models/50_OS');
 // @access  Private
 router.get('/ordersummary', authUser, async (req, res) => {
   let user = await User.findById(req.user.id);
+  //Check if multiple login, if yes, do nothing
+  const token = req.header('x-auth-token');
+  if (user.sKey !== token) {
+    const msg = { err: 'Multiple user login, please login again.' }
+    console.log(msg)
+    return res.json([msg])
+  }
+  //Check if the user have the right
   if (!user.po) {
     return res.status(400).json({ msg: 'Out of authority' });
   }
@@ -26,7 +34,7 @@ router.get('/ordersummary', authUser, async (req, res) => {
   console.log('the osList', osList)
   if (osList.length === 0) {
     console.log('No os Found')
- 
+
     return res.json([])
   } else {
     console.log('osList is returned')
@@ -40,6 +48,15 @@ router.get('/ordersummary', authUser, async (req, res) => {
 router.post('/', authUser, async (req, res) => {
   console.log('Generate Order Summary by cases selected');
   const user = await User.findById(req.user.id);
+
+  //Check if multiple login, if yes, do nothing
+  const token = req.header('x-auth-token');
+  if (user.sKey !== token) {
+    const msg = { err: 'multiple user login, please login again.' }
+    console.log(msg)
+    return res.json([msg])
+  }
+  //Check if the user have the right
   if (!user.po) {
     return res.status(400).json({ msg: 'Out of authority' });
   }
@@ -284,7 +301,9 @@ router.post('/', authUser, async (req, res) => {
         { company: comId, osNo: newOsNO },
         { company: 0 }
       );
-      return res.json(result);
+      // const msg = 'the order summary is made'
+      // return res.json(msg);
+      return res.json(result)
     })
     .catch((err) => {
       console.log(err);
@@ -398,6 +417,14 @@ router.post('/materialprice', authUser, async (req, res) => {
 // Result   Return an array named "materialPriceList"
 router.delete('/deleteos/:osId', authUser, async (req, res) => {
   let user = await User.findById(req.user.id);
+  //Check if multiple login, if yes, do nothing
+  const token = req.header('x-auth-token');
+  if (user.sKey !== token) {
+    const msg = { err: 'multiple user login, please login again.' }
+    console.log(msg)
+    return res.json([msg])
+  }
+  //Check if the user have the right
   if (!user.po) {
     return res.status(400).json({ msg: 'Out of authority' });
   }
@@ -441,6 +468,14 @@ router.delete('/deleteos/:osId', authUser, async (req, res) => {
 router.post('/purchaseorder/:osId', authUser, async (req, res) => {
   console.log('Start upload Po'); // Test Code
   let user = await User.findById(req.user.id);
+  //Check if multiple login, if yes, do nothing
+  const token = req.header('x-auth-token');
+  if (user.sKey !== token) {
+    const msg = { err: 'multiple user login, please login again.' }
+    console.log(msg)
+    return res.json([msg])
+  }
+  //Check if the user have right
   if (!user.po) {
     return res.status(400).json({ msg: 'Out of authority' });
   }
@@ -629,6 +664,14 @@ router.post('/purchaseorder/:osId', authUser, async (req, res) => {
 router.post('/updatehscode/:osId', authUser, async (req, res) => {
   console.log('Start upload Po'); // Test Code
   let user = await User.findById(req.user.id);
+  //Check if multiple login, if yes, do nothing
+  const token = req.header('x-auth-token');
+  if (user.sKey !== token) {
+    const msg = { err: 'multiple user login, please login again.' }
+    console.log(msg)
+    return res.json([msg])
+  }
+  //Check if the user have the right
   if (!user.po) {
     return res.status(400).json({ msg: 'Out of authority' });
   }
