@@ -89,7 +89,7 @@ const SrMtrl = ({ srMtrl, currentPath }) => {
               idx={idx}
               mainPrice={srMtrl.mainPrice}
               currentPath={currentPath}
-              // options={options}
+            // options={options}
             />
           ))}
         </div>

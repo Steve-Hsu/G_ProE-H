@@ -19,7 +19,7 @@ const SrMtrlState = (props) => {
     srMtrls: [],
     isUpdated: false,
     editingList: [],
-    srMtrlError:null,
+    srMtrlError: null,
   };
 
   const [state, dispatch] = useReducer(SrMtrlReducer, initialState);
@@ -50,18 +50,24 @@ const SrMtrlState = (props) => {
 
   //@1 Get srMtrl
   const getSrMtrls = async () => {
-    const srMtrls = await axios.get('/api/srmtrl');
+    const res = await axios.get('/api/srmtrl');
     // Now matter what you return in the router, the axios will return a object in format that have head and data, you need to put foo.data to the payload, or you will get exatra datas like head.
-    if(srMtrls.data.length > 0 ){
-        dispatch({
-          type: SRMTRL_DOWNLOAD,
-          payload: srMtrls.data,
-        });
+    if (res.data.length === 0) {
+      dispatch({ type: UPDATE_ERROR, payload: 'No material is found' });
+      setTimeout(() => {
+        dispatch({ type: UPDATE_ERROR, payload: null });
+      }, 3500)
+    } else if (res.data[0].err) {
+      console.log('Multiple user login~!')
+      dispatch({ type: UPDATE_ERROR, payload: res.data[0].err });
+      setTimeout(() => {
+        dispatch({ type: UPDATE_ERROR, payload: null });
+      }, 3500);
     } else {
-      dispatch({type: UPDATE_ERROR, payload: 'No material is found'});
-      setTimeout(()=>{
-        dispatch({type: UPDATE_ERROR, payload: null});
-      },3500)
+      dispatch({
+        type: SRMTRL_DOWNLOAD,
+        payload: res.data,
+      });
     }
   };
 
@@ -249,18 +255,26 @@ const SrMtrlState = (props) => {
       },
     };
 
-    try {
-      await axios.put('/api/srmtrl/update/mpricevalues', body, config);
 
+    const res = await axios.put('/api/srmtrl/update/mpricevalues', body, config).catch((err) => {
+      return console.log('Upload srMtrl faild, server problems');
+    });
+
+    if (res.data[0]) {
+      const err = res.data[0].err
+      console.log('Multiple user login~!')
+      dispatch({ type: UPDATE_ERROR, payload: err });
+      setTimeout(() => {
+        dispatch({ type: UPDATE_ERROR, payload: null });
+      }, 3500);
+    } else {
       dispatch({
         type: TOGGLE_ISUPDATE,
         payload: true,
       });
-
       return console.log('mPrice color updated');
-    } catch (err) {
-      return console.log('Upload srMtrl faild, server problems');
     }
+
   };
 
   //@1 update quotation of material in mPrices
@@ -272,21 +286,29 @@ const SrMtrlState = (props) => {
       },
     };
 
-    try {
-      await axios.put(
-        '/api/srmtrl/update/mpricevalues/quotation',
-        body,
-        config
-      );
 
+    const res = await axios.put(
+      '/api/srmtrl/update/mpricevalues/quotation',
+      body,
+      config
+    ).catch((err) => {
+      return console.log('Upload srMtrl faild, server problems');
+    });
+
+    if (res.data[0]) {
+      const err = res.data[0].err
+      console.log('Multiple user login~!')
+      dispatch({ type: UPDATE_ERROR, payload: err });
+      setTimeout(() => {
+        dispatch({ type: UPDATE_ERROR, payload: null });
+      }, 3500);
+    } else {
       dispatch({
         type: TOGGLE_ISUPDATE,
         payload: true,
       });
 
       return console.log('mPrice color updated');
-    } catch (err) {
-      return console.log('Upload srMtrl faild, server problems');
     }
   };
 
@@ -320,7 +342,7 @@ const SrMtrlState = (props) => {
   };
 
   const clearSrMtrlError = () => {
-    dispatch({type: UPDATE_ERROR, payload : null})
+    dispatch({ type: UPDATE_ERROR, payload: null })
   }
   // const deletePrice = async (srMtrlId, mPriceId) => {
   //   const config = {

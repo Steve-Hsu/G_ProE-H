@@ -14,6 +14,16 @@ const SRMtrl = require('../models/30_SRMtrl');
 // @desc    Read the compnay's srMtrl from database
 // @access  Private
 router.get('/', authUser, async (req, res) => {
+
+  const user = await User.findById(req.user.id)
+  //Check if multiple login, if yes, do nothing
+  const token = req.header('x-auth-token');
+  if (user.sKey !== token) {
+    const msg = { err: 'Multiple user login, please login again.' }
+    console.log(msg)
+    return res.json([msg])
+  }
+
   const srMtrls = await SRMtrl.find(
     { company: req.user.company },
     {
@@ -38,6 +48,15 @@ router.get('/', authUser, async (req, res) => {
 // @desc    Response to the queried obj
 // @access  Private
 router.put('/queryresult', authUser, async (req, res) => {
+  const user = await User.findById(req.user.id)
+  //Check if multiple login, if yes, do nothing
+  const token = req.header('x-auth-token');
+  if (user.sKey !== token) {
+    const msg = { err: 'Multiple user login, please login again.' }
+    console.log(msg)
+    return res.json([msg])
+  }
+
   let body = req.body;
   delete body._id;
   const filed = Object.keys(body);
@@ -75,6 +94,14 @@ router.put('/:caseId', authUser, async (req, res) => {
   const comId = req.user.company;
   const caseId = req.params.caseId;
   let user = await User.findById(userId);
+  //Check if multiple login, if yes, do nothing
+  const token = req.header('x-auth-token');
+  if (user.sKey !== token) {
+    const msg = { err: 'Multiple user login, please login again.' }
+    console.log(msg)
+    return res.json([msg])
+  }
+
   if (!user.cases) {
     return res.status(400).json({
       msg: 'Out of authority',
@@ -736,6 +763,14 @@ router.put('/update/mpricevalues', authUser, async (req, res) => {
   const comId = req.user.company;
   const userId = req.user.id;
   let user = await User.findById(userId);
+  //Check if multiple login, if yes, do nothing
+  const token = req.header('x-auth-token');
+  if (user.sKey !== token) {
+    const msg = { err: 'Multiple user login, please login again.' }
+    console.log(msg)
+    return res.json([msg])
+  }
+
   // Check the authority of the user
   if (!user) {
     return res.status(400).json({
@@ -1158,6 +1193,13 @@ router.put('/update/mpricevalues/quotation', authUser, async (req, res) => {
   const srMtrlList = req.body;
   const userId = req.user.id;
   let user = await User.findById(userId);
+  //Check if multiple login, if yes, do nothing
+  const token = req.header('x-auth-token');
+  if (user.sKey !== token) {
+    const msg = { err: 'Multiple user login, please login again.' }
+    console.log(msg)
+    return res.json([msg])
+  }
   // Check the authority of the user
   if (!user) {
     return res.status(400).json({

@@ -906,9 +906,10 @@ const CasesState = (props) => {
     });
 
 
-    if (res.data[0].err) {
+    if (res.data[0]) {
+      const err = res.data[0].err
       console.log('Multiple user login~!')
-      dispatch({ type: UPDATE_ERROR, payload: res.data[0].err });
+      dispatch({ type: UPDATE_ERROR, payload: err });
       setTimeout(() => {
         dispatch({ type: UPDATE_ERROR, payload: null });
       }, 3500);
@@ -967,9 +968,10 @@ const CasesState = (props) => {
       const res = await axios.get(`/api/case/existingcase/${id}`, config);
 
 
-      if (res.data[0].err) {
+      if (res.data[0]) {
+        const err = res.data[0].err
         console.log('Multiple user login~!')
-        dispatch({ type: UPDATE_ERROR, payload: res.data[0].err });
+        dispatch({ type: UPDATE_ERROR, payload: err });
         setTimeout(() => {
           dispatch({ type: UPDATE_ERROR, payload: null });
         }, 3500);
