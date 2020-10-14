@@ -894,16 +894,8 @@ const CasesState = (props) => {
       },
     };
 
-    try {
-      const res = await axios.post(`/api/case/upload/${caseId}`, cases, config);
-      console.log('Upload succeed!');
-      if (isDownLoadCase) {
-        //This dispatch is nothing related to the upload, just after upload we need to take back the cases to feed to the state for the UI is updated to inform the user, so here use CASE_DOWNLOAD
-        dispatch({ type: CASE_DOWNLOAD, payload: res.data });
-        dispatch({ type: TOGGLE_ISUPDATE, payload: true });
-      }
-      return res.data;
-    } catch (err) {
+
+    const res = await axios.post(`/api/case/upload/${caseId}`, cases, config).catch((err) => {
       dispatch({
         type: CASE_USER_NOT_AUTHORIZED,
         payload: 'You are not authorized to generate a new case',
@@ -911,7 +903,26 @@ const CasesState = (props) => {
       console.log(
         'Upload new case faild, The user not authorized to update this case'
       );
+    });
+
+
+    if (res.data[0].err) {
+      console.log('Multiple user login~!')
+      dispatch({ type: UPDATE_ERROR, payload: res.data[0].err });
+      setTimeout(() => {
+        dispatch({ type: UPDATE_ERROR, payload: null });
+      }, 3500);
+    } else {
+      console.log('Upload succeed!');
+      if (isDownLoadCase) {
+        //This dispatch is nothing related to the upload, just after upload we need to take back the cases to feed to the state for the UI is updated to inform the user, so here use CASE_DOWNLOAD
+        dispatch({ type: CASE_DOWNLOAD, payload: res.data });
+        dispatch({ type: TOGGLE_ISUPDATE, payload: true });
+      }
     }
+    return res.data;
+
+
   };
 
   // // Upload existing case- Submit form
@@ -947,15 +958,25 @@ const CasesState = (props) => {
 
   //Download Existing Case
   const downloadCase = async (id) => {
-    if(id !='emptycase'){
+    if (id != 'emptycase') {
       const config = {
         headers: {
           'Content-Type': 'application/json',
         },
       };
       const res = await axios.get(`/api/case/existingcase/${id}`, config);
-      console.log('Download succeed!');
-      dispatch({ type: CASE_DOWNLOAD, payload: res.data });
+
+
+      if (res.data[0].err) {
+        console.log('Multiple user login~!')
+        dispatch({ type: UPDATE_ERROR, payload: res.data[0].err });
+        setTimeout(() => {
+          dispatch({ type: UPDATE_ERROR, payload: null });
+        }, 3500);
+      } else {
+        console.log('Download succeed!');
+        dispatch({ type: CASE_DOWNLOAD, payload: res.data });
+      }
     }
   };
 
@@ -1228,15 +1249,22 @@ const CasesState = (props) => {
     };
     const res = await axios.get('/api/case/', config);
     // console.log('download succeed!', res.data); // Test Code
-    if(res.data.length > 0 ){
-      dispatch({ type: CASE_LIST_DOWNLOAD, payload: res.data });
-    } else {
+
+    if (res.data.length === 0) {
       dispatch({ type: UPDATE_ERROR, payload: 'No case found.' });
-      setTimeout(()=>{
+      setTimeout(() => {
         dispatch({ type: UPDATE_ERROR, payload: null });
       }, 3500);
+    } else if (res.data[0].err) {
+      console.log('Multiple user login~!')
+      dispatch({ type: UPDATE_ERROR, payload: res.data[0].err });
+      setTimeout(() => {
+        dispatch({ type: UPDATE_ERROR, payload: null });
+      }, 3500);
+    } else {
+      dispatch({ type: CASE_LIST_DOWNLOAD, payload: res.data });
     }
-  
+
   };
 
   const deleteCase = async (caseId) => {
@@ -1253,8 +1281,8 @@ const CasesState = (props) => {
     dispatch({ type: CASE_MTRL_CARD });
   };
 
-  const clearCaseError = ()=>{
-    dispatch({type: UPDATE_ERROR, payload:null});
+  const clearCaseError = () => {
+    dispatch({ type: UPDATE_ERROR, payload: null });
   }
 
   return (

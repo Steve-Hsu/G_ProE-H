@@ -31,6 +31,10 @@ const UserSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  //This key is actually the token, generated and changed everytime when user login, for prevent mutiple login with one user account. Everytime user make a request, server will check if the token of user is matched to the one in mongoDb, if not, request will be refused.
+  sKey: {
+    type: String,
+  },
   // Authorities of the user
   cases: {
     // case is a keyword in javaScript so here call case as cases.

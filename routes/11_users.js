@@ -206,6 +206,7 @@ router.post(
         quo,
         po,
         loss: loss,
+        sKey: null,
       });
 
       //bcrypt the password
@@ -396,12 +397,12 @@ router.post('/uploadloss', authCom, async (req, res) => {
                 idx2 === 1
                   ? 130
                   : idx2 === 2
-                  ? 300
-                  : idx2 === 3
-                  ? 500
-                  : idx2 === 4
-                  ? 2000
-                  : 7
+                    ? 300
+                    : idx2 === 3
+                      ? 500
+                      : idx2 === 4
+                        ? 2000
+                        : 7
               );
           }
           break;

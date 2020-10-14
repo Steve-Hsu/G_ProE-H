@@ -14,10 +14,22 @@ const Com = require('../models/00_Company');
 // @desc    Get logged in as a user
 // @access  Private
 router.get('/', authUser, async (req, res) => {
+  // save the token to the mongoDB everyTime the user login, if the user want make any request, it will check the token, if not matched, the request will be refused.
+  const token = req.header('x-auth-token');
+  const sKey = token
+  // console.log("this is the key generated", sKey) // Test Code
+
+
+  await User.updateOne(
+    { _id: req.user.id },
+    { sKey: sKey },
+  );
+
   const user = await User.findOne(
     { _id: req.user.id },
     { name: 1, comName: 1, comSymbol: 1 }
   );
+
   const comId = req.user.company;
   const company = await Com.findOne(
     { _id: comId },

@@ -27,7 +27,7 @@ router.get('/', authUser, async (req, res) => {
     date: -1,
   });
 
-  if(srMtrls.length > 0){
+  if (srMtrls.length > 0) {
     res.json(srMtrls);
   } else {
     res.json([])
@@ -81,15 +81,15 @@ router.put('/:caseId', authUser, async (req, res) => {
     });
   }
 
-  // Check if the user have the authority to update the case -------------------
-  let existingCases = await Case.findById(caseId);
-  // If the user is case creator, pass !
-  if (existingCases.user.toString() === userId) {
-    // if the user's id is added to authorizedUser of this case, pass !
-  } else if (existingCases.authorizedUser.includes(userId)) {
-  } else {
-    return res.status(400).json({ msg: 'Not an authorized user.' });
-  }
+  // // Check if the user have the authority to update the case -------------------
+  // let existingCases = await Case.findById(caseId);
+  // // If the user is case creator, pass !
+  // if (existingCases.user.toString() === userId) {
+  //   // if the user's id is added to authorizedUser of this case, pass !
+  // } else if (existingCases.authorizedUser.includes(userId)) {
+  // } else {
+  //   return res.status(400).json({ msg: 'Not an authorized user.' });
+  // }
 
   // Update srMtrl ---------------------------------------------------------------
   const { cases, comName, comSymbol } = req.body;

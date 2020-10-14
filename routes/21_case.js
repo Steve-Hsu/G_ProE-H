@@ -7,12 +7,19 @@ const { check, validationResult } = require('express-validator');
 const User = require('../models/10_User');
 const Case = require('../models/20_Case');
 const SRMtrl = require('../models/30_SRMtrl');
-const c = require('config');
 
 // @route   GET api/case/
 // @desc    Read the user's cases from database
 // @access  Private
 router.get('/', authUser, async (req, res) => {
+  const token = req.header('x-auth-token');
+  const user = await User.findById(req.user.id);
+  if (user.sKey !== token) {
+    const msg = { err: 'Multiple user login, please login again.' }
+    console.log(msg)
+    return res.json([msg])
+  }
+  // console.log(token) // Test code
   // let user = await User.findById(req.user.id);
   // if (!user.quo) {
   //   return res.status(400).json({ msg: 'Out of authority' });
@@ -36,35 +43,35 @@ router.get('/', authUser, async (req, res) => {
   ]).sort({ date: -1 });
 
   let insertList = await new Promise((resolve, reject) => {
-    if(caseList.length > 0){
-    let n = 0;
+    if (caseList.length > 0) {
+      let n = 0;
 
-    caseList.map(async (c) => {
-      await User.findOne(
-        { company: req.user.company, _id: c.user },
-        { _id: 0, name: 1 }
-      )
-        .then(async (result) => {
-          if (result) {
-            c.merchandiser = await result.name;
-          }
-          n = n + 1;
-          return n;
-        })
-        .then((n) => {
-          if (n === caseList.length) {
-            resolve();
-          }
-        });
-    });
-  } else {
-    resolve()
-  }
+      caseList.map(async (c) => {
+        await User.findOne(
+          { company: req.user.company, _id: c.user },
+          { _id: 0, name: 1 }
+        )
+          .then(async (result) => {
+            if (result) {
+              c.merchandiser = await result.name;
+            }
+            n = n + 1;
+            return n;
+          })
+          .then((n) => {
+            if (n === caseList.length) {
+              resolve();
+            }
+          });
+      });
+    } else {
+      resolve()
+    }
   });
 
   try {
     Promise.all([caseList, insertList]).then(async () => {
-      if(caseList.length === 0 ){
+      if (caseList.length === 0) {
         return res.json([])
       } else {
         console.log('caseList is sent out', caseList);
@@ -112,15 +119,26 @@ router.get('/company', authUser, async (req, res) => {
 // @desc    Read specific case by _id of the case
 // @access  Private
 router.get('/existingcase/:id', authUser, async (req, res) => {
+
+  //Check if multiple login, if yes, do nothing
+  const token = req.header('x-auth-token');
+  const user = await User.findById(req.user.id);
+  if (user.sKey !== token) {
+    const msg = { err: 'Multiple user login, please login again.' }
+    console.log(msg)
+    return res.json([msg])
+  }
+
   try {
     const cases = await Case.findOne({ _id: req.params.id }, { company: 0 });
     res.json(cases);
-  
+
 
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
   }
+
 });
 
 // @route   POST api/case/user/case/:caseId
@@ -130,8 +148,18 @@ router.post(
   '/upload/:caseId',
   [authUser, [check('style', 'Style is required')]],
   async (req, res) => {
-    // Check if the user has authority to add a new case --------------------------
+
     let user = await User.findById(req.user.id);
+
+    //Check if multiple login, if yes, do nothing
+    const token = req.header('x-auth-token');
+    if (user.sKey !== token) {
+      const msg = { err: 'Multiple user login, please login again.' }
+      console.log(msg)
+      return res.json([msg])
+    }
+
+    // Check if the user has authority to add a new case --------------------------
     if (!user.cases) {
       return res.status(400).json({ msg: 'Out of authority' });
     }
@@ -185,7 +213,10 @@ router.post(
               cWay.gClr = cWay.gClr.toUpperCase().trim();
               resolve();
             }
-          });
+          }).catch((err) => {
+            console.error(err.message);
+            res.status(500).send('Server Error');
+          });;
 
           // Prevent duplicated empty colorWay
           const preventDuplicatedCWay = new Promise((resolve) => {
@@ -212,8 +243,14 @@ router.post(
               } else {
                 resolve();
               }
-            });
-          });
+            }).catch((err) => {
+              console.error(err.message);
+              res.status(500).send('Server Error');
+            });;
+          }).catch((err) => {
+            console.error(err.message);
+            res.status(500).send('Server Error');
+          });;
 
           Promise.all([preventDuplicatedCWay]).then(() => {
             num = num + 1;
@@ -221,11 +258,16 @@ router.post(
               console.log('Promise trimedcWays');
               return resolve();
             }
-          });
+          }).catch((err) => {
+            console.error(err.message);
+            res.status(500).send('Server Error');
+          });;
         });
       } else {
         return resolve();
       }
+    }).catch((err) => {
+      console.log(err)
     });
 
     // Since Size is selected by built-in selector, the string dosen't need to be trimed or change the format
@@ -267,7 +309,10 @@ router.post(
         console.log('Promise resolve- not built gQty yet - numberThegQty'); // Test Code
         return resolve();
       }
-    });
+    }).catch((err) => {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    });;
 
     const trimedMtrls = new Promise((resolve, reject) => {
       console.log('Promise start- trimedMtrls'); // Test Code
@@ -322,7 +367,10 @@ router.post(
               ); // Test Code
               return resolve();
             }
-          });
+          }).catch((err) => {
+            console.error(err.message);
+            res.status(500).send('Server Error');
+          });;
 
           const mtrlSPECPromise = new Promise((resolve) => {
             if (mtrl.sizeSPECs.length > 0) {
@@ -349,7 +397,10 @@ router.post(
               ); // Test Code
               return resolve();
             }
-          });
+          }).catch((err) => {
+            console.error(err.message);
+            res.status(500).send('Server Error');
+          });;
 
           const mtrlCsptPromise = new Promise((resolve) => {
             console.log('Promise start- mtrlCsptPromise'); // Test Code
@@ -410,7 +461,10 @@ router.post(
             } else {
               return resolve();
             }
-          });
+          }).catch((err) => {
+            console.error(err.message);
+            res.status(500).send('Server Error');
+          });;
 
           Promise.all([
             mtrlColorPromise,
@@ -423,13 +477,19 @@ router.post(
               console.log('1st Promise All resolve'); // Test Code
               return resolve();
             }
-          });
+          }).catch((err) => {
+            console.error(err.message);
+            res.status(500).send('Server Error');
+          });;
         });
       } else {
         console.log('Promise trimedMtrls resolve - no mtrls '); // Test Code
         return resolve();
       }
-    });
+    }).catch((err) => {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    });;
 
     const comSymbol = user.comSymbol;
 
@@ -468,7 +528,7 @@ router.post(
               gQtys,
               mtrls,
               isImportedExcel,
-              lastUpdateBy : userName,
+              lastUpdateBy: userName,
               updateDate: Date.now(),
             };
             console.log('The Finall PromiseAll');
@@ -567,8 +627,8 @@ router.post(
             gQtys,
             mtrls,
             isImportedExcel,
-            merchandiser : userName,
-            lastUpdateBy : userName,
+            merchandiser: userName,
+            lastUpdateBy: userName,
             updateDate: Date.now(),
           });
           // name variable "case" will cause problem, so here name it "nCase"
@@ -583,6 +643,7 @@ router.post(
         });
     }
   }
+
 );
 
 // @route   DELETE api/case/:id
@@ -591,6 +652,15 @@ router.post(
 // @access  Private
 router.delete('/:id', authUser, async (req, res) => {
   let user = await User.findById(req.user.id);
+
+  //Check if multiple login, if yes, do nothing
+  const token = req.header('x-auth-token');
+  if (user.sKey !== token) {
+    const msg = { err: 'Multiple user login, please login again.' }
+    console.log(msg)
+    return res.json([msg])
+  }
+
   if (!user.cases) {
     return res.status(400).json({
       msg: 'Out of authority',
@@ -658,6 +728,15 @@ router.put('/delete/:caseId/:subjectId', authUser, async (req, res) => {
   // Check if the user has authority to update case ---------------------------
   // console.log('The router triggered'); // Test Code
   let user = await User.findById(req.user.id);
+
+  //Check if multiple login, if yes, do nothing
+  const token = req.header('x-auth-token');
+  if (user.sKey !== token) {
+    const msg = { err: 'Multiple user login, please login again.' }
+    console.log(msg)
+    return res.json([msg])
+  }
+  //Check if the user have the right to manage case
   if (!user.cases) {
     return res.status(400).json({
       msg: 'Out of authority',
@@ -864,6 +943,15 @@ router.put('/deletemtrl/:caseId/:mtrlId', authUser, async (req, res) => {
   // Check if the user has authority to update case ---------------------------
   // console.log('The router triggered'); // Test Code
   let user = await User.findById(req.user.id);
+
+  //Check if multiple login, if yes, do nothing
+  const token = req.header('x-auth-token');
+  if (user.sKey !== token) {
+    const msg = { err: 'Multiple user login, please login again.' }
+    console.log(msg)
+    return res.json([msg])
+  }
+  // Check if the user have the right o manage case
   if (!user.cases) {
     return res.status(400).json({
       msg: 'Out of authority',

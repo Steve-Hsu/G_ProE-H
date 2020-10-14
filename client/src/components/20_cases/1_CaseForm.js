@@ -53,6 +53,7 @@ const CaseForm = ({ props }) => {
     merchandiser,
     lastUpdateBy,
     updateDate,
+    caseError,
   } = casesContext;
   const { comName, comSymbol } = authUserContext;
   const { updateSrMtrlByMtrl } = srMtrlContext;
@@ -189,7 +190,7 @@ const CaseForm = ({ props }) => {
     <Fragment>
       {/* // Ask the user when they want to jump to another page wihout saving datas */}
       {/* <Prompt when={formIsHalfFilledOut} message='Hey' /> */}
-      {popover === true || isLoading === true ? (
+      {popover === true || isLoading === true || caseError !== null ? (
         <DeletePopover key={`casepopover`} />
       ) : null}
       {isEditingCase ? (
