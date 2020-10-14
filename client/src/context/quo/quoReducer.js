@@ -9,6 +9,7 @@ import {
   QUOFORM_UPDATE,
   CURRETQUOFORM_UPDATE,
   CURRETQUOFORM_MQUOS_UPDATE,
+  UPDATE_ERROR,
 } from '../types';
 
 export default (state, action) => {
@@ -74,6 +75,11 @@ export default (state, action) => {
             Number(action.payload.mQuosTotal),
         },
       };
+    case UPDATE_ERROR:
+      return {
+        ...state,
+        quoError: action.payload
+      }
     default:
   }
 };

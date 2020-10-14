@@ -26,6 +26,7 @@ const Quotation = (props) => {
     isQuotating,
     openQuoForm,
     // getCaseList,
+    quoError,
   } = quoContext;
   const { popover, current, isLoading, toggleLoading } = popoverContext;
   const currentPath = props.location.pathname;
@@ -51,7 +52,7 @@ const Quotation = (props) => {
       });
     });
     if (currentPath === '/api/quogarment') {
-      updateMPricesQuotation(body).then(()=>{
+      updateMPricesQuotation(body).then(() => {
         toggleLoading(false)
       });
     }
@@ -59,8 +60,7 @@ const Quotation = (props) => {
 
   return (
     <Fragment>
-      {/* {popover ? <DeletePopover key={current.id} current={current} /> : null} */}
-      {popover === true || isLoading === true ? <DeletePopover key='quotationpopover' current={current} /> : null}
+      {popover === true || isLoading === true || quoError !== null ? <DeletePopover key='quotationpopover' current={current} /> : null}
       <div className='grid-1-4'>
         {/* Grid-1 */}
         <LeftBar currentPath={currentPath} />
@@ -80,10 +80,10 @@ const Quotation = (props) => {
             {isQuotating === null ? (
               <ItemSelector props={props} purpose='quoCaseSelector' />
             ) : (
-              <div>
-                {openQuoForm === null ? <QuoFormSelector /> : <QuoForm />}
-              </div>
-            )}
+                <div>
+                  {openQuoForm === null ? <QuoFormSelector /> : <QuoForm />}
+                </div>
+              )}
           </div>
         ) : null}
       </div>

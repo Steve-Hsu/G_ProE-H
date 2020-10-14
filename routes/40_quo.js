@@ -17,67 +17,83 @@ const QuoForm = require('../models/41_QuoForm');
 // @route   GET api/quogarment/
 // @desc    Read the compnay's case List from database
 // @access  Private
-router.get('/', authUser, async (req, res) => {
-  let user = await User.findById(req.user.id);
-  if (!user.quo) {
-    return res.status(400).json({ msg: 'Out of authority' });
-  }
-  let caseList = await Case.aggregate([
-    {
-      $match: { company: mongoose.Types.ObjectId(req.user.company) },
-    },
-    {
-      $project: {
-        user: 1,
-        cNo: 1,
-        caseType: 1,
-        style: 1,
-        client: 1,
-        merchandiser: '',
-        quoNo: '',
-      },
-    },
-  ]).sort({ date: -1 });
+// router.get('/', authUser, async (req, res) => {
+//   let user = await User.findById(req.user.id);
+//   //Check if multiple login, if yes, do nothing
+//   const token = req.header('x-auth-token');
+//   if (user.sKey !== token) {
+//     const msg = { err: 'Multiple user login, please login again.' }
+//     console.log(msg)
+//     return res.json([msg])
+//   }
 
-  let insertList = await new Promise((resolve, reject) => {
-    let n = 0;
+//   if (!user.quo) {
+//     return res.status(400).json({ msg: 'Out of authority' });
+//   }
+//   let caseList = await Case.aggregate([
+//     {
+//       $match: { company: mongoose.Types.ObjectId(req.user.company) },
+//     },
+//     {
+//       $project: {
+//         user: 1,
+//         cNo: 1,
+//         caseType: 1,
+//         style: 1,
+//         client: 1,
+//         merchandiser: '',
+//         quoNo: '',
+//       },
+//     },
+//   ]).sort({ date: -1 });
 
-    caseList.map(async (c) => {
-      await User.findOne(
-        { company: req.user.company, _id: c.user },
-        { _id: 0, name: 1 }
-      )
-        .then(async (result) => {
-          if (result) {
-            c.merchandiser = await result.name;
-          }
-          n = n + 1;
-          return n;
-        })
-        .then((n) => {
-          if (n === caseList.length) {
-            resolve();
-          }
-        });
-    });
-  });
+//   let insertList = await new Promise((resolve, reject) => {
+//     let n = 0;
 
-  try {
-    Promise.all([caseList, insertList]).then(async () => {
-      console.log('caseList is sent out', caseList);
-      return res.json(caseList);
-    });
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
-  }
-});
+//     caseList.map(async (c) => {
+//       await User.findOne(
+//         { company: req.user.company, _id: c.user },
+//         { _id: 0, name: 1 }
+//       )
+//         .then(async (result) => {
+//           if (result) {
+//             c.merchandiser = await result.name;
+//           }
+//           n = n + 1;
+//           return n;
+//         })
+//         .then((n) => {
+//           if (n === caseList.length) {
+//             resolve();
+//           }
+//         });
+//     });
+//   });
+
+//   try {
+//     Promise.all([caseList, insertList]).then(async () => {
+//       console.log('caseList is sent out', caseList);
+//       return res.json(caseList);
+//     });
+//   } catch (err) {
+//     console.error(err.message);
+//     res.status(500).send('Server Error');
+//   }
+// });
 
 // @route   GET api/quogarment/quohead/cNo
 // @desc    Read the compnay's srMtrl from database, and if the quo not existing, create a new one
 // @access  Private
 router.get('/quohead/:cNo', authUser, async (req, res) => {
   const user = await User.findById(req.user.id);
+  //Check if multiple login, if yes, do nothing
+  const token = req.header('x-auth-token');
+  if (user.sKey !== token) {
+    const msg = { err: 'Multiple user login, please login again.' }
+    console.log(msg)
+    return res.json([msg])
+  }
+  // Check if the user have the right to manage quotation
   if (!user.quo) {
     return res.status(400).json({ msg: 'Out of authority' });
   }
@@ -299,6 +315,14 @@ router.get('/quohead/:cNo', authUser, async (req, res) => {
 // @result  return object contain the array "quoForms" and the object "versionNum" of QUO
 router.put('/quoform/:cNo/uploadquoForm', authUser, async (req, res) => {
   let user = await User.findById(req.user.id);
+  //Check if multiple login, if yes, do nothing
+  const token = req.header('x-auth-token');
+  if (user.sKey !== token) {
+    const msg = { err: 'Multiple user login, please login again.' }
+    console.log(msg)
+    return res.json([msg])
+  }
+  //Check if the user have the right
   if (!user.quo) {
     return res.status(400).json({ msg: 'Out of authority' });
   }
@@ -601,6 +625,14 @@ router.put('/quoform/:cNo/uploadquoForm', authUser, async (req, res) => {
 // @result  return an updated quoForms : Array object
 router.put('/quotateadvise', authUser, async (req, res) => {
   const user = await User.findById(req.user.id);
+  //Check if multiple login, if yes, do nothing
+  const token = req.header('x-auth-token');
+  if (user.sKey !== token) {
+    const msg = { err: 'Multiple user login, please login again.' }
+    console.log(msg)
+    return res.json([msg])
+  }
+
   if (!user.quo) {
     return res.status(400).json({ msg: 'Out of authority' });
   }
@@ -1302,6 +1334,14 @@ router.delete(
   async (req, res) => {
     console.log('delete quoForm is called in backEnd');
     let user = await User.findById(req.user.id);
+    //Check if multiple login, if yes, do nothing
+    const token = req.header('x-auth-token');
+    if (user.sKey !== token) {
+      const msg = { err: 'Delete failed. Multiple user login, please login again.' }
+      console.log(msg)
+      return res.json([msg])
+    }
+    //Check if the user have the right
     if (!user.quo) {
       return res.status(400).json({ msg: 'Out of authority' });
     }

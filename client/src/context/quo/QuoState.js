@@ -41,6 +41,7 @@ const QuoState = (props) => {
       theCase: null,
     },
     currentQuoForm: null,
+    quoError: null,
   };
   const [state, dispatch] = useReducer(QuoReducer, initialState);
   const {
@@ -84,10 +85,18 @@ const QuoState = (props) => {
     if (isQuotating === null) {
       dispatch({ type: QUOFORM_SELECTOR_SWITCH, payload: cNo });
       const res = await axios.get(`/api/quogarment/quohead/${cNo}`);
-      dispatch({ type: QUOTATION_DOWNLOAD, payload: res.data });
-      // await downLoadQuoHead(cNo).then(() => {
-      //   // resolve();
-      // });
+
+      if (res.data[0]) {
+        const err = res.data[0].err
+        console.log('Multiple user login~!')
+        dispatch({ type: UPDATE_ERROR, payload: err });
+        setTimeout(() => {
+          dispatch({ type: UPDATE_ERROR, payload: null });
+        }, 3500);
+      } else {
+        console.log('Download succeed!');
+        dispatch({ type: QUOTATION_DOWNLOAD, payload: res.data });
+      }
 
       return cNo;
     } else {
@@ -141,11 +150,20 @@ const QuoState = (props) => {
         body,
         config
       );
+      if (res.data[0]) {
+        const err = res.data[0].err
+        console.log('Multiple user login~!')
+        dispatch({ type: UPDATE_ERROR, payload: err });
+        setTimeout(() => {
+          dispatch({ type: UPDATE_ERROR, payload: null });
+        }, 3500);
+        return resolve(null)
+      } else {
+        dispatch({ type: QUOFORM_DOWNLOAD, payload: res.data });
+        // Return quoForm id for switch to the QuoForm page.
+        return resolve(res.data);
+      }
 
-      dispatch({ type: QUOFORM_DOWNLOAD, payload: res.data });
-      // Return quoForm id for switch to the QuoForm page.
-
-      return resolve(res.data);
     });
     return upLoad;
   };
@@ -171,14 +189,22 @@ const QuoState = (props) => {
   const deleteQuoForm = async (body) => {
     const quoNo = body.quoNo;
     const quoFormId = body.quoFormId;
-
-    try {
-      //This could be a severe problem
-      //Here the path seem a little strange, I still can't figure it out, only can use the path now to temparalily solve the problem
-      await axios.delete(`quogarment/delete/quoform/${quoNo}/${quoFormId}`);
-      dispatch({ type: QUOFORM_DELETE, payload: quoFormId });
-    } catch (err) {
+    //This could be a severe problem
+    //Here the path seem a little strange, I still can't figure it out, only can use the path now to temparalily solve the problem
+    const res = await axios.delete(`quogarment/delete/quoform/${quoNo}/${quoFormId}`).catch((err) => {
       console.log('Delete quoForm have problem', err);
+    });
+
+    if (res.data[0]) {
+      const err = res.data[0].err
+      console.log('Multiple user login~!')
+      dispatch({ type: UPDATE_ERROR, payload: err });
+      setTimeout(() => {
+        dispatch({ type: UPDATE_ERROR, payload: null });
+      }, 3500);
+    } else {
+      console.log('Delete the quotation form succeed!');
+      dispatch({ type: QUOFORM_DELETE, payload: quoFormId });
     }
   };
 
@@ -341,6 +367,10 @@ const QuoState = (props) => {
     dispatch({ type: CURRETQUOFORM_UPDATE, payload: quoForm });
   };
 
+  const clearQuoError = () => {
+    dispatch({ type: UPDATE_ERROR, payload: null });
+  };
+
 
   return (
     <QuoContext.Provider
@@ -351,6 +381,7 @@ const QuoState = (props) => {
         openQuoForm: state.openQuoForm,
         quotation: state.quotation,
         currentQuoForm: state.currentQuoForm,
+        quoError: state.quoError,
         // getCaseList,
         switchPage,
         switchQuoFormSelector,
@@ -363,6 +394,7 @@ const QuoState = (props) => {
         updateQuoSize,
         updateQuocWay,
         updateCurrentQuoForm,
+        clearQuoError
       }}
     >
       {props.children}

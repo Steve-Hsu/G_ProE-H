@@ -4,8 +4,6 @@ import QuoContext from '../../context/quo/quoContext';
 import PopoverContext from '../../context/popover/popoverContext';
 
 //Component
-import DeletePopover from '../layout/DeletePopover';
-
 import QuoMtrl from './40_03_03_quoMtrl';
 import QuoOtherEx from './40_03_04_quoOtherEx';
 // import QuoCondition from './40_03_05_quoCondition';
@@ -67,11 +65,8 @@ const QuoForm = () => {
   }
 
   const {
-    popover,
-    // current,
     togglePopover,
     toggleLoading,
-    isLoading,
   } = popoverContext;
   const onSubmitQuoForm = async (e) => {
     // console.log('here triggered'); // Test Code
@@ -137,9 +132,6 @@ const QuoForm = () => {
 
   return (
     <Fragment>
-      {popover === true || isLoading === true ? (
-        <DeletePopover key='quoFormPopover' />
-      ) : null}
       <div
         className='container container-with-navbar whenPrint'
         id='quotationForm'
@@ -303,7 +295,7 @@ const QuoForm = () => {
                 id={`cm${_id}`}
                 value={cm || ''}
                 className='whenPrintNoBorder whenPrintFSSmall bd-no'
-                // style={{ width: '5rem' }}
+              // style={{ width: '5rem' }}
               />
             </div>
           </div>

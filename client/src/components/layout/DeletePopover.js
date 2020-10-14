@@ -28,7 +28,7 @@ const DeletePopover = () => {
     doubleCheck,
     addDoubleCheckValue,
   } = popoverContext;
-  const { deleteQuoForm, deletemQuo, switchQuoForm } = quoContext;
+  const { deleteQuoForm, deletemQuo, switchQuoForm, quoError, clearQuoError } = quoContext;
   const { deleteOs, osError, clearOsError } = purContext;
   const { deleteUser, clearCurrent } = userContext;
   // }
@@ -122,9 +122,8 @@ const DeletePopover = () => {
     ) {
       return (
         <div key='doubleCheckDiv' className='px-1'>
-          <div className='fs-tiny'>{`Enter the ${
-            current.cNo || current.quoNo || current.osNo ? 'Number' : 'Name'
-          } for deleting`}</div>
+          <div className='fs-tiny'>{`Enter the ${current.cNo || current.quoNo || current.osNo ? 'Number' : 'Name'
+            } for deleting`}</div>
           <input
             key='doubleCheckInput'
             type='text'
@@ -134,10 +133,10 @@ const DeletePopover = () => {
               current.cNo
                 ? current.cNo
                 : current.quoNo
-                ? current.quoNo
-                : current.osNo
-                ? current.osNo
-                : current.name
+                  ? current.quoNo
+                  : current.osNo
+                    ? current.osNo
+                    : current.name
             }
           />
         </div>
@@ -158,54 +157,57 @@ const DeletePopover = () => {
               <Spinner />
             </div>
           </div>
-        ) : osError !== null || caseError !== null || srMtrlError !== null ? (<div className='popup-container bd-light bd-radius-s bg-cp-2'>
-            <div className='h-10 w-100 h-scatter-content'>
-              <div className='h-10 p-1'><i className="fas fa-exclamation-triangle"> Notice : </i></div>
-              <div><DeleteBtnSmallNoWarning className='mr-05' onClick={osError !== null ? clearOsError : caseError !== null ? clearCaseError : srMtrlError !== null ? clearSrMtrlError : null}/></div>
-            </div>
-            <div className='center-content h-80 w-100'>
-              {osError || caseError || srMtrlError} 
-            </div>
-          </div>) : (
-          <div className='popup-container bd-light bd-radius-s bg-cp-2'>
-            <div className='p-2 h-20'>Delete this {`${words()}`}</div>
-            <div className='center-content h-40'>
-              {' '}
-              <h3>Are you sure?</h3>
-            </div>
-
-            <div className='h-20 px-2 py-0'>{doubleCheckInput()}</div>
-            <div className='h-scatter-content p-1 h-20'>
-              <div className='center-content w-50'>
-                <button
-                  className='btn btn-sq btn-block sq-block bg-safe'
-                  onClick={togglePopover}
-                >
-                  Back
-                </button>
-              </div>
-              <div className='center-content w-50'>
-                {(current.target === 'case' && doubleCheck != current.cNo) ||
-                (current.target === 'quoForm' &&
-                  doubleCheck != current.quoNo) ||
-                (current.target === 'deleteOs' &&
-                  doubleCheck != current.osNo) ||
-                (current.target === 'user' && doubleCheck != current.name) ? (
-                  <div className='sq-block bd-radius-s  bg-fade fc-fade-dark center-content'>
-                    Delete
-                  </div>
-                ) : (
-                  <button
-                    className='btn btn-sq btn-block sq-block bg-warning'
-                    onClick={onChangeDelete}
-                  >
-                    Delete
-                  </button>
-                )}
-              </div>
-            </div>
+        ) : osError !== null || caseError !== null || srMtrlError !== null || quoError !== null ? (<div className='popup-container bd-light bd-radius-s bg-cp-2'>
+          <div className='h-10 w-100 h-scatter-content'>
+            <div className='h-10 p-1'><i className="fas fa-exclamation-triangle"> Notice : </i></div>
+            <div><DeleteBtnSmallNoWarning className='mr-05' onClick={osError !== null ? clearOsError :
+              caseError !== null ? clearCaseError :
+                srMtrlError !== null ? clearSrMtrlError :
+                  quoError !== null ? clearQuoError : null} /></div>
           </div>
-        ) }
+          <div className='center-content h-80 w-100 p-1'>
+            {osError || caseError || srMtrlError || quoError}
+          </div>
+        </div>) : (
+              <div className='popup-container bd-light bd-radius-s bg-cp-2'>
+                <div className='p-2 h-20'>Delete this {`${words()}`}</div>
+                <div className='center-content h-40'>
+                  {' '}
+                  <h3>Are you sure?</h3>
+                </div>
+
+                <div className='h-20 px-2 py-0'>{doubleCheckInput()}</div>
+                <div className='h-scatter-content p-1 h-20'>
+                  <div className='center-content w-50'>
+                    <button
+                      className='btn btn-sq btn-block sq-block bg-safe'
+                      onClick={togglePopover}
+                    >
+                      Back
+                </button>
+                  </div>
+                  <div className='center-content w-50'>
+                    {(current.target === 'case' && doubleCheck != current.cNo) ||
+                      (current.target === 'quoForm' &&
+                        doubleCheck != current.quoNo) ||
+                      (current.target === 'deleteOs' &&
+                        doubleCheck != current.osNo) ||
+                      (current.target === 'user' && doubleCheck != current.name) ? (
+                        <div className='sq-block bd-radius-s  bg-fade fc-fade-dark center-content'>
+                          Delete
+                        </div>
+                      ) : (
+                        <button
+                          className='btn btn-sq btn-block sq-block bg-warning'
+                          onClick={onChangeDelete}
+                        >
+                          Delete
+                        </button>
+                      )}
+                  </div>
+                </div>
+              </div>
+            )}
       </div>
     </div>
   );

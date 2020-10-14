@@ -1,6 +1,5 @@
 import React, { useContext, Fragment } from 'react';
 import QuoContext from '../../context/quo/quoContext';
-import DeletePopover from '../layout/DeletePopover';
 import Table from '../elements/table/Table';
 import GoBackBtn from '../elements/btns/GoBackBtn';
 import PopoverContext from '../../context/popover/popoverContext';
@@ -17,18 +16,20 @@ const QuoForm = () => {
     uploadQuoForm,
   } = quoContext;
 
-  const { toggleLoading, isLoading } = popoverContext;
+  const { toggleLoading } = popoverContext;
 
   const addNewQuotation = async (e) => {
     e.preventDefault();
     toggleLoading();
     await uploadQuoForm(isQuotating, true)
       .then((result) => {
-        const quoForms = result.quoForms;
-        // console.log(result); // test Code
-        const newQuoFormId = quoForms[quoForms.length - 1]._id;
-        // console.log(newQuoFormId); // Test Code
-        switchQuoForm(newQuoFormId);
+        if (result) {
+          const quoForms = result.quoForms;
+          // console.log(result); // test Code
+          const newQuoFormId = quoForms[quoForms.length - 1]._id;
+          // console.log(newQuoFormId); // Test Code
+          switchQuoForm(newQuoFormId);
+        }
       })
       .then(() => {
         toggleLoading();
@@ -53,7 +54,6 @@ const QuoForm = () => {
 
   return (
     <Fragment>
-      {isLoading ? <DeletePopover key='quoFormSelectorPopover' /> : null}
       <div className='container container-with-navbar'>
         <form id='addNewQuoForm' onSubmit={addNewQuotation}></form>
         <GoBackBtn onClick={goBack} />
