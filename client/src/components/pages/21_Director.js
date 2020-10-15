@@ -63,12 +63,12 @@ export const Director = (props) => {
   return (
     <Fragment>
       {/* content */}
-      <div className='h-center-content'>
+      <div className='h-center-content h-100vh'>
         <div className='container container-with-navbar w-100'>
-          <Banner purpose='case' onClick={goCase} label='Start a case' />
-          <Banner purpose='mPrice' onClick={gomPrice} label='Material Price' />
-          <Banner purpose='quotation' onClick={goQuotation} label={quoLabel} />
-          <Banner purpose='purchase' onClick={goPurchase} label={purLabel} />
+          <Banner purpose='case' onClick={goCase} label='Start a case' className='bg-gray-1' />
+          <Banner purpose='mPrice' onClick={gomPrice} label='Material Price' className='bg-gray-1' />
+          <Banner purpose='quotation' onClick={goQuotation} label={quoLabel} className='bg-gray-1' />
+          <Banner purpose='purchase' onClick={goPurchase} label={purLabel} className='bg-gray-1' />
           {/* <Banner purpose='progress' onClick={goProgress} label='Progress' /> */}
         </div>
       </div>

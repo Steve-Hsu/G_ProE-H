@@ -9,7 +9,9 @@
 :root {
   /* Color plate */
   /* Applying the _1 as the background Color or opposite the _4 as the background Color */
-  --cp-1_1: #f6f4e6;
+  /* --cp-1_1: #f6f4e6; */
+  --cp-1_1: #f5f5f5;
+  /* --cp-1_2: #fddb3a; */
   --cp-1_2: #fddb3a;
   --cp-1_3: #52575d;
   --cp-1_4: #41444b;
@@ -36,6 +38,11 @@
   /* This color should be able to apply to any color wihout dismatch.  */
   --fade-color: rgba(0, 0, 0, 0.08);
   --fade-color-dark: rgba(0, 0, 0, 0.35);
+  --gray-1: #f5f5f5;
+  --gray-2: #e2e2e2;
+  --gray-3: #cacaca;
+  --gray-4: #a8a8a8;
+  --gray-5: #888888;
 
   /* Space */
   --gap: 0;
@@ -91,15 +98,16 @@ body {
 }
 
 a {
-  color: var(--primary-color);
+  color: var(--cp-1_3);
   text-decoration: none;
 }
 
 a:hover {
-  color: #666;
+  color: var(--cp-1_2);
 }
 
 ul {
+  color: var(--cp-1_3);
   list-style: none;
 }
 
@@ -630,7 +638,7 @@ img {
   right: 0;
   bottom: 0;
   height: var(--btn-h-m);
-  background-color: var(--cp-1_3);
+  /* background-color: var(--cp-1_3); */
   -webkit-transition: 0.4s;
   transition: 0.4s;
 }
@@ -671,7 +679,7 @@ img {
 .form-text {
   display: block;
   margin-top: 0.3rem;
-  color: #888;
+  color: var(--cp-1_3);
 }
 
 .form-group {
@@ -746,8 +754,8 @@ textarea:hover {
   /* color: var(--primary-text); */
   /* background: var(--primary-color); */
   /* border: 1px solid var(--cp-1_2); */
-  transition: all 0.3s;
-  box-shadow: 0px 0 2px 1px var(--cp-1_2-c);
+  transition: all 0.1s;
+  box-shadow: 0px 0 0px 2px var(--cp-1_2);
 }
 /* input[type='number']:focus, */
 /* input:focus,
@@ -809,7 +817,7 @@ input[type='submit']:focus {
   transform-origin: 0 0;
   transition: all 0.3s;
   animation: labelDown 0.7s ease;
-  color: var(--cp-1_2);
+  color: var(--gray-3);
   white-space: nowrap;
 }
 
@@ -831,8 +839,8 @@ input[type='submit']:focus {
   outline: none;
   /* background: var(--cp-1_2); */
   border: 1px solid rgba(255, 255, 255, 0);
-  transition: all 1.2s;
-  box-shadow: 0px 0 2px 1px var(--cp-1_2-c);
+  transition: all 0.2s;
+  box-shadow: 0px 0 0px 2px var(--cp-1_2);
 }
 
 .MPH-input:hover + .MPH-input-label {
@@ -877,7 +885,7 @@ input[type='submit']:focus {
 
 .item-input::placeholder {
   position: relative;
-  color: var();
+  /* color: var(); */
   font-size: 3rem;
   z-index: 3;
 }
@@ -892,7 +900,7 @@ input[type='submit']:focus {
 
 @keyframes labelUp {
   0% {
-    color: var(--cp-1_2);
+    color: var(--gray-3);
   }
   25% {
     color: rgba(255, 255, 255, 0);
@@ -901,7 +909,7 @@ input[type='submit']:focus {
     color: rgba(255, 255, 255, 0);
   }
   75% {
-    color: var(--cp-1_3);
+    color: var(--gray-4);
   }
   100% {
     color: var(--cp-1_3);
@@ -910,19 +918,19 @@ input[type='submit']:focus {
 
 @keyframes labelDown {
   0% {
-    color: var(--cp-1_3);
+    color: var(--gray-5);
   }
   25% {
     color: rgba(255, 255, 255, 0);
   }
   50% {
-    color: var(--cp-1_2);
+    color: var(--gray-3);
   }
   75% {
-    color: var(--cp-1_2);
+    color: var(--gray-3);
   }
   100% {
-    color: var(--cp-1_2);
+    color: var(--gray-3);
   }
 }
 /* Usage : Use a div with class .MPH-input-group to warp a input and babel, the input will transform it size when focused. */
@@ -945,10 +953,10 @@ input[type='submit']:focus {
   z-index: 10;
   height: 50px;
   width: 100%;
-  border-bottom: solid 1px var(--primary-color);
+  /* border-bottom: solid 1px var(--primary-color); */
   opacity: 1;
   margin-bottom: 1rem;
-  color: var(--primary-text);
+  /* color: var(--primary-text); */
 }
 
 .navbar ul {
@@ -956,13 +964,13 @@ input[type='submit']:focus {
 }
 
 .navbar a {
-  color: #fff;
+  /* color: #fff; */
   padding: 0.45rem;
   margin: 0 0.25rem;
 }
 
 .navbar a:hover {
-  color: var(--light-color);
+  color: var(--primary-color);
 }
 
 .navbar .welcome span {
@@ -1110,6 +1118,30 @@ input[type='submit']:focus {
 /* @Like Forced important style ----------------  */
 /* @Text */
 /* @Font */
+/* @Font-styles  */
+/* syne-regular - latin */
+/* syne-regular - latin */
+@font-face {
+  font-family: 'Syne';
+  font-style: normal;
+  font-weight: 400;
+  src: url('./fonts/syne-v1-latin-regular.eot'); /* IE9 Compat Modes */
+  src: local(''),
+    url('./fonts/syne-v1-latin-regular.eot?#iefix') format('embedded-opentype'),
+    /* IE6-IE8 */ url('./fonts/syne-v1-latin-regular.woff2') format('woff2'),
+    /* Super Modern Browsers */ url('./fonts/syne-v1-latin-regular.woff')
+      format('woff'),
+    /* Modern Browsers */ url('./fonts/syne-v1-latin-regular.ttf')
+      format('truetype'),
+    /* Safari, Android, iOS */ url('./fonts/syne-v1-latin-regular.svg#Syne')
+      format('svg'); /* Legacy iOS */
+}
+.syen-regular {
+  font-family: 'Syne';
+  font-style: normal;
+  font-weight: 400;
+}
+
 /* Font-size */
 .fs-large {
   font-size: 2rem;
@@ -1165,6 +1197,18 @@ input[type='submit']:focus {
 
 .fc-success {
   color: var(--success-color);
+}
+
+.fc-gray-1 {
+  color: var(--gray-1);
+}
+
+.fc-gray-3 {
+  color: var(--gray-3);
+}
+
+.fc-gray-5 {
+  color: var(--gray-5);
 }
 /* font weight */
 .fw-bold {
@@ -1756,6 +1800,29 @@ input[type='submit']:focus {
   background: var(--fade-color-dark);
 }
 
+.bg-gray-1 {
+  background: var(--gray-1);
+}
+
+.bg-gray-2 {
+  background: var(--gray-2);
+}
+
+.bg-gray-3 {
+  background: var(--gray-3);
+}
+.bg-gray-4 {
+  background: var(--gray-4);
+}
+
+.bg-gray-5 {
+  background: var(--gray-4);
+}
+
+.bg-white {
+  background: white;
+}
+
 .bg-no {
   background: rgba(255, 255, 255, 0);
 }
@@ -1787,6 +1854,10 @@ input[type='submit']:focus {
 
 .bd-light-b {
   border-bottom: 1px solid var(--fade-color);
+}
+
+.bd-light-b-2px {
+  border-bottom: 2px solid var(--fade-color);
 }
 
 .bd-cp-2 {
@@ -1877,6 +1948,11 @@ input[type='submit']:focus {
 /* @ Hover React */
 .hover-cp-2:hover {
   background: var(--cp-1_2);
+  transition: ease-out 0.3s;
+}
+
+.hover-fc-cp-2:hover {
+  color: var(--cp-1_2);
   transition: ease-out 0.3s;
 }
 

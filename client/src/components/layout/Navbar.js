@@ -93,19 +93,20 @@ const Navbar = ({ title, icon }) => {
     </Fragment>
   );
 
-  const updateNotice = (notice) => {
-    return (
-      <Fragment>
-        <div className='fs-lead fc-success'>{notice}</div>
-      </Fragment>
-    );
-  };
+  // const updateNotice = (notice) => {
+  //   return (
+  //     <Fragment>
+  //       <div className='fs-lead fc-success'>{notice}</div>
+  //     </Fragment>
+  //   );
+  // };
 
   return (
-    <div className='navbar bg-cp-2 shadow-b noPrint'>
-      <h1>
+    <div className='navbar bd-light-b-2px noPrint bg-white'>
+      <h1 className='syen-regular'>
         <Link to='/'>
-          <i className={icon} /> {title}
+          <span className='fc-cp-2'>G</span><span >-Pro</span>
+          <span className='fc-gray-5 '>E</span>
         </Link>
       </h1>
       {/* {sm.isUpdated && c.isUpdated
@@ -130,9 +131,9 @@ Navbar.propTypes = {
   icon: PropTypes.string,
 };
 
-Navbar.defaultProps = {
-  title: 'G-ProE',
-  icon: 'fas fa-tshirt',
-};
+// Navbar.defaultProps = {
+//   title: 'G-ProE',
+//   icon: 'fas fa-tshirt',
+// };
 
 export default Navbar;

@@ -1,12 +1,12 @@
 import React from 'react';
 
-const Banner = ({ purpose, onClick, label }) => {
+const Banner = ({ purpose, onClick, label, className }) => {
   const result = (purpose) => {
     switch (purpose) {
       case 'case':
       case 'mPrice':
         return (
-          <div className='card bd-radius-s bd-light bg-cp-1 w-100 h-20vh'>
+          <div className={`card bd-radius-s bd-light bg-cp-1 w-100 h-20vh ${className}`}>
             <a onClick={onClick} className='cursor'>
               <i className='fas fa-sign-out-alt'></i>{' '}
               <span className='hide-lg'>{label}</span>
@@ -25,7 +25,7 @@ const Banner = ({ purpose, onClick, label }) => {
           option2 = 'osSelector';
         }
         return (
-          <div className='card bd-radius-s bd-light bg-cp-1 w-100 h-20vh'>
+          <div className={`card bd-radius-s bd-light bg-cp-1 w-100 h-20vh ${className}`}>
             <div>
               <a onClick={onClick[0][option1]} className='cursor'>
                 <i className='fas fa-sign-out-alt'></i>{' '}

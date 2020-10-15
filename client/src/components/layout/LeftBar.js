@@ -43,7 +43,7 @@ const LeftBar = ({ currentPath }) => {
   } = quoContext;
 
   const { openPage, toggleConfirmDate, currentPo } = purContext;
-  const {toggleLoading} = popoverContext
+  const { toggleLoading } = popoverContext
 
   const theCase = quotation.theCase;
 
@@ -256,7 +256,7 @@ const LeftBar = ({ currentPath }) => {
           console.log('the resultSheet', resultSheet);
           const JSONRows = JSON.stringify(resultSheet);
           console.log('the json JSONRows', JSONRows);
-         await getM_list(JSONRows).then(()=>{
+          await getM_list(JSONRows).then(() => {
             toggleLoading(false)
           });
         });
@@ -305,7 +305,7 @@ const LeftBar = ({ currentPath }) => {
 
   return (
     <div
-      className='container-with-navbar leftbar bg-cp-1 bd-light bd-no-t h-100 noPrint'
+      className='container-with-navbar leftbar bg-white bd-light bd-no-t h-100 noPrint'
       style={{ height: 'clamp(100vh, 100%, 100%)' }}
     >
       <div className='leftbar-component ml-1'>
@@ -327,22 +327,22 @@ const LeftBar = ({ currentPath }) => {
           osNo === null &&
           showMtrlCard === false &&
           isEditingCase === true ? (
-          normalSummitBtn()
-        ) : null}
+              normalSummitBtn()
+            ) : null}
         {/*Submit BTN srMtr Set */}
         {currentPage === 'mprice' ? normalSummitBtn() : null}
         {/*Submit BTN quotation Set */}
         {currentPage === 'quotation' &&
-        quotateFor === 'garment' &&
-        isQuotating === null
+          quotateFor === 'garment' &&
+          isQuotating === null
           ? null
           : currentPage === 'quotation'
-          ? normalSummitBtn()
-          : null}
+            ? normalSummitBtn()
+            : null}
         {/*Submit BTN Purchase Set */}
         {(currentPage === 'purchase' && openPage === 'caseSelector') ||
-        (currentPage === 'purchase' && openPage === 'purchaseOrder') ||
-        (currentPage === 'purchase' && openPage === 'oSMtrlList')
+          (currentPage === 'purchase' && openPage === 'purchaseOrder') ||
+          (currentPage === 'purchase' && openPage === 'oSMtrlList')
           ? normalSummitBtn()
           : null}
         {/* Other Btns */}
@@ -353,72 +353,72 @@ const LeftBar = ({ currentPath }) => {
             {showMtrlCard ? (
               printOutElement()
             ) : (
-              <div>
-                {' '}
-                {osNo ? null : (
-                  <div>
-                    {currentPage === 'case' ? (
-                      isImportedExcel ? (
-                        <div className='btn-block bd-radius-s bg-cp-2-light-c center-content mt-1'>
-                          Have imported Style from Excel
-                        </div>
-                      ) : (
-                        <div className='round-area bg-cp-3 mt-1'>
-                          <i className='fas fa-table fc-cp-1'>
-                            {' '}
+                <div>
+                  {' '}
+                  {osNo ? null : (
+                    <div>
+                      {currentPage === 'case' ? (
+                        isImportedExcel ? (
+                          <div className='btn-block bd-radius-s bg-cp-2-light-c center-content mt-1'>
+                            Have imported Style from Excel
+                          </div>
+                        ) : (
+                            <div className='round-area bg-cp-3 mt-1'>
+                              <i className='fas fa-table fc-cp-1'>
+                                {' '}
                             Read Bom from Excel
                           </i>
-                          <label className='btn btn-block mt-05 bd-radius-s bd-light bg-cp-1 fs-small'>
-                            <input
-                              type='file'
-                              id='upload-excel'
-                              name='inputFileName'
-                              accept='.xls, .xlsx'
-                              style={{
-                                position: 'fixed',
-                                right: '100%',
-                                bottom: '100%',
-                              }}
-                              onChange={labelOfReadExcel}
-                            />
-                            {excelName.length > 0 ? String(excelName) : null}
-                            {inputFileName}
-                          </label>
-                          {inputFileName == 'Select a File...' ? null : (
-                            <button
-                              className='btn btn-block mt-05 h-100 bd-radius-s bd-light bg-cp-2'
-                              onClick={readExcel}
-                            >
-                              Read
-                            </button>
-                          )}
-                        </div>
-                      )
-                    ) : null}
-                    <div className='h-scatter-content mt-1'>
-                      <div> Color Way</div>
-                      <SqBtnLarge
-                        label={<i className='fas fa-swatchbook'> Color ＋</i>}
-                        onClick={addcWay}
-                      />
+                              <label className='btn btn-block mt-05 bd-radius-s bd-light bg-cp-1 fs-small'>
+                                <input
+                                  type='file'
+                                  id='upload-excel'
+                                  name='inputFileName'
+                                  accept='.xls, .xlsx'
+                                  style={{
+                                    position: 'fixed',
+                                    right: '100%',
+                                    bottom: '100%',
+                                  }}
+                                  onChange={labelOfReadExcel}
+                                />
+                                {excelName.length > 0 ? String(excelName) : null}
+                                {inputFileName}
+                              </label>
+                              {inputFileName == 'Select a File...' ? null : (
+                                <button
+                                  className='btn btn-block mt-05 h-100 bd-radius-s bd-light bg-cp-2'
+                                  onClick={readExcel}
+                                >
+                                  Read
+                                </button>
+                              )}
+                            </div>
+                          )
+                      ) : null}
+                      <div className='h-scatter-content mt-1'>
+                        <div> Color Way</div>
+                        <SqBtnLarge
+                          label={<i className='fas fa-swatchbook'> Color ＋</i>}
+                          onClick={addcWay}
+                        />
+                      </div>
+                      <div className='h-scatter-content mt-05'>
+                        <div>Size </div>
+                        <SqBtnLarge
+                          label={<i className='fas fa-ruler'> Size ＋</i>}
+                          onClick={addSize}
+                        />
+                      </div>
+                      <div className='h-scatter-content mt-05'>
+                        <div>Material</div>
+                        <SqBtnLarge
+                          label={<i className='fab fa-buffer '> Item ＋</i>}
+                          onClick={addMtrl}
+                        />
+                      </div>
                     </div>
-                    <div className='h-scatter-content mt-05'>
-                      <div>Size </div>
-                      <SqBtnLarge
-                        label={<i className='fas fa-ruler'> Size ＋</i>}
-                        onClick={addSize}
-                      />
-                    </div>
-                    <div className='h-scatter-content mt-05'>
-                      <div>Material</div>
-                      <SqBtnLarge
-                        label={<i className='fab fa-buffer '> Item ＋</i>}
-                        onClick={addMtrl}
-                      />
-                    </div>
-                  </div>
-                )}
-                {/* <div>
+                  )}
+                  {/* <div>
                   {cNo === null ? null : (
                     <input
                       type='submit'
@@ -429,28 +429,28 @@ const LeftBar = ({ currentPath }) => {
                     />
                   )}
                 </div> */}
-                {/* <div> */}
-                {cNo === null ? null : (
-                  <div>
-                    <input
-                      type='submit'
-                      // form='caseForm'
-                      className='btn btn-block bg-cp-1 mt-1'
-                      value='Material Card'
-                      onClick={onClick2}
-                    />
-                    <input
-                      type='submit'
-                      // form='caseForm'
-                      className='btn btn-block bg-cp-1 mt-1'
-                      value='Copy this case as a new Case'
-                      onClick={onClick}
-                    />
-                  </div>
-                )}
-                {/* </div> */}
-              </div>
-            )}
+                  {/* <div> */}
+                  {cNo === null ? null : (
+                    <div>
+                      <input
+                        type='submit'
+                        // form='caseForm'
+                        className='btn btn-block bg-cp-1 mt-1'
+                        value='Material Card'
+                        onClick={onClick2}
+                      />
+                      <input
+                        type='submit'
+                        // form='caseForm'
+                        className='btn btn-block bg-cp-1 mt-1'
+                        value='Copy this case as a new Case'
+                        onClick={onClick}
+                      />
+                    </div>
+                  )}
+                  {/* </div> */}
+                </div>
+              )}
           </>
         ) : null}
         {/* @Quotation Set */}
@@ -506,40 +506,40 @@ const LeftBar = ({ currentPath }) => {
         }
         {/* @Purchase Set */}
         {(currentPath === '/api/purchase' && openPage === 'purchaseOrder') ||
-        (currentPath === '/api/purchase' && openPage === 'oSMtrlList') ? (
-          <div>
-            {printOutElement()}
-            {openPage === 'purchaseOrder' ? (
-              <div className='round-area bd-light'>
-                <div>
-                  <i className='fas fa-file-import'> Confirm the PO</i>
+          (currentPath === '/api/purchase' && openPage === 'oSMtrlList') ? (
+            <div>
+              {printOutElement()}
+              {openPage === 'purchaseOrder' ? (
+                <div className='round-area bd-light'>
+                  <div>
+                    <i className='fas fa-file-import'> Confirm the PO</i>
+                  </div>
+                  {currentPo.poConfirmDate ? (
+                    <LockedBadge
+                      labels={[
+                        <i className='fas fa-check-circle'> PO Has Confirmed</i>,
+                      ]}
+                      style={{ marginTop: '0.5rem' }}
+                      className='h-center-content'
+                    />
+                  ) : (
+                      <LockedBadge
+                        labels={['Not Confirmed']}
+                        style={{
+                          background: 'var(--fade-color)',
+                          marginTop: '0.5rem',
+                        }}
+                        className='h-center-content'
+                      />
+                    )}
+                  <div className='h-scatter-content mt-05'>
+                    <div></div>
+                    <SqBtnLarge onClick={toggleConfirmDate} label='Confirme' />
+                  </div>
                 </div>
-                {currentPo.poConfirmDate ? (
-                  <LockedBadge
-                    labels={[
-                      <i className='fas fa-check-circle'> PO Has Confirmed</i>,
-                    ]}
-                    style={{ marginTop: '0.5rem' }}
-                    className='h-center-content'
-                  />
-                ) : (
-                  <LockedBadge
-                    labels={['Not Confirmed']}
-                    style={{
-                      background: 'var(--fade-color)',
-                      marginTop: '0.5rem',
-                    }}
-                    className='h-center-content'
-                  />
-                )}
-                <div className='h-scatter-content mt-05'>
-                  <div></div>
-                  <SqBtnLarge onClick={toggleConfirmDate} label='Confirme' />
-                </div>
-              </div>
-            ) : null}
-          </div>
-        ) : null}
+              ) : null}
+            </div>
+          ) : null}
       </div>
     </div>
   );

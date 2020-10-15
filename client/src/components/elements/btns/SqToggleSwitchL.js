@@ -11,7 +11,7 @@ const SqToggleSwitchL = ({ name, checked, onChange, label_1, label_2 }) => {
           checked={checked == true}
           onChange={onChange}
         />
-        <div className='sq-slider h-scatter-content v-center-content'>
+        <div className='sq-slider bg-cp-3 h-scatter-content v-center-content'>
           <div className='sq-block center-content '>{label_1}</div>
           <div className='sq-block center-content '>{label_2}</div>
         </div>
