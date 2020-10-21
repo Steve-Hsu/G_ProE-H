@@ -82,6 +82,7 @@ export const TOGGLE_DISPALYTITALES = 'TOGGLE_DISPALYTITALES';
 export const INPUTTAG_FILE_NAME = 'INPUTTAG_FILE_NAME';
 export const CASE_LIST_DOWNLOAD = 'CASE_LIST_DOWNLOAD';
 export const CASE_MTRL_CARD = 'CASE_MTRL_CARD';
+export const CASE_CONFIRMDATE = 'CASE_CONFIRMDATE';
 
 //@ may not need this one --------------------------------------------
 export const CLEAR_USERS_STATE = 'CLEAR_USERS_STATE';

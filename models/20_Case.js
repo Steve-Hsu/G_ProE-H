@@ -65,7 +65,7 @@ const CaseSchema = mongoose.Schema({
   //     ref: 'users',
   //   },
   // ],
-  caseConfirmedDate: {
+  caseConfirmDate: {
     // The date, all material be established. As long as the material info is changed, this date will be dupdate.
     type: Date,
     default: null,

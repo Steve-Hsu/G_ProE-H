@@ -182,6 +182,7 @@ router.post(
       gQtys,
       mtrls,
       isImportedExcel,
+      caseConfirmDate,
     } = req.body;
 
     const caseId = req.params.caseId;
@@ -530,6 +531,7 @@ router.post(
               isImportedExcel,
               lastUpdateBy: userName,
               updateDate: Date.now(),
+              caseConfirmDate: caseConfirmDate,
             };
             console.log('The Finall PromiseAll');
             // if (!cases){}
@@ -630,7 +632,6 @@ router.post(
             merchandiser: userName,
             lastUpdateBy: userName,
             updateDate: Date.now(),
-            // bomConfirmedDate: null,
           });
           // name variable "case" will cause problem, so here name it "nCase"
           const nCase = await newCase.save();

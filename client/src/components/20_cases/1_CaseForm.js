@@ -54,6 +54,7 @@ const CaseForm = ({ props }) => {
     lastUpdateBy,
     updateDate,
     caseError,
+    caseConfirmDate,
   } = casesContext;
   const { comName, comSymbol } = authUserContext;
   const { updateSrMtrlByMtrl } = srMtrlContext;
@@ -75,6 +76,7 @@ const CaseForm = ({ props }) => {
     gQtys: gQtys,
     mtrls: mtrls,
     isImportedExcel: isImportedExcel,
+    caseConfirmDate: caseConfirmDate,
   };
 
   //@ Case Types, the type has nothing to do with code's "type"

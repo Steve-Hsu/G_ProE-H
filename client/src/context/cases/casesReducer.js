@@ -25,6 +25,7 @@ import {
   INPUTTAG_FILE_NAME,
   CASE_MTRL_CARD,
   UPDATE_ERROR,
+  CASE_CONFIRMDATE,
 } from '../types';
 
 export default (state, action) => {
@@ -204,6 +205,11 @@ export default (state, action) => {
       return {
         ...state,
         caseError: action.payload,
+      }
+    case CASE_CONFIRMDATE:
+      return {
+        ...state,
+        caseConfirmDate: action.payload,
       }
     default:
   }

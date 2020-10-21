@@ -315,7 +315,7 @@ const PurState = (props) => {
     }
   };
 
-  const toggleConfirmDate = () => {
+  const togglePoConfirmDate = () => {
     let subject = state.currentPo;
     const checkConfirmDate = subject.poConfirmDate;
     if (checkConfirmDate) {
@@ -475,7 +475,7 @@ const PurState = (props) => {
         deleteOs,
         updatePOInform,
         uploadPO,
-        toggleConfirmDate,
+        togglePoConfirmDate,
         getPOTotal,
         evenMoq,
         enterHsCode,

@@ -30,6 +30,7 @@ import {
   CASE_LIST_DOWNLOAD,
   CASE_MTRL_CARD,
   UPDATE_ERROR,
+  CASE_CONFIRMDATE,
 } from '../types';
 
 const CasesState = (props) => {
@@ -74,6 +75,7 @@ const CasesState = (props) => {
     merchandiser: null,
     lastUpdateBy: null,
     updateDate: null,
+    caseConfirmDate: null,
   };
 
   const generateId = () => {
@@ -1287,6 +1289,18 @@ const CasesState = (props) => {
     dispatch({ type: UPDATE_ERROR, payload: null });
   }
 
+  const toggleCaseConfirmDate = () => {
+    const checkConfirmDate = state.caseConfirmDate;
+    let date = null
+    if (checkConfirmDate) {
+      console.log('has the date')
+    } else {
+      console.log('Add the date')
+      date = Date.now();
+    }
+    dispatch({ type: CASE_CONFIRMDATE, payload: date });
+  };
+
   return (
     <CasesContext.Provider
       value={{
@@ -1317,6 +1331,7 @@ const CasesState = (props) => {
         lastUpdateBy: state.lastUpdateBy,
         updateDate: state.updateDate,
         caseError: state.caseError,
+        caseConfirmDate: state.caseConfirmDate,
         addCaseValue,
         addcWay,
         updatecWay,
@@ -1344,6 +1359,7 @@ const CasesState = (props) => {
         deleteCase,
         toggleMtrlCard,
         clearCaseError,
+        toggleCaseConfirmDate,
       }}
     >
       {props.children}

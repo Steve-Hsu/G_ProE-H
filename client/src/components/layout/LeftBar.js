@@ -32,6 +32,8 @@ const LeftBar = ({ currentPath }) => {
     isEditingCase,
     toggleMtrlCard,
     showMtrlCard,
+    caseConfirmDate,
+    toggleCaseConfirmDate
   } = casesContext;
   const {
     isQuotating,
@@ -42,7 +44,7 @@ const LeftBar = ({ currentPath }) => {
     downLoadmtrlPrice,
   } = quoContext;
 
-  const { openPage, toggleConfirmDate, currentPo } = purContext;
+  const { openPage, togglePoConfirmDate, currentPo } = purContext;
   const { toggleLoading } = popoverContext
 
   const theCase = quotation.theCase;
@@ -465,7 +467,7 @@ const LeftBar = ({ currentPath }) => {
                   {cNo === null ? null : (
                     <div>
                       <div className='mt-1'>
-                        {confirmArea()}
+                        {confirmArea('Confirm the Case', 'Case is Confirmed', 'Not Confirmed', caseConfirmDate, toggleCaseConfirmDate)}
                       </div>
                       <input
                         type='submit'
@@ -546,7 +548,7 @@ const LeftBar = ({ currentPath }) => {
               {printOutElement()}
               {openPage === 'purchaseOrder' ?
 
-                confirmArea('Confrim the PO', 'PO Has Confirmed', 'Not Confirmed', currentPo.poConfirmDate, toggleConfirmDate)
+                confirmArea('Confrim the PO', 'PO Has Confirmed', 'Not Confirmed', currentPo.poConfirmDate, togglePoConfirmDate)
 
                 : null}
             </Fragment>
