@@ -50,11 +50,11 @@ const ConditionItem = ({
           </div>
         </div>
       ) : (
-        <div className='noPrint w-100 mb-05'>
-          <span className='fw-bold'>{subject.condition} : </span>
-          {subject.conditionDescription}
-        </div>
-      )}
+          <div className='noPrint w-100 mb-05'>
+            <span className='fw-bold'>{subject.condition} : </span>
+            {subject.conditionDescription}
+          </div>
+        )}
       {/* Show only when print */}
       <div className='showWhenPrint w-100 fs-small'>
         <span className='fw-bold'>{subject.condition} : </span>

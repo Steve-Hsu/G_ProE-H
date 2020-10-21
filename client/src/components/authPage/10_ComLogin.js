@@ -63,56 +63,64 @@ const ComLogin = (props) => {
         {token !== null && !loading ? (
           <Spinner />
         ) : (
-          <div>
-            <h1>
-              Company <span className='text-primary'>Login</span>
-            </h1>
-            <form onSubmit={onSubmit}>
-              {/* {Email Address} */}
-              <div>
-                <input
-                  id='comEmail'
-                  type='email'
-                  name='email'
-                  value={email}
-                  onChange={onChange}
-                  maxLength='100'
-                  required
-                  placeholder='.'
-                  className='MPH-input'
-                />
-                <label htmlFor='comEmail' className='MPH-input-label'>
-                  Email Address
-                </label>
+            <div>
+              <div className='mb-3'>
+                <h1>
+                  Company <span>Lo</span>
+                  <span className='fc-cp-2'>g</span>
+                  <span >i</span>
+                  <span className='fc-gray-5'>n</span>
+
+                </h1>
+
               </div>
-              {/* {Password} */}
-              <div>
-                <input
-                  id='comPassword'
-                  type='password'
-                  name='password'
-                  value={password}
-                  onChange={onChange}
-                  maxLength='50'
-                  required
-                  placeholder='.'
-                  className='MPH-input'
-                />
-                <label htmlFor='comPassword' className='MPH-input-label'>
-                  Password
+
+              <form onSubmit={onSubmit}>
+                {/* {Email Address} */}
+                <div>
+                  <input
+                    id='comEmail'
+                    type='email'
+                    name='email'
+                    value={email}
+                    onChange={onChange}
+                    maxLength='100'
+                    required
+                    placeholder='.'
+                    className='MPH-input'
+                  />
+                  <label htmlFor='comEmail' className='MPH-input-label'>
+                    Email Address
                 </label>
-              </div>
-              {/* Submit button */}
-              <input
-                type='submit'
-                value='Login'
-                className='btn  btn-block mb-05'
-                style={{ height: '2rem' }}
-              />
-              <Alerts />
-            </form>
-          </div>
-        )}
+                </div>
+                {/* {Password} */}
+                <div>
+                  <input
+                    id='comPassword'
+                    type='password'
+                    name='password'
+                    value={password}
+                    onChange={onChange}
+                    maxLength='50'
+                    required
+                    placeholder='.'
+                    className='MPH-input'
+                  />
+                  <label htmlFor='comPassword' className='MPH-input-label'>
+                    Password
+                </label>
+                </div>
+                {/* Submit button */}
+                <input
+                  type='submit'
+                  value='Login'
+                  className='btn  btn-block mb-05'
+                  style={{ height: '2rem' }}
+                />
+                <Alerts />
+              </form>
+            </div>
+          )}
       </div>
     </Fragment>
   );

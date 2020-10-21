@@ -51,9 +51,15 @@ const UserLogin = (props) => {
   };
   return (
     <div className='form-container'>
-      <h1>
-        User <span className='text-primary'>Login</span>
-      </h1>
+      <div className='mb-3'>
+        <h1>
+          User <span>Lo</span>
+          <span className='fc-cp-2'>g</span>
+          <span >i</span>
+          <span className='fc-gray-5'>n</span>
+        </h1>
+      </div>
+
       <form onSubmit={onSubmit}>
         {/* {Email Address} */}
         <div>

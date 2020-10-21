@@ -79,7 +79,7 @@ const BoardItem = ({
             <SrMtrl srMtrl={subject} currentPath={currentPath} />
           ) : purpose === 'purchaseOrder' ? (
             <div
-              className='boardChild round-card bg-cp-elem bd-light hover-cp-2 p-03'
+              className='boardChild round-card bg-cp-elem bd-light hover-cp-2 p-05'
               style={{ position: 'relative' }}
               onClick={onClick}
             >
@@ -114,7 +114,7 @@ const BoardItem = ({
             </div>
           ) : (
               <div
-                className='boardChild round-card bg-cp-elem bd-light hover-cp-2 p-03'
+                className='boardChild round-card bg-cp-elem bd-light hover-cp-2 p-05'
                 style={selectedBackGround(id)}
                 onClick={onClick}
               >
@@ -124,21 +124,30 @@ const BoardItem = ({
                 </div>
                 {displayTitles.map((title) => {
                   // console.log(title) // test Code
+                  const keyOftitle = Object.keys(title)[0];
                   let className = 'fs-tiny'
-                  switch (Object.keys(title)[0]) {
+                  switch (keyOftitle) {
+                    case 'cNo':
+                      className = 'fw-bold fs-normal'
+                      break;
                     case 'supplier':
                       className = 'fw-bold fs-lead'
                       break;
                     case 'ref_no':
                       className = 'fs-normal'
+                      break;
+                    case 'position':
+                    case 'descriptions':
+                      className = 'mb-05 fs-tiny'
+                      break;
                     default:
                   }
                   return (
                     <div className={className}
-                      key={`${Object.keys(title)[0]}${subject.id ? subject.id : subject._id
+                      key={`${keyOftitle}${subject.id ? subject.id : subject._id
                         }`}
                     >
-                      {subject[Object.keys(title)[0]]}
+                      {keyOftitle === 'descriptions' ? subject[keyOftitle].map((d) => `${d} `) : subject[keyOftitle]}
                     </div>
                   );
                 })}

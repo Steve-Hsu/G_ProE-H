@@ -282,7 +282,7 @@ img {
 
 .grid-Quo-condition {
   display: grid;
-  grid-template-columns: 10rem 1fr;
+  grid-template-columns: 12.8rem 1fr;
 }
 
 .grid-Pur-Mtrl {
@@ -1291,6 +1291,10 @@ input[type='submit']:focus {
   padding: 0.3rem;
 }
 
+.p-04 {
+  padding: 0.4rem;
+}
+
 .p-05 {
   padding: 0.5rem;
 }
@@ -1364,9 +1368,6 @@ input[type='submit']:focus {
 .pt {
   padding-top: var(--gap);
 }
-.pt-0 {
-  padding-top: 0;
-}
 .pt-04 {
   padding-top: 0.4rem;
 }
@@ -1393,9 +1394,6 @@ input[type='submit']:focus {
 .pb {
   padding-bottom: var(--gap);
 }
-.pb-0 {
-  padding-bottom: 0;
-}
 
 .pb-03 {
   padding-bottom: 0.3rem;
@@ -1417,9 +1415,6 @@ input[type='submit']:focus {
 .pl {
   padding-left: var(--gap);
 }
-.pl-0 {
-  padding-left: 0;
-}
 .pl-05 {
   padding-left: 0.5rem;
 }
@@ -1440,9 +1435,6 @@ input[type='submit']:focus {
 .pr {
   padding-right: var(--gap);
 }
-.pr-0 {
-  padding-right: 0;
-}
 .pr-05 {
   padding-right: 0.5rem;
 }
@@ -1456,11 +1448,23 @@ input[type='submit']:focus {
   padding-right: 3rem;
 }
 
+.pt-0 {
+  padding-top: 0;
+}
+.pb-0 {
+  padding-bottom: 0;
+}
+
+.pl-0 {
+  padding-left: 0;
+}
+.pr-0 {
+  padding-right: 0;
+}
 .py-0 {
   padding-top: 0;
   padding-bottom: 0;
 }
-
 .p-0 {
   padding: 0;
 }
@@ -1552,6 +1556,9 @@ input[type='submit']:focus {
   margin-top: var(--gap);
 }
 
+.mt-03 {
+  margin-top: 0.3rem;
+}
 .mt-05 {
   margin-top: 0.5rem;
 }
