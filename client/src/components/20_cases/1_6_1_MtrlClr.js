@@ -4,7 +4,7 @@ import CasesContext from '../../context/cases/casesContext';
 
 const MtrlClr = ({ mtrlColor, mtrlId }) => {
   const casesContext = useContext(CasesContext);
-  const { addValueMtrlColor, cWays, mtrls, osNo } = casesContext;
+  const { addValueMtrlColor, cWays, mtrls, osNo, caseConfirmDate } = casesContext;
   const { mColor } = mtrlColor;
   const cWayLabel = cWays.find(({ id }) => id === mtrlColor.cWay).gClr;
   const multipleColor = mtrls.find(({ id }) => id === mtrlId).multipleColor;
@@ -26,10 +26,10 @@ const MtrlClr = ({ mtrlColor, mtrlId }) => {
         onChange={addValueMtrlColor}
         maxLength={mColorLength}
         className='MPH-input'
-        readOnly={osNo ? true : false}
+        readOnly={caseConfirmDate || osNo ? true : false}
       />
       <label htmlFor={mtrlColor.id} className='MPH-input-label'>
-        {multipleColor == true ? `For ${cWayLabel.includes("Empty-ColorWay_Duplicated")? cWayLabel.slice(26) : cWayLabel}` : 'For all ColorWay'}
+        {multipleColor == true ? `For ${cWayLabel.includes("Empty-ColorWay_Duplicated") ? cWayLabel.slice(26) : cWayLabel}` : 'For all ColorWay'}
       </label>
     </div>
   );

@@ -6,26 +6,26 @@ import DeleteBtnSmall from '../elements/btns/DeleteBtnSmall';
 
 const ColorWay = ({ cWay }) => {
   const casesContext = useContext(CasesContext);
-  const { cNo, osNo, cWays, updatecWay } = casesContext;
+  const { cNo, osNo, cWays, updatecWay, caseConfirmDate } = casesContext;
   const popoverContext = useContext(PopoverContext);
   const { togglePopover } = popoverContext;
   //For sparete the postion of btn, here use an inline style.
   //deleteBtn in ColorWay.
 
-  const deleteBtnPosition = {
-    // top: ' 50%',
-    // left: '50%',
-    // transform: 'translate(0rem, -0.5rem)',
-  };
+  // const deleteBtnPosition = {
+  //   // top: ' 50%',
+  //   // left: '50%',
+  //   // transform: 'translate(0rem, -0.5rem)',
+  // };
 
   //@ Value for input
   //words length limit
   const maxWdsLength = '50';
   const colorWayLength = maxWdsLength;
 
-  const te = {
-    color: 'orange',
-  };
+  // const te = {
+  //   color: 'orange',
+  // };
 
   const warningTextBoxStyle = () => {
     let obj = {};
@@ -57,28 +57,39 @@ const ColorWay = ({ cWay }) => {
       style={{ height: 'var(--btn-h-m)' }}
     >
       <div style={{ height: 'var(--btn-h-m)' }}>
-        {cNo === null || osNo ? null : (
+        {cNo === null || caseConfirmDate != null || osNo != null ? null : (
           <DeleteBtnSmall value={cWay.id} name='cWay' onClick={togglePopover} />
         )}
       </div>
-      <div style={{ height: 'var(--btn-h-m)' }}>
-        <input
-          id={cWay.id}
-          type='text'
-          name='style'
-          placeholder='.'
-          onChange={updatecWay}
-          maxLength={colorWayLength}
-          autoFocus
-          className='MPH-input bd-no bg-cp-1 fs-lead w-100 h-100 bg-no'
-          style={warningTextBoxStyle()}
-          value={cWay.gClr || ''}
-        />
+      {caseConfirmDate || osNo ? (<div style={{ height: 'var(--btn-h-m' }}>
+        <div className='MPH-input bd-no fs-lead w-100 h-100 hover-no'>
+          {cWay.gClr.includes('COLORWAY_DUPLICATED') ? (<span className='fc-danger'>{`Empty-${Number(cWays.findIndex((e) => e.id === cWay.id)) + 1}`}</span>) : cWay.gClr}
+        </div>
         <label htmlFor={cWay.id} className='MPH-input-label'>
           Color Way -{' '}
           {`${Number(cWays.findIndex((e) => e.id === cWay.id)) + 1}`}
         </label>
-      </div>
+      </div>) : (
+          <div style={{ height: 'var(--btn-h-m)' }}>
+            <input
+              id={cWay.id}
+              type='text'
+              name='style'
+              placeholder='.'
+              onChange={updatecWay}
+              maxLength={colorWayLength}
+              autoFocus
+              className='MPH-input bd-no fs-lead w-100 h-100 bg-no'
+              style={warningTextBoxStyle()}
+              value={cWay.gClr || ''}
+            />
+            <label htmlFor={cWay.id} className='MPH-input-label'>
+              Color Way -{' '}
+              {`${Number(cWays.findIndex((e) => e.id === cWay.id)) + 1}`}
+            </label>
+          </div>
+        )}
+
     </div>
   );
 };

@@ -7,7 +7,7 @@ import DeleteBtnSmall from '../elements/btns/DeleteBtnSmall';
 const Size = ({ size }) => {
   const casesContext = useContext(CasesContext);
   const popoverContext = useContext(PopoverContext);
-  const { _id, cNo, osNo, sizes, gQtys, updateSize } = casesContext;
+  const { _id, cNo, osNo, sizes, gQtys, updateSize, caseConfirmDate } = casesContext;
   const { togglePopover } = popoverContext;
   const event = new Event('change');
   //@ Array for generate <option> tags for s<elect> tag.
@@ -89,9 +89,13 @@ const Size = ({ size }) => {
 
   //@ select the right size when new case is download
   const loadCaseSelectTagIndex = () => {
-    document
-      .getElementById(`${size.gSize}${size.id}`)
-      .setAttribute('selected', 'selected');
+    if (caseConfirmDate || osNo) {
+    } else {
+      document
+        .getElementById(`${size.gSize}${size.id}`)
+        .setAttribute('selected', 'selected');
+    }
+
   };
 
   const sumNumOfSize = () => {
@@ -106,27 +110,30 @@ const Size = ({ size }) => {
 
   return (
     <div className='bd-cp-2-b-2px pb-05'>
-      <select
-        id={size.id}
-        list='garmentSize'
-        placeholder='Size'
-        onChange={onChange}
-        autoFocus
-        default='XS'
-        className='select-primary bg-cp-1 fc-cp-3 bd-no fs-lead'
-      >
-        {sizeList.map((s) => {
-          return (
-            <option key={`${s}${size.id}`} id={`${s}${size.id}`} value={s}>
-              {s}
-            </option>
-          );
-        })}
-      </select>
+      {caseConfirmDate || osNo ? (<div className='bg-cp-1 fc-cp-3 bd-no fs-lead'>{size.gSize}</div>) : (
+        <select
+          id={size.id}
+          list='garmentSize'
+          placeholder='Size'
+          onChange={onChange}
+          autoFocus
+          default='XS'
+          className='select-primary bg-cp-1 fc-cp-3 bd-no fs-lead'
+        >
+          {sizeList.map((s) => {
+            return (
+              <option key={`${s}${size.id}`} id={`${s}${size.id}`} value={s}>
+                {s}
+              </option>
+            );
+          })}
+        </select>
+      )}
+
       {/* {cNo === null ? null : ( */}
       <div className='v-center-content'>
         <div className='pl-05'>
-          {cNo === null || osNo ? null : (
+          {cNo === null || caseConfirmDate != null || osNo != null ? null : (
             <DeleteBtnSmall
               name='size'
               value={size.id}

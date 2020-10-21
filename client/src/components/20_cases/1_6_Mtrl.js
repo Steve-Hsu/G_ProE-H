@@ -25,6 +25,7 @@ const Mtrl = ({ mtrl }) => {
     addMtrlValue,
     addCaseValue,
     addMtrlValueDescription,
+    caseConfirmDate,
   } = casesContext;
 
   const { togglePopover } = popoverContext;
@@ -163,7 +164,7 @@ const Mtrl = ({ mtrl }) => {
       //     mtrlAttribute(subject).charAt(0).toUpperCase() +
       //     mtrlAttribute(subject).slice(1);
       // }
-      if (osNo) {
+      if (caseConfirmDate || osNo) {
         return <div className='itemSelect'>{mtrl.item}</div>;
       } else {
         return (
@@ -207,26 +208,26 @@ const Mtrl = ({ mtrl }) => {
                 className='MPH-input'
                 value={mtrlAttribute(subject)[0] || ''}
                 maxLength={maxWdsLength}
-                readOnly={osNo ? true : false}
+                readOnly={caseConfirmDate || osNo ? true : false}
               />
             </div>
           ) : (
-            mtrl.descriptions.map((des, idx) => (
-              <div key={`${subject}${idx}${mtrl.id}`} className='mb-05'>
-                <input
-                  type='text'
-                  id={idx}
-                  name={mtrl.id}
-                  placeholder='.'
-                  onChange={addMtrlValueDescription}
-                  className='MPH-input'
-                  value={mtrlAttribute(subject)[idx] || ''}
-                  maxLength={maxWdsLength}
-                  readOnly={osNo ? true : false}
-                />
-              </div>
-            ))
-          )}
+              mtrl.descriptions.map((des, idx) => (
+                <div key={`${subject}${idx}${mtrl.id}`} className='mb-05'>
+                  <input
+                    type='text'
+                    id={idx}
+                    name={mtrl.id}
+                    placeholder='.'
+                    onChange={addMtrlValueDescription}
+                    className='MPH-input'
+                    value={mtrlAttribute(subject)[idx] || ''}
+                    maxLength={maxWdsLength}
+                    readOnly={caseConfirmDate || osNo ? true : false}
+                  />
+                </div>
+              ))
+            )}
         </>
       );
     } else {
@@ -241,7 +242,7 @@ const Mtrl = ({ mtrl }) => {
             className='MPH-input'
             value={mtrlAttribute(subject) || ''}
             maxLength={maxWdsLength}
-            readOnly={osNo ? true : false}
+            readOnly={caseConfirmDate || osNo ? true : false}
           />
           <label htmlFor={`${subject}${mtrl.id}`} className='MPH-input-label'>
             {subject}
@@ -258,7 +259,7 @@ const Mtrl = ({ mtrl }) => {
         name={mtrl.id}
         checked={mtrl[subject]}
         onChange={onChange}
-        readOnlyIndicator={osNo}
+        readOnlyIndicator={osNo ? osNo : caseConfirmDate}
         onLabel='On'
         offLabel='Off'
       />
@@ -296,7 +297,7 @@ const Mtrl = ({ mtrl }) => {
 
           {/* Row_1 - Delete Btn */}
           <div>
-            {cNo === null || osNo ? null : (
+            {cNo === null || casesContext != null || osNo != null ? null : (
               <DeleteBtnSmall
                 value={mtrl.id}
                 name='mtrl'
@@ -403,7 +404,7 @@ const Mtrl = ({ mtrl }) => {
             </button>
           </div>
           {/* Row_4 - Unit Selector */}
-          {osNo ? (
+          {caseConfirmDate || osNo ? (
             <div>
               <div className='fs-tiny  transition'>Unit</div>
               <div className='h-3rem w-100 round-area bd-light fs-lead center-content'>
@@ -411,16 +412,16 @@ const Mtrl = ({ mtrl }) => {
               </div>
             </div>
           ) : (
-            <Select
-              purpose='unit'
-              subject={mtrl}
-              onChange={addMtrlValue}
-              required={true}
-              label='Unit'
-              className='select-primary-sub  bd-light'
-              selectedOption={mtrl.unit}
-            />
-          )}
+              <Select
+                purpose='unit'
+                subject={mtrl}
+                onChange={addMtrlValue}
+                required={true}
+                label='Unit'
+                className='select-primary-sub  bd-light'
+                selectedOption={mtrl.unit}
+              />
+            )}
         </div>
         {/* {Row_5} */}
         {/* Color expand panel  */}
@@ -430,7 +431,7 @@ const Mtrl = ({ mtrl }) => {
             <div
               style={{ height: '100%', display: 'grid', placeItems: 'center' }}
             >
-              {osNo ? null : toggleSwitchObj('multipleColor')}
+              {caseConfirmDate || osNo ? null : toggleSwitchObj('multipleColor')}
             </div>
             <div style={attachedTable('cWay')} className='mt-1'>
               {mtrl.multipleColor == true ? (
@@ -442,12 +443,12 @@ const Mtrl = ({ mtrl }) => {
                   />
                 ))
               ) : (
-                <MtrlClr
-                  key={mtrl.mtrlColors[0].id}
-                  mtrlColor={mtrl.mtrlColors[0]}
-                  mtrlId={mtrl.id}
-                />
-              )}
+                  <MtrlClr
+                    key={mtrl.mtrlColors[0].id}
+                    mtrlColor={mtrl.mtrlColors[0]}
+                    mtrlId={mtrl.id}
+                  />
+                )}
             </div>
           </div>
         ) : null}
@@ -458,7 +459,7 @@ const Mtrl = ({ mtrl }) => {
             <div
               style={{ height: '100%', display: 'grid', placeItems: 'center' }}
             >
-              {osNo ? null : toggleSwitchObj('multipleSPEC')}
+              {caseConfirmDate || osNo ? null : toggleSwitchObj('multipleSPEC')}
             </div>
             <div style={attachedTable('size')} className='mt-1'>
               {mtrl.multipleSPEC == true ? (
@@ -470,12 +471,12 @@ const Mtrl = ({ mtrl }) => {
                   />
                 ))
               ) : (
-                <MtrlSizeSPEC
-                  key={mtrl.sizeSPECs[0].id}
-                  sizeSPEC={mtrl.sizeSPECs[0]}
-                  mtrlId={mtrl.id}
-                />
-              )}
+                  <MtrlSizeSPEC
+                    key={mtrl.sizeSPECs[0].id}
+                    sizeSPEC={mtrl.sizeSPECs[0]}
+                    mtrlId={mtrl.id}
+                  />
+                )}
             </div>
           </div>
         ) : null}
@@ -486,7 +487,7 @@ const Mtrl = ({ mtrl }) => {
             <div
               style={{ height: '100%', display: 'grid', placeItems: 'center' }}
             >
-              {osNo ? null : toggleSwitchObj('multipleCSPT')}
+              {caseConfirmDate || osNo ? null : toggleSwitchObj('multipleCSPT')}
             </div>
             <div style={attachedTable('cspt')} className='mt-1'>
               {mtrl.multipleCSPT == true ? (
@@ -498,12 +499,12 @@ const Mtrl = ({ mtrl }) => {
                   />
                 ))
               ) : (
-                <MtrlCspt
-                  key={`Fragment${sizes[0].id}${mtrl.id}`}
-                  size={sizes[0]}
-                  mtrl={mtrl}
-                />
-              )}
+                  <MtrlCspt
+                    key={`Fragment${sizes[0].id}${mtrl.id}`}
+                    size={sizes[0]}
+                    mtrl={mtrl}
+                  />
+                )}
             </div>
           </div>
         ) : null}

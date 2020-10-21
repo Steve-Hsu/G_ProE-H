@@ -4,7 +4,7 @@ import CasesContext from '../../context/cases/casesContext';
 
 const MtrlCspt = ({ size, mtrl }) => {
   const casesContext = useContext(CasesContext);
-  const { addValueMtrlCspt, osNo } = casesContext;
+  const { addValueMtrlCspt, osNo, caseConfirmDate } = casesContext;
   //@ Value for input
   //words length limit
   const maxWdsLength = '4';
@@ -41,7 +41,7 @@ const MtrlCspt = ({ size, mtrl }) => {
         max={Max}
         className='MPH-input'
         step='.01'
-        readOnly={osNo ? true : false}
+        readOnly={caseConfirmDate || osNo ? true : false}
       />
       <label htmlFor={cspt.id} className='MPH-input-label'>
         {multipleCSPT == true ? `For ${size.gSize}` : 'For all Size'}

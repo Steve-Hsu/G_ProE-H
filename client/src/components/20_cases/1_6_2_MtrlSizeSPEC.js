@@ -4,7 +4,7 @@ import CasesContext from '../../context/cases/casesContext';
 
 const MtrlSizeSPEC = ({ sizeSPEC, mtrlId }) => {
   const casesContext = useContext(CasesContext);
-  const { addValueMtrlSizeSPEC, sizes, mtrls, osNo } = casesContext;
+  const { addValueMtrlSizeSPEC, sizes, mtrls, osNo, caseConfirmDate } = casesContext;
   const { mSizeSPEC } = sizeSPEC;
   const sizeLable = sizes.find(({ id }) => id === sizeSPEC.size).gSize;
   const multipleSPEC = mtrls.find(({ id }) => id === mtrlId).multipleSPEC;
@@ -25,7 +25,7 @@ const MtrlSizeSPEC = ({ sizeSPEC, mtrlId }) => {
         onChange={addValueMtrlSizeSPEC}
         maxLength={SizeSPECLength}
         className='MPH-input'
-        readOnly={osNo ? true : false}
+        readOnly={caseConfirmDate || osNo ? true : false}
       />
       <label htmlFor={sizeSPEC.id} className='MPH-input-label'>
         {multipleSPEC == true ? `For ${sizeLable}` : 'For all Size'}

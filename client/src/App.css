@@ -835,7 +835,7 @@ input[type='submit']:focus {
 
 .MPH-input:hover,
 .MPH-input:focus {
-  box-shadow: none;
+  /* box-shadow: none; */
   outline: none;
   /* background: var(--cp-1_2); */
   border: 1px solid rgba(255, 255, 255, 0);
@@ -1199,6 +1199,10 @@ input[type='submit']:focus {
   color: var(--success-color);
 }
 
+.fc-danger {
+  color: var(--danger-color);
+}
+
 .fc-gray-1 {
   color: var(--gray-1);
 }
@@ -1210,6 +1214,7 @@ input[type='submit']:focus {
 .fc-gray-5 {
   color: var(--gray-5);
 }
+
 /* font weight */
 .fw-bold {
   font-weight: bold;
@@ -1982,7 +1987,11 @@ input[type='submit']:focus {
 .hover-no:hover,
 .hover-0:hover {
   color: var(--cp-1_2);
-  background: var(--fade-color-dark);
+  background: rgba(255, 255, 255, 0);
+  box-shadow: none;
+  /* border: 1px solid rgba(255, 255, 255, 0); */
+  outline: none;
+  transition: all 0.2s;
 }
 
 /* @Loader */

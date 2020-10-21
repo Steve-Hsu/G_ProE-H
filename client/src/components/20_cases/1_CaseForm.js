@@ -212,7 +212,7 @@ const CaseForm = ({ props }) => {
                   <div className='h-scatter-content'>
                     {' '}
                     <div>{cNo === null ? 'New Case' : cNo}</div>
-                    {cNo === null || osNo ? null : (
+                    {cNo === null || osNo || caseConfirmDate ? null : (
                       <DeleteBtnSmall
                         name='case'
                         onClick={togglePopover}
@@ -276,6 +276,14 @@ const CaseForm = ({ props }) => {
                     <div>{`${lastUpdateBy},  Date : ${updateDate}`}</div>
                   </div>
                 ) : null}
+                {caseConfirmDate ? (
+                  <LockedBadge
+                    labels={[
+                      `The Case is locked.`,
+                      <i className="fas fa-exclamation-triangle"> The case's confirmed, therefore you can't update the case</i>,
+                    ]}
+                  />
+                ) : null}
                 {osNo ? (
                   <LockedBadge
                     labels={[
@@ -296,7 +304,7 @@ const CaseForm = ({ props }) => {
                 >
                   Size-Breakdown
                 </div>
-                {osNo ? (
+                {caseConfirmDate || osNo ? (
                   <div></div>
                 ) : (
                     <SqBtnLarge
@@ -305,7 +313,7 @@ const CaseForm = ({ props }) => {
                     />
                   )}
 
-                {osNo ? (
+                {caseConfirmDate || osNo ? (
                   <div></div>
                 ) : (
                     <SqBtnLarge
@@ -399,7 +407,7 @@ const CaseForm = ({ props }) => {
                   <span className='fs-tiny ml-1 fc-cp-2-c'>{mtrls.length} ms</span>
                 </div>
                 <div className='ml-05'>
-                  {osNo ? null : (
+                  {caseConfirmDate || osNo ? null : (
                     <SqBtnLarge
                       label={<i className='fab fa-buffer '> Item ＋</i>}
                       onClick={addMtrl}
