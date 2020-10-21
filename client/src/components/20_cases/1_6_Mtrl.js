@@ -196,7 +196,7 @@ const Mtrl = ({ mtrl }) => {
     } else if (subject === 'Description') {
       return (
         <>
-          <div className='fs-tiny'>Description</div>
+          <div className='fs-tiny fc-gray-4'>Description</div>
           {mtrl.descriptions.length == 0 ? (
             <div key={`${subject}${0}${mtrl.id}`} className='mb-05'>
               <input
@@ -362,7 +362,7 @@ const Mtrl = ({ mtrl }) => {
           {/* Row_4 - Icon Space */}
           <div></div>
           <div className='mr-1'>
-            <div className='fs-tiny transition'>
+            <div className='fs-tiny transition fc-gray-4'>
               {mtrl.multipleColor == true ? 'Multiple' : 'Single'}
             </div>
             <button
@@ -376,7 +376,7 @@ const Mtrl = ({ mtrl }) => {
             </button>
           </div>
           <div className='mr-1'>
-            <div className='fs-tiny  transition'>
+            <div className='fs-tiny  transition fc-gray-4'>
               {mtrl.multipleSPEC == true ? 'Multiple' : 'Single'}
             </div>
             <button
@@ -390,7 +390,7 @@ const Mtrl = ({ mtrl }) => {
             </button>
           </div>
           <div className='mr-1'>
-            <div className='fs-tiny  transition'>
+            <div className='fs-tiny  transition fc-gray-4'>
               {mtrl.multipleCSPT == true ? 'Multiple' : 'Single'}
             </div>
             <button
@@ -406,7 +406,7 @@ const Mtrl = ({ mtrl }) => {
           {/* Row_4 - Unit Selector */}
           {caseConfirmDate || osNo ? (
             <div>
-              <div className='fs-tiny  transition'>Unit</div>
+              <div className='fs-tiny  transition fc-gray-4'>Unit</div>
               <div className='h-3rem w-100 round-area bd-light fs-lead center-content'>
                 {mtrl.unit}
               </div>

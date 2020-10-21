@@ -817,7 +817,7 @@ input[type='submit']:focus {
   transform-origin: 0 0;
   transition: all 0.3s;
   animation: labelDown 0.7s ease;
-  color: var(--gray-3);
+  color: var(--gray-4);
   white-space: nowrap;
 }
 
@@ -856,7 +856,7 @@ input[type='submit']:focus {
 .MPH-input:not(:placeholder-shown) + .MPH-input-label {
   transform: translateY(-3.3rem) scale(0.7);
   animation: labelUp 0.7s ease;
-  color: var(--cp-1_3);
+  color: var(--gray-4);
 }
 
 .MPH-input:focus + .MPH-input-label-gQty,
@@ -900,7 +900,7 @@ input[type='submit']:focus {
 
 @keyframes labelUp {
   0% {
-    color: var(--gray-3);
+    color: var(--gray-4);
   }
   25% {
     color: rgba(255, 255, 255, 0);
@@ -908,29 +908,37 @@ input[type='submit']:focus {
   50% {
     color: rgba(255, 255, 255, 0);
   }
-  75% {
+  65% {
+    color: var(--gray-3);
+  }
+
+  85% {
     color: var(--gray-4);
   }
+
   100% {
-    color: var(--cp-1_3);
+    color: var(--gray-4);
   }
 }
 
 @keyframes labelDown {
   0% {
-    color: var(--gray-5);
+    color: var(--gray-4);
   }
   25% {
     color: rgba(255, 255, 255, 0);
   }
+  35% {
+    color: var(--gray-2);
+  }
   50% {
     color: var(--gray-3);
   }
-  75% {
-    color: var(--gray-3);
+  65% {
+    color: var(--gray-4);
   }
   100% {
-    color: var(--gray-3);
+    color: var(--gray-4);
   }
 }
 /* Usage : Use a div with class .MPH-input-group to warp a input and babel, the input will transform it size when focused. */
@@ -1209,6 +1217,10 @@ input[type='submit']:focus {
 
 .fc-gray-3 {
   color: var(--gray-3);
+}
+
+.fc-gray-4 {
+  color: var(--gray-4);
 }
 
 .fc-gray-5 {

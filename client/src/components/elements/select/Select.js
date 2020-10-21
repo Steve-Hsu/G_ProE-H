@@ -137,7 +137,7 @@ const Select = ({
 
   return (
     <div>
-      {label ? <div className='fs-tiny  transition'>{label}</div> : null}
+      {label ? <div className='fs-tiny  transition fc-gray-4'>{label}</div> : null}
       <select
         // id={`${purpose}${subject.id ? subject.id : subject._id}`}
         id={theId(id)}
