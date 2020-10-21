@@ -630,6 +630,7 @@ router.post(
             merchandiser: userName,
             lastUpdateBy: userName,
             updateDate: Date.now(),
+            // bomConfirmedDate: null,
           });
           // name variable "case" will cause problem, so here name it "nCase"
           const nCase = await newCase.save();

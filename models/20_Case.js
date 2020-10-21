@@ -49,14 +49,14 @@ const CaseSchema = mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  merchandiser:{
-    type:String,
+  merchandiser: {
+    type: String,
   },
   lastUpdateBy: {
-    type:String,
+    type: String,
   },
   updateDate: {
-    type:Date,
+    type: Date,
   },
   // authorizedUser: [
   //   {
@@ -65,9 +65,10 @@ const CaseSchema = mongoose.Schema({
   //     ref: 'users',
   //   },
   // ],
-  bomDate: {
+  caseConfirmedDate: {
     // The date, all material be established. As long as the material info is changed, this date will be dupdate.
     type: Date,
+    default: null,
   },
   csptDate: {
     // The date, all the consumption of material be filled out.

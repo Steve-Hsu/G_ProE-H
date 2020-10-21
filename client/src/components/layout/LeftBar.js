@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { Fragment, useContext } from 'react';
 import CasesContext from '../../context/cases/casesContext';
 import QuoContext from '../../context/quo/quoContext';
 import PurContext from '../../context/pur/purContext';
@@ -303,6 +303,38 @@ const LeftBar = ({ currentPath }) => {
     );
   };
 
+  const confirmArea = (title, confirmedLabel, notConfirmedLabel, checkPoint, onClick) => {
+    return (
+      <div className='round-area bd-light'>
+        <div>
+          <i className='fas fa-file-import'> {title}</i>
+        </div>
+        {checkPoint ? (
+          <LockedBadge
+            labels={[
+              <i className='fas fa-check-circle'> {confirmedLabel}</i>,
+            ]}
+            style={{ marginTop: '0.5rem' }}
+            className='h-center-content'
+          />
+        ) : (
+            <LockedBadge
+              labels={[notConfirmedLabel]}
+              style={{
+                background: 'var(--fade-color)',
+                marginTop: '0.5rem',
+              }}
+              className='h-center-content'
+            />
+          )}
+        <div className='h-scatter-content mt-05'>
+          <div></div>
+          <SqBtnLarge onClick={onClick} label='Confirme' />
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div
       className='container-with-navbar leftbar bg-white bd-light bd-no-t h-100 noPrint'
@@ -432,17 +464,20 @@ const LeftBar = ({ currentPath }) => {
                   {/* <div> */}
                   {cNo === null ? null : (
                     <div>
+                      <div className='mt-1'>
+                        {confirmArea()}
+                      </div>
                       <input
                         type='submit'
                         // form='caseForm'
-                        className='btn btn-block bg-cp-1 mt-1'
+                        className='btn btn-block bg-cp-1 mt-1 hover-cp-2'
                         value='Material Card'
                         onClick={onClick2}
                       />
                       <input
                         type='submit'
                         // form='caseForm'
-                        className='btn btn-block bg-cp-1 mt-1'
+                        className='btn btn-block bg-cp-1 mt-1 hover-cp-2'
                         value='Copy this case as a new Case'
                         onClick={onClick}
                       />
@@ -507,38 +542,14 @@ const LeftBar = ({ currentPath }) => {
         {/* @Purchase Set */}
         {(currentPath === '/api/purchase' && openPage === 'purchaseOrder') ||
           (currentPath === '/api/purchase' && openPage === 'oSMtrlList') ? (
-            <div>
+            <Fragment>
               {printOutElement()}
-              {openPage === 'purchaseOrder' ? (
-                <div className='round-area bd-light'>
-                  <div>
-                    <i className='fas fa-file-import'> Confirm the PO</i>
-                  </div>
-                  {currentPo.poConfirmDate ? (
-                    <LockedBadge
-                      labels={[
-                        <i className='fas fa-check-circle'> PO Has Confirmed</i>,
-                      ]}
-                      style={{ marginTop: '0.5rem' }}
-                      className='h-center-content'
-                    />
-                  ) : (
-                      <LockedBadge
-                        labels={['Not Confirmed']}
-                        style={{
-                          background: 'var(--fade-color)',
-                          marginTop: '0.5rem',
-                        }}
-                        className='h-center-content'
-                      />
-                    )}
-                  <div className='h-scatter-content mt-05'>
-                    <div></div>
-                    <SqBtnLarge onClick={toggleConfirmDate} label='Confirme' />
-                  </div>
-                </div>
-              ) : null}
-            </div>
+              {openPage === 'purchaseOrder' ?
+
+                confirmArea('Confrim the PO', 'PO Has Confirmed', 'Not Confirmed', currentPo.poConfirmDate, toggleConfirmDate)
+
+                : null}
+            </Fragment>
           ) : null}
       </div>
     </div>
@@ -557,3 +568,31 @@ export default LeftBar;
 //               />
 //             </div> */
 //  }
+
+         // <div className='round-area bd-light'>
+                //   <div>
+                //     <i className='fas fa-file-import'> Confirm the PO</i>
+                //   </div>
+                //   {currentPo.poConfirmDate ? (
+                //     <LockedBadge
+                //       labels={[
+                //         <i className='fas fa-check-circle'> PO Has Confirmed</i>,
+                //       ]}
+                //       style={{ marginTop: '0.5rem' }}
+                //       className='h-center-content'
+                //     />
+                //   ) : (
+                //       <LockedBadge
+                //         labels={['Not Confirmed']}
+                //         style={{
+                //           background: 'var(--fade-color)',
+                //           marginTop: '0.5rem',
+                //         }}
+                //         className='h-center-content'
+                //       />
+                //     )}
+                //   <div className='h-scatter-content mt-05'>
+                //     <div></div>
+                //     <SqBtnLarge onClick={toggleConfirmDate} label='Confirme' />
+                //   </div>
+                // </div>
