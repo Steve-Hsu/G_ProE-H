@@ -501,69 +501,43 @@ router.post(
     // In the front end, if it is a new case, the caseId will be default as string 'newCase'.
     // Whereas it is a existing case, the caseId will hold the _id of the case
     if (caseId !== 'newCase') {
-      Promise.all([trimedcWays, numberThegQty, trimedMtrls])
-        .then(async () => {
-          let updatedcNo = '';
-          if (cNo) {
+      const existingCase = await Case.findOne({ cNo: cNo, company: comId }, { company: 0 });
+      if (existingCase.osNo) {
+        //if osNo is made, don't allow to update the existing case
+        return res.json(existingCase);
+      } else {
+        //if the osNo is not made, allow user to update the case
+        Promise.all([trimedcWays, numberThegQty, trimedMtrls])
+          .then(async () => {
+            let updatedcNo = '';
+            if (cNo) {
 
-            // Check if the user is the case creator, only the case creator can confirm the case
-            const existingCase = await Case.findOne({ cNo: cNo, company: comId }, { company: 0 });
-            const userOwnerId = existingCase.user;
-            const hasConfirmed = existingCase.caseConfirmDate;
-            console.log("the id of the user of the case", userOwnerId);
-            console.log("the id of the user", userId);
-            // Here don't compare the type of the 2 Ids so use '==' not '===' in the paranthesis of the If
-            // If the cNo is true, it imply that the case is the existing one
-            let caseTypeSymbol = cNo.slice(-1);
-            switch (caseType) {
-              case 'Bulk':
-                caseTypeSymbol = 'B';
-                break;
-              case 'Salesman Sample':
-                caseTypeSymbol = 'S';
-                break;
-              case 'Test Sample':
-                caseTypeSymbol = 'T';
-                break;
-              default:
-            }
-            updatedcNo = cNo.slice(0, -1) + caseTypeSymbol;
+              // Check if the user is the case creator, only the case creator can confirm the case
 
-            console.log('The Finall PromiseAll');
-            if (userId == userOwnerId) {
-              // If the user is the case creator, then update everything the user want.
-              const caseFields = {
-                cNo: updatedcNo,
-                caseType: caseType,
-                style: trimedStyle,
-                client: trimedClient,
-                cWays,
-                sizes,
-                gQtys,
-                mtrls,
-                isImportedExcel,
-                lastUpdateBy: userName,
-                updateDate: Date.now(),
-                caseConfirmDate: caseConfirmDate,
-              };
-              console.log('The case update by case creator')
-              const updatedCase = await Case.findOneAndUpdate(
-                // poDate must be null, it means the Case is not being made a PO, so it allows to be updated
-                { _id: caseId, poDate: null },
-                {
-                  $set: caseFields,
-                },
-                { new: true }
-              );
-              return updatedCase;
-            } else {
-              //If the user is not the case creator, check if the case is confirmed, if so lock it don't let the user update the case.
-              if (hasConfirmed) {
-                //If confirmed, don't update anything, just return the existingCase.
-                console.log('case not updated, due to case confirmed and locked by the case creator')
-                return existingCase;
-              } else {
-                //If not confirmed, let the user update anything but the caseConfirmedDate
+              const userOwnerId = existingCase.user;
+              const hasConfirmed = existingCase.caseConfirmDate;
+              console.log("the id of the user of the case", userOwnerId);
+              console.log("the id of the user", userId);
+              // Here don't compare the type of the 2 Ids so use '==' not '===' in the paranthesis of the If
+              // If the cNo is true, it imply that the case is the existing one
+              let caseTypeSymbol = cNo.slice(-1);
+              switch (caseType) {
+                case 'Bulk':
+                  caseTypeSymbol = 'B';
+                  break;
+                case 'Salesman Sample':
+                  caseTypeSymbol = 'S';
+                  break;
+                case 'Test Sample':
+                  caseTypeSymbol = 'T';
+                  break;
+                default:
+              }
+              updatedcNo = cNo.slice(0, -1) + caseTypeSymbol;
+
+              console.log('The Finall PromiseAll');
+              if (userId == userOwnerId) {
+                // If the user is the case creator, then update everything the user want.
                 const caseFields = {
                   cNo: updatedcNo,
                   caseType: caseType,
@@ -576,8 +550,9 @@ router.post(
                   isImportedExcel,
                   lastUpdateBy: userName,
                   updateDate: Date.now(),
+                  caseConfirmDate: caseConfirmDate,
                 };
-                console.log('The case update by user')
+                console.log('The case update by case creator')
                 const updatedCase = await Case.findOneAndUpdate(
                   // poDate must be null, it means the Case is not being made a PO, so it allows to be updated
                   { _id: caseId, poDate: null },
@@ -587,21 +562,53 @@ router.post(
                   { new: true }
                 );
                 return updatedCase;
+              } else {
+                //If the user is not the case creator, check if the case is confirmed, if so lock it don't let the user update the case.
+                if (hasConfirmed) {
+                  //If confirmed, don't update anything, just return the existingCase.
+                  console.log('case not updated, due to case confirmed and locked by the case creator')
+                  return existingCase;
+                } else {
+                  //If not confirmed, let the user update anything but the caseConfirmedDate
+                  const caseFields = {
+                    cNo: updatedcNo,
+                    caseType: caseType,
+                    style: trimedStyle,
+                    client: trimedClient,
+                    cWays,
+                    sizes,
+                    gQtys,
+                    mtrls,
+                    isImportedExcel,
+                    lastUpdateBy: userName,
+                    updateDate: Date.now(),
+                  };
+                  console.log('The case update by user')
+                  const updatedCase = await Case.findOneAndUpdate(
+                    // poDate must be null, it means the Case is not being made a PO, so it allows to be updated
+                    { _id: caseId, poDate: null },
+                    {
+                      $set: caseFields,
+                    },
+                    { new: true }
+                  );
+                  return updatedCase;
+                }
+
               }
-
             }
-          }
 
-          // method .updateOne() will not return the case it self, so here make a one, named "updateCases" and return to the fronend client.
-        })
-        .then((result) => {
-          console.log('The existing Case is updated'); // Test Code
-          return res.json(result);
-        })
-        .catch((err) => {
-          console.error(err.message);
-          res.status(500).send('Server Error');
-        });
+            // method .updateOne() will not return the case it self, so here make a one, named "updateCases" and return to the fronend client.
+          })
+          .then((result) => {
+            console.log('The existing Case is updated'); // Test Code
+            return res.json(result);
+          })
+          .catch((err) => {
+            console.error(err.message);
+            res.status(500).send('Server Error');
+          });
+      }
     } else {
       // Get the id of case from URL by params
       //Get last 2 digits of year
