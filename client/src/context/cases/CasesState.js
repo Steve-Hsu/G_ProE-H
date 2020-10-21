@@ -38,8 +38,7 @@ const CasesState = (props) => {
   const initialState = {
     caseList: [],
     _id: null, //It will generated automatically by mongoDB
-    user: null,
-    company: null,
+    // user: null,
     cNo: null,
     caseType: null,
     style: null,
@@ -1306,8 +1305,8 @@ const CasesState = (props) => {
       value={{
         caseList: state.caseList,
         _id: state._id,
-        user: state.user,
-        company: state.company,
+        // user: state.user,
+        // company: state.company,
         cNo: state.cNo,
         caseType: state.caseType,
         style: state.style,

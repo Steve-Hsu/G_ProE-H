@@ -150,6 +150,8 @@ router.post(
   async (req, res) => {
 
     let user = await User.findById(req.user.id);
+    const userId = req.user.id;
+    const comId = req.user.company;
 
     //Check if multiple login, if yes, do nothing
     const token = req.header('x-auth-token');
@@ -503,6 +505,14 @@ router.post(
         .then(async () => {
           let updatedcNo = '';
           if (cNo) {
+
+            // Check if the user is the case creator, only the case creator can confirm the case
+            const existingCase = await Case.findOne({ cNo: cNo, company: comId }, { company: 0 });
+            const userOwnerId = existingCase.user;
+            const hasConfirmed = existingCase.caseConfirmDate;
+            console.log("the id of the user of the case", userOwnerId);
+            console.log("the id of the user", userId);
+            // Here don't compare the type of the 2 Ids so use '==' not '===' in the paranthesis of the If
             // If the cNo is true, it imply that the case is the existing one
             let caseTypeSymbol = cNo.slice(-1);
             switch (caseType) {
@@ -519,36 +529,69 @@ router.post(
             }
             updatedcNo = cNo.slice(0, -1) + caseTypeSymbol;
 
-            const caseFields = {
-              cNo: updatedcNo,
-              caseType: caseType,
-              style: trimedStyle,
-              client: trimedClient,
-              cWays,
-              sizes,
-              gQtys,
-              mtrls,
-              isImportedExcel,
-              lastUpdateBy: userName,
-              updateDate: Date.now(),
-              caseConfirmDate: caseConfirmDate,
-            };
             console.log('The Finall PromiseAll');
-            // if (!cases){}
-            //   return res.status(404).json({
-            //     msg: 'Case not found',
-            //   });
+            if (userId == userOwnerId) {
+              // If the user is the case creator, then update everything the user want.
+              const caseFields = {
+                cNo: updatedcNo,
+                caseType: caseType,
+                style: trimedStyle,
+                client: trimedClient,
+                cWays,
+                sizes,
+                gQtys,
+                mtrls,
+                isImportedExcel,
+                lastUpdateBy: userName,
+                updateDate: Date.now(),
+                caseConfirmDate: caseConfirmDate,
+              };
+              console.log('The case update by case creator')
+              const updatedCase = await Case.findOneAndUpdate(
+                // poDate must be null, it means the Case is not being made a PO, so it allows to be updated
+                { _id: caseId, poDate: null },
+                {
+                  $set: caseFields,
+                },
+                { new: true }
+              );
+              return updatedCase;
+            } else {
+              //If the user is not the case creator, check if the case is confirmed, if so lock it don't let the user update the case.
+              if (hasConfirmed) {
+                //If confirmed, don't update anything, just return the existingCase.
+                console.log('case not updated, due to case confirmed and locked by the case creator')
+                return existingCase;
+              } else {
+                //If not confirmed, let the user update anything but the caseConfirmedDate
+                const caseFields = {
+                  cNo: updatedcNo,
+                  caseType: caseType,
+                  style: trimedStyle,
+                  client: trimedClient,
+                  cWays,
+                  sizes,
+                  gQtys,
+                  mtrls,
+                  isImportedExcel,
+                  lastUpdateBy: userName,
+                  updateDate: Date.now(),
+                };
+                console.log('The case update by user')
+                const updatedCase = await Case.findOneAndUpdate(
+                  // poDate must be null, it means the Case is not being made a PO, so it allows to be updated
+                  { _id: caseId, poDate: null },
+                  {
+                    $set: caseFields,
+                  },
+                  { new: true }
+                );
+                return updatedCase;
+              }
 
-            const updatedCase = await Case.findOneAndUpdate(
-              // poDate must be null, it means the Case is not being made a PO, so it allows to be updated
-              { _id: caseId, poDate: null },
-              {
-                $set: caseFields,
-              },
-              { new: true }
-            );
-            return updatedCase;
+            }
           }
+
           // method .updateOne() will not return the case it self, so here make a one, named "updateCases" and return to the fronend client.
         })
         .then((result) => {

@@ -1,9 +1,10 @@
 import React, { Fragment, useContext } from 'react';
+import AuthUserContext from '../../context/authUser/authUserContext';
 import CasesContext from '../../context/cases/casesContext';
 import QuoContext from '../../context/quo/quoContext';
 import PurContext from '../../context/pur/purContext';
 import PopoverContext from '../../context/popover/popoverContext'
-import SearchBar from './SearchBar';
+// import SearchBar from './SearchBar';
 // import Papa from 'papaparse';
 import readXlsxFile from 'read-excel-file';
 import SqBtnLarge from '../elements/btns/SqBtnLarge';
@@ -13,10 +14,13 @@ import SizeSelector from '../40_quo/40_03_01_sizeSelector';
 import CWaySelector from '../40_quo/40_03_02_cWaySelector';
 
 const LeftBar = ({ currentPath }) => {
+  const authUserContext = useContext(AuthUserContext);
   const casesContext = useContext(CasesContext);
   const quoContext = useContext(QuoContext);
   const purContext = useContext(PurContext);
   const popoverContext = useContext(PopoverContext)
+  const { name } = authUserContext
+  const userName = name
   const {
     addCaseValue,
     mtrls,
@@ -33,7 +37,8 @@ const LeftBar = ({ currentPath }) => {
     toggleMtrlCard,
     showMtrlCard,
     caseConfirmDate,
-    toggleCaseConfirmDate
+    toggleCaseConfirmDate,
+    merchandiser,
   } = casesContext;
   const {
     isQuotating,
@@ -359,10 +364,17 @@ const LeftBar = ({ currentPath }) => {
           </div>
         ) : currentPage === 'case' &&
           osNo === null &&
+          caseConfirmDate === null &&
           showMtrlCard === false &&
           isEditingCase === true ? (
               normalSummitBtn()
-            ) : null}
+            ) : currentPage === 'case' &&
+              osNo === null &&
+              merchandiser === userName &&
+              showMtrlCard === false &&
+              isEditingCase === true ? (
+                normalSummitBtn()
+              ) : null}
         {/*Submit BTN srMtr Set */}
         {currentPage === 'mprice' ? normalSummitBtn() : null}
         {/*Submit BTN quotation Set */}
@@ -389,7 +401,7 @@ const LeftBar = ({ currentPath }) => {
             ) : (
                 <div>
                   {' '}
-                  {osNo ? null : (
+                  {osNo || caseConfirmDate ? null : (
                     <div>
                       {currentPage === 'case' ? (
                         isImportedExcel ? (
@@ -466,9 +478,10 @@ const LeftBar = ({ currentPath }) => {
                   {/* <div> */}
                   {cNo === null ? null : (
                     <div>
-                      <div className='mt-1'>
+                      {merchandiser === userName ? (<div className='mt-1'>
                         {confirmArea('Confirm the Case', 'Case is Confirmed', 'Not Confirmed', caseConfirmDate, toggleCaseConfirmDate)}
-                      </div>
+                      </div>) : null}
+
                       <input
                         type='submit'
                         // form='caseForm'

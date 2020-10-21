@@ -10,7 +10,7 @@ import SrMtrlContext from '../../context/srMtrl/srMtrlContext';
 import PopoverContext from '../../context/popover/popoverContext';
 import PurContext from '../../context/pur/purContext';
 
-const Navbar = ({ title, icon }) => {
+const Navbar = () => {
   const authComContext = useContext(AuthComContext);
   const authUserContext = useContext(AuthUserContext);
   const userContext = useContext(UserContext);
@@ -126,10 +126,10 @@ const Navbar = ({ title, icon }) => {
   );
 };
 
-Navbar.propTypes = {
-  title: PropTypes.string.isRequired,
-  icon: PropTypes.string,
-};
+// Navbar.propTypes = {
+//   title: PropTypes.string.isRequired,
+//   icon: PropTypes.string,
+// };
 
 // Navbar.defaultProps = {
 //   title: 'G-ProE',
