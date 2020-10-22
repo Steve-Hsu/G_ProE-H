@@ -12,7 +12,7 @@ export const MPrice = (props) => {
   const srMtrlContext = useContext(SrMtrlContext);
   const popoverContext = useContext(PopoverContext);
   const currentPath = props.location.pathname;
-  const { srMtrls, updateMPrices, updateMPricesQuotation } = srMtrlContext;
+  const { srMtrls, updateMPrices } = srMtrlContext;
   const { toggleLoading } = popoverContext;
 
   const onSubmitSrMtrl = async (e) => {

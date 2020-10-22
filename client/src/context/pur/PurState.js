@@ -17,7 +17,8 @@ import {
   UPDATE_SUPPLIERS,
   UPDATE_MOQPOQTY,
   UPDATE_HSCODE,
-  UPDATE_ERROR
+  UPDATE_ERROR,
+  UPDATE_EDITING_LIST,
   // UPDATE_CASEMTRL,
 } from '../types';
 
@@ -30,6 +31,7 @@ const PurState = (props) => {
     currentPo: null,
     currentPoPriceList: [],
     osError: null,
+    editingLeadTime: [],
   };
   const [state, dispatch] = useReducer(PurReducer, initialState);
   const { caseList, openPage, currentOrderSummary, currentPo } = state;
@@ -136,6 +138,7 @@ const PurState = (props) => {
         dispatch({ type: PO_CURRENT, payload: subject });
         break;
       case 'oSMtrlList':
+      case 'leadTimePage':
         dispatch({ type: PURPAGE_SWITCH, payload: value });
         break;
       default:
@@ -452,6 +455,21 @@ const PurState = (props) => {
     dispatch({ type: UPDATE_ERROR, payload: null });
   };
 
+  const openMtrlLeadTime = (mtrlId) => {
+    let list = state.editingLeadTime;
+    const check = state.editingLeadTime.includes(mtrlId);
+    if (check) {
+      list = state.editingLeadTime.filter((i) => {
+        return i !== mtrlId;
+      });
+      dispatch({ type: UPDATE_EDITING_LIST, payload: list });
+    } else {
+      // console.log('The push is triggered'); // test Code
+      list.push(mtrlId);
+      dispatch({ type: UPDATE_EDITING_LIST, payload: list });
+    }
+  };
+
 
   return (
     <PurContext.Provider
@@ -464,6 +482,7 @@ const PurState = (props) => {
         currentPo: state.currentPo,
         currentPoPriceList: state.currentPoPriceList,
         osError: state.osError,
+        editingLeadTime: state.editingLeadTime,
         searchCaseList,
         selectCase,
         createOrderSummary,
@@ -481,6 +500,7 @@ const PurState = (props) => {
         enterHsCode,
         uploadHsCode,
         clearOsError,
+        openMtrlLeadTime,
       }}
     >
       {props.children}

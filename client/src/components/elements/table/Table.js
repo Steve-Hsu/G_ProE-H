@@ -114,13 +114,38 @@ const Table = ({
           <div style={cellStyle('item')}>ITEM</div>
         ) : null}
         {displayTitles.map((obj) => {
-          if (obj[Object.keys(obj)[0]]) {
+
+          const theTitle = Object.keys(obj)[0]
+          if (theTitle) {
+            let showTitle = ''
+            switch (theTitle) {
+              case 'cNo':
+                showTitle = 'Case No.'
+                break;
+              case 'caseType':
+                showTitle = 'Type.'
+                break;
+              case 'quoNo':
+                showTitle = 'Quotation'
+                break;
+              case 'osNo':
+                showTitle = 'OS No.'
+                break;
+              case 'mColor':
+                showTitle = 'Color'
+                break;
+              case 'mSizeSPEC':
+                showTitle = 'SPEC'
+                break;
+              default:
+                showTitle = theTitle
+            }
             return (
               <div
                 key={`headerCellOf${Object.keys(obj)[0]}`}
                 style={cellStyle(Object.keys(obj)[0], trueInDisplayTitles)}
               >
-                {Object.keys(obj)[0].toUpperCase()}
+                {showTitle.toUpperCase()}
               </div>
             );
           } else {

@@ -24,14 +24,13 @@ export const ItemSelector = ({ props, purpose, currentPath }) => {
     downloadCase,
     addCaseValue,
     caseList,
-    defaultCase,
     isBoardMode,
     caseError,
   } = caseContext;
   const { srMtrls, getSrMtrls, openSrMtrl, editingList, srMtrlError } = srMtrlContext;
   const { switchQuoFormSelector, quotation, switchQuoForm } = quoContext;
-  const { selectCase, selectedCases, switchPage } = purContext;
-  const {isLoading, toggleLoading } = popoverContext;
+  const { selectCase, selectedCases, switchPage, currentOrderSummary, openMtrlLeadTime, editingLeadTime, } = purContext;
+  const { isLoading, toggleLoading } = popoverContext;
   useEffect(() => {
     switch (purpose) {
       case 'srMtrlSelector':
@@ -114,16 +113,6 @@ export const ItemSelector = ({ props, purpose, currentPath }) => {
       goBack = () => {
         props.history.push('/api/case/director');
       };
-      // if (purpose === 'srMtrlSelector') {
-      //   goBack = () => {
-      //     props.history.push('/api/case/director');
-      //   };
-      // } else {
-      //   goBack = () => {
-      //     quoContext.switchPage();
-      //   };
-      // }
-
       break;
     case 'quoFormSelector':
       subjects = quotation.quoForms;
@@ -143,18 +132,36 @@ export const ItemSelector = ({ props, purpose, currentPath }) => {
         // defaultCase();
       };
       break;
+    case 'leadTimePage':
+      subjects = currentOrderSummary.caseMtrls;
+      attributes = [openMtrlLeadTime, editingLeadTime];
+      displayTitles = [
+        {
+          supplier: true,
+        },
+        { ref_no: true },
+        { mColor: true },
+        { mSizeSPEC: true },
+        { Qty: true },
+      ];
+      goBack = (e) => {
+        e.preventDefault();
+        switchPage('orderSummary');
+      };
+
+      break;
     default:
   }
 
   return (
     <Fragment>
-    {caseError !== null || srMtrlError !== null || isLoading === true ? (
+      {caseError !== null || srMtrlError !== null || isLoading === true ? (
         <DeletePopover key={`casepopover`} />
       ) : null}
       {/* <div style={{ paddingTop: '50px' }} className='p-1 container'> */}
       <div
         className=' container container-with-navbar'
-        // style={{ paddingTop: '60px' }}
+      // style={{ paddingTop: '60px' }}
       >
         <div className='grid-6'>
           <GoBackBtn onClick={goBack} />
@@ -175,14 +182,14 @@ export const ItemSelector = ({ props, purpose, currentPath }) => {
             currentPath={currentPath}
           />
         ) : (
-          <Table
-            purpose={purpose}
-            subjects={subjects}
-            displayTitles={displayTitles}
-            toggleItemAttributes={attributes}
-            currentPath={currentPath}
-          />
-        )}
+            <Table
+              purpose={purpose}
+              subjects={subjects}
+              displayTitles={displayTitles}
+              toggleItemAttributes={attributes}
+              currentPath={currentPath}
+            />
+          )}
         {/* </div> */}
       </div>
     </Fragment>

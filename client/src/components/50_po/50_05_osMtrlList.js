@@ -6,7 +6,7 @@ import OsMtrlListItem from './50_05_01_osMtrlListItem';
 
 const OsMtrlList = () => {
   const purContext = useContext(PurContext);
-  const { osNo, currentOrderSummary, uploadHsCode } = purContext;
+  const { currentOrderSummary, uploadHsCode } = purContext;
   const { caseMtrls, suppliers } = currentOrderSummary;
 
   const submit = (e) => {
@@ -23,7 +23,7 @@ const OsMtrlList = () => {
   });
   return (
     <div>
-      <NoAndDateHeader No={osNo} />
+      <NoAndDateHeader No={currentOrderSummary.osNo} />
       <FormTitle title='Order Summary' />
       <form id='updateOrderSummary' onSubmit={submit}></form>
       <section id='purchaseListArea' className='mb-2'>
@@ -66,10 +66,9 @@ const OsMtrlList = () => {
         })}
         <div className='mt-05 h-scatter-content'>
           <div></div>
-          <div>{`Total : ${
-            caseMtrls.filter((i) => confirmedSuppliers.includes(i.supplier))
+          <div>{`Total : ${caseMtrls.filter((i) => confirmedSuppliers.includes(i.supplier))
               .length
-          } materials`}</div>
+            } materials`}</div>
         </div>
       </section>
     </div>

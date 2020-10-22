@@ -12,6 +12,7 @@ import {
   UPDATE_MOQPOQTY,
   UPDATE_HSCODE,
   UPDATE_ERROR,
+  UPDATE_EDITING_LIST,
   // UPDATE_CASEMTRL,
 } from '../types';
 
@@ -36,6 +37,7 @@ export default (state, action) => {
         currentOrderSummary: null,
         currentPo: null,
         currentPoPriceList: [],
+        editingLeadTime: [],
       };
     case PURPAGE_SWITCH:
       return {
@@ -120,6 +122,11 @@ export default (state, action) => {
     //       caseMtrls: action.payload,
     //     },
     //   };
+    case UPDATE_EDITING_LIST:
+      return {
+        ...state,
+        editingLeadTime: action.payload,
+      }
     default:
   }
 };

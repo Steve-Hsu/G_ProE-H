@@ -59,6 +59,9 @@ const TableItem = ({
         toggleItemAttributes[1]('orderSummary');
 
         break;
+      case 'leadTimePage':
+        toggleItemAttributes[0](subject.id);
+        break;
       default:
     }
   };
@@ -88,62 +91,62 @@ const TableItem = ({
         <Mtrl key={subject.id} mtrl={subject} />
       ) : (purpose === 'srMtrlSelector' && checkSrMtrlId(id)) ||
         (purpose === 'quoSrMtrlSelector' && checkSrMtrlId(id)) ? (
-        <SrMtrl srMtrl={subject} currentPath={currentPath} />
-      ) : purpose === 'purCaseSelector' && subject.poDate !== null ? null : (
-        <div
-          className='flexBox bd-light bd-no-t bg-cp-elem hover-cp-2'
-          onClick={onClick}
-          style={selectedBackGround(id)}
-          // style={{ background: 'red' }}
-        >
-          <div style={cellStyle('no')}>{idx + 1}</div>
-          {purpose === '1_CaseForm' ? (
-            <div style={cellStyle('item')}>{subject.item}</div>
-          ) : null}
-          {displayTitles.map((title) => {
-            if (title[Object.keys(title)[0]]) {
-              //   console.log('the length of dispalytitles', trueInDisplayTitles); // Test Code
-              if (Object.keys(title)[0] == 'descriptions') {
-                return (
-                  <div
-                    style={cellStyle(
-                      Object.keys(title)[0],
-                      trueInDisplayTitles
-                    )}
-                    key={`${Object.keys(title)[0]}${subject.id}`}
-                  >
-                    {subject[Object.keys(title)[0]].map((des, idx) => (
+            <SrMtrl srMtrl={subject} currentPath={currentPath} />
+          ) : purpose === 'purCaseSelector' && subject.poDate !== null ? null : (
+            <div
+              className='flexBox bd-light bd-no-t bg-cp-elem hover-cp-2'
+              onClick={onClick}
+              style={selectedBackGround(id)}
+            // style={{ background: 'red' }}
+            >
+              <div style={cellStyle('no')} className='fs-small'>{idx + 1}</div>
+              {purpose === '1_CaseForm' ? (
+                <div style={cellStyle('item')}>{subject.item}</div>
+              ) : null}
+              {displayTitles.map((title) => {
+                if (title[Object.keys(title)[0]]) {
+                  //   console.log('the length of dispalytitles', trueInDisplayTitles); // Test Code
+                  if (Object.keys(title)[0] == 'descriptions') {
+                    return (
                       <div
-                        key={`${des}OfNum${idx}Of${subject.id}`}
-                        className='mr-1'
-                        style={{
-                          whiteSpace: 'nowrap',
-                        }}
+                        style={cellStyle(
+                          Object.keys(title)[0],
+                          trueInDisplayTitles
+                        )}
+                        key={`${Object.keys(title)[0]}${subject.id}`}
                       >
-                        <div> {des}</div>
+                        {subject[Object.keys(title)[0]].map((des, idx) => (
+                          <div
+                            key={`${des}OfNum${idx}Of${subject.id}`}
+                            className='mr-1'
+                            style={{
+                              whiteSpace: 'nowrap',
+                            }}
+                          >
+                            <div> {des}</div>
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
-                );
-              } else {
-                return (
-                  <div
-                    style={cellStyle(
-                      Object.keys(title)[0],
-                      trueInDisplayTitles
-                    )}
-                    key={`${Object.keys(title)[0]}${subject.id}`}
-                  >
-                    {subject[Object.keys(title)[0]]}
-                  </div>
-                );
-              }
-            } else {
-              return null;
-            }
-          })}
-        </div>
-      )}
+                    );
+                  } else {
+                    return (
+                      <div
+                        style={cellStyle(
+                          Object.keys(title)[0],
+                          trueInDisplayTitles
+                        )}
+                        key={`${Object.keys(title)[0]}${subject.id}`}
+                      >
+                        {subject[Object.keys(title)[0]]}
+                      </div>
+                    );
+                  }
+                } else {
+                  return null;
+                }
+              })}
+            </div>
+          )}
     </Fragment>
   );
 };

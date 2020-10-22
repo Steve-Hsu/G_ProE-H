@@ -32,7 +32,7 @@ const Purchase = (props) => {
     props.history.push('/api/case/director');
   };
 
-  const onSubmit = async (e) => {
+  const onSubmit_1 = async (e) => {
     e.preventDefault();
     toggleLoading(true);
     console.log('order summary is triggered');
@@ -40,6 +40,10 @@ const Purchase = (props) => {
       toggleLoading(false);
     });
   };
+
+  const onSubmit_2 = () => {
+    console.log('yes here is hit')
+  }
 
   //Here use same function the "switchPage", but separate to 2 onClick func the "goOsSelector" and "goOrderSummary", if not do so, the render seems sometime not refering to the value soon enough, cause the func in the state will enter an null value
   const goOsSelector = (e) => {
@@ -61,7 +65,7 @@ const Purchase = (props) => {
       {openPage === 'caseSelector' ? (
         <div className='grid-1-4'>
           <LeftBar currentPath={currentPath} />
-          <form id='purchase' onSubmit={onSubmit}>
+          <form id='purchase' onSubmit={onSubmit_1}>
             <ItemSelector props={props} purpose='purCaseSelector' />
           </form>
         </div>
@@ -99,6 +103,14 @@ const Purchase = (props) => {
             <GoBackBtn onClick={goOrderSummanry} className='noPrint' />
             <OsMtrlList />
           </div>
+        </div>
+      ) : openPage === 'leadTimePage' ? (
+        <div className='grid-1-4'>
+          <LeftBar currentPath={currentPath} />
+          <form id='poLeadTime' onSubmit={onSubmit_2}>
+            <ItemSelector props={props} purpose='leadTimePage' />
+          </form>
+
         </div>
       ) : null}
     </Fragment>

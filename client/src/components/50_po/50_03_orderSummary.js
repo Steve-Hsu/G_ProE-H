@@ -15,10 +15,15 @@ const OrderSummary = () => {
   const { switchPage, currentOrderSummary } = purContext;
   const { _id, osNo, cNos, suppliers, osConfirmDate } = currentOrderSummary;
 
-  const onClick = (e) => {
+  const onClick_1 = (e) => {
     e.preventDefault();
     switchPage('oSMtrlList');
   };
+
+  const onClick_2 = (e) => {
+    e.preventDefault();
+    switchPage('leadTimePage')
+  }
 
   return (
     <Fragment>
@@ -49,7 +54,10 @@ const OrderSummary = () => {
         </div>
         <div className='h-scatter-content'>
           <div></div>
-          <SqBtnLarge onClick={onClick} label='List' />
+          <div className='flexBox'>
+            <SqBtnLarge onClick={onClick_1} label='List' className='mr-05' />
+            <SqBtnLarge onClick={onClick_2} label='Lead Time' />
+          </div>
         </div>
         {osConfirmDate !== null ? (
           <LockedBadge

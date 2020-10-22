@@ -84,36 +84,40 @@ router.get('/', authUser, async (req, res) => {
   }
 });
 
+//@ Test router
 // @route   GET api/case/user
 // @desc    Read the user's cases from database
 // @access  Private
-router.get('/user', authUser, async (req, res) => {
-  try {
-    const cases = await Case.find({ user: req.user.id }, { company: 0 }).sort({
-      date: -1,
-    });
-    console.log('yes')
-    res.json(cases);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
-  }
-});
+// router.get('/user', authUser, async (req, res) => {
+//   const comId = req.user.company
+//   try {
+//     const cases = await Case.find({ user: req.user.id, company: comId }, { company: 0 }).sort({
+//       date: -1,
+//     });
+//     console.log('yes')
+//     res.json(cases);
+//   } catch (err) {
+//     console.error(err.message);
+//     res.status(500).send('Server Error');
+//   }
+// });
 
+//@ Test router
 // @route   GET api/case/company
 // @desc    Read the company's cases from database
 // @access  Private
-router.get('/company', authUser, async (req, res) => {
-  try {
-    const cases = await Case.find({ company: req.user.company }).sort({
-      date: -1,
-    });
-    res.json(cases);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
-  }
-});
+// router.get('/company', authUser, async (req, res) => {
+//   const comId = req.user.company
+//   try {
+//     const cases = await Case.find({ company: comId }).sort({
+//       date: -1,
+//     });
+//     res.json(cases);
+//   } catch (err) {
+//     console.error(err.message);
+//     res.status(500).send('Server Error');
+//   }
+// });
 
 // @route   GET api/case/existingcase
 // @desc    Read specific case by _id of the case
