@@ -212,7 +212,7 @@ const CaseForm = ({ props }) => {
                   <div className='h-scatter-content'>
                     {' '}
                     <div>{cNo === null ? 'New Case' : cNo}</div>
-                    {cNo === null || osNo || caseConfirmDate ? null : (
+                    {cNo === null || osNo != null || caseConfirmDate != null ? null : (
                       <DeleteBtnSmall
                         name='case'
                         onClick={togglePopover}

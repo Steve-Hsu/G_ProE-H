@@ -13,6 +13,7 @@ import {
   UPDATE_HSCODE,
   UPDATE_ERROR,
   UPDATE_EDITING_LIST,
+  UPDATE_LEADTIME,
   // UPDATE_CASEMTRL,
 } from '../types';
 
@@ -126,6 +127,19 @@ export default (state, action) => {
       return {
         ...state,
         editingLeadTime: action.payload,
+      }
+    case UPDATE_LEADTIME:
+      return {
+        ...state,
+        currentOrderSummary: {
+          ...state.currentOrderSummary,
+          caseMtrls: state.currentOrderSummary.caseMtrls.map((i) => {
+            if (i.id === action.payload.id) {
+              i = action.payload
+            }
+            return i;
+          }),
+        },
       }
     default:
   }

@@ -297,7 +297,7 @@ const Mtrl = ({ mtrl }) => {
 
           {/* Row_1 - Delete Btn */}
           <div>
-            {cNo === null || casesContext != null || osNo != null ? null : (
+            {cNo === null || caseConfirmDate != null || osNo != null ? null : (
               <DeleteBtnSmall
                 value={mtrl.id}
                 name='mtrl'

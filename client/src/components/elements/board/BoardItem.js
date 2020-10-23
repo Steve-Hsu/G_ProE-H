@@ -1,5 +1,5 @@
 import React, { useContext, Fragment } from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import PopoverContext from '../../../context/popover/popoverContext';
 import SrMtrl from '../../30_srMtrl/30_01_srMtrl';
 
@@ -76,7 +76,7 @@ const BoardItem = ({
         toggleItemAttributes[1].includes(id)) ||
         (purpose === 'quoSrMtrlSelector' &&
           toggleItemAttributes[1].includes(id)) ? (
-            <SrMtrl srMtrl={subject} currentPath={currentPath} />
+            <SrMtrl srMtrl={subject} currentPath={currentPath} idx={idx} />
           ) : purpose === 'purchaseOrder' ? (
             <div
               className='boardChild round-card bg-cp-elem bd-light hover-cp-2 p-05'
@@ -160,7 +160,7 @@ const BoardItem = ({
 export default BoardItem;
 
 // PropTyeps
-BoardItem.propTypes = {
-  // displayTitles: PropTypes.array.isRequired,
-  // subject: PropTypes.object.isRequired,
-};
+// BoardItem.propTypes = {
+//   // displayTitles: PropTypes.array.isRequired,
+//   // subject: PropTypes.object.isRequired,
+// };

@@ -9,7 +9,7 @@ import PopoverContext from '../../context/popover/popoverContext';
 import TopLabelTiny from '../elements/Label/TopLabelTiny';
 // import ToggleSwitch from '../elements/btns/ToggleSwitch';
 
-const SrMtrl = ({ srMtrl, currentPath }) => {
+const SrMtrl = ({ srMtrl, currentPath, idx }) => {
   const srMtrlContext = useContext(SrMtrlContext);
   const popoverContext = useContext(PopoverContext);
   const { addMPrice, openSrMtrl } = srMtrlContext;
@@ -46,7 +46,10 @@ const SrMtrl = ({ srMtrl, currentPath }) => {
       {popover === true || isLoading === true ? (
         <DeletePopover key={'srMtrlPopover'} />
       ) : null}
-      <GoBackBtnSpinSmall onClick={goBack} />
+      <div>
+        <TopLabelTiny label={idx + 1} />
+        <GoBackBtnSpinSmall onClick={goBack} />
+      </div>
       <div className='ml-1 w-90' style={{ flex: '1 1 auto' }}>
         <div className='grid-2'>
           <div>

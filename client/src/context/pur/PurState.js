@@ -19,6 +19,7 @@ import {
   UPDATE_HSCODE,
   UPDATE_ERROR,
   UPDATE_EDITING_LIST,
+  UPDATE_LEADTIME,
   // UPDATE_CASEMTRL,
 } from '../types';
 
@@ -39,8 +40,7 @@ const PurState = (props) => {
   const generateId = () => {
     return (
       //generate 22 digits string with number or character.
-      Math.random().toString(36).substring(2, 15) +
-      Math.random().toString(36).substring(2, 15)
+      Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
     );
   };
 
@@ -470,6 +470,105 @@ const PurState = (props) => {
     }
   };
 
+  const addLeadTime = (caseMtrlId) => {
+    let caseMtrl = currentOrderSummary.caseMtrls.find(({ id }) => id === caseMtrlId);
+    if (caseMtrl) {
+      const totalMtrlQty = caseMtrl.purchaseQtySumUp + caseMtrl.purchaseLossQtySumUp + caseMtrl.purchaseMoqQty;
+      let item = 'undefined';
+      let now = new Date();
+      let predictLeadTime = now.getTime() + 15 * 24 * 60 * 60 * 1000;
+      const PoConfirmed = caseMtrl.price ? true : false;
+      if (PoConfirmed) {
+        if (caseMtrl.item) {
+          item = caseMtrl.item.toLowerCase();
+          switch (item) {
+            case 'fabric':
+              predictLeadTime = now.getTime() + 30 * 24 * 60 * 60 * 1000;
+              break;
+            default:
+              predictLeadTime = now.getTime() + 15 * 24 * 60 * 60 * 1000;
+          }
+        }
+        let date = predictLeadTime
+        let qty = Number(totalMtrlQty)
+        if (caseMtrl.leadTimes) {
+          //If leadTimes existing
+          caseMtrl.leadTimes.map((LTime) => {
+            qty = qty - LTime.qty
+            return null
+          })
+          caseMtrl.leadTimes.push({ id: generateId(), date: date, qty: qty })
+        } else {
+          //If leadTime not existing
+          const leadTimes = [{ id: generateId(), date: date, qty: qty }]
+          caseMtrl.leadTimes = leadTimes
+        }
+
+        dispatch({ type: UPDATE_LEADTIME, payload: caseMtrl })
+      } else {
+        console.log('Po not confirmed');
+      }
+    } else {
+      console.log('Not this caseMtrl');
+    }
+  }
+
+  const updateLeadTime = (e, caseMtrlId) => {
+    let caseMtrl = currentOrderSummary.caseMtrls.find(({ id }) => id === caseMtrlId);
+    if (caseMtrl) {
+      const value = e.target.value
+      const updateAttribute = e.target.name
+      const leadTimeId = e.target.id
+      const totalMtrlQty = caseMtrl.purchaseQtySumUp + caseMtrl.purchaseLossQtySumUp + caseMtrl.purchaseMoqQty;
+
+      let leadTimeQty = 0
+      if (caseMtrl.leadTimes) {
+        caseMtrl.leadTimes.map((LTime) => {
+          if (LTime.id !== leadTimeId) {
+            leadTimeQty += LTime.qty
+          }
+          return LTime
+        })
+      }
+      console.log('LeadTimeQty', leadTimeQty)
+
+      const qtyEnterMargin = totalMtrlQty - leadTimeQty
+
+
+      caseMtrl = caseMtrl.leadTimes.map((LTime) => {
+        if (LTime.id === leadTimeId) {
+          LTime[updateAttribute] =
+            updateAttribute == 'qty' ?
+              Number(value) > qtyEnterMargin ?
+                Number(qtyEnterMargin) :
+                Number(value) :
+              value;
+        }
+        return LTime
+      })
+      dispatch({ type: UPDATE_LEADTIME, payload: caseMtrl })
+    } else {
+      console.log('Not this caseMtrl');
+    }
+  }
+
+  const deleteLeadTime = (e) => {
+    const caseMtrlId = e.target.name;
+    const leadTimeId = e.target.value;
+
+    let caseMtrl = currentOrderSummary.caseMtrls.find(({ id }) => id === caseMtrlId);
+    console.log('here triggered', caseMtrl)
+    console.log('leadTimeId', leadTimeId)
+    if (caseMtrl) {
+      const newLeadTimes = caseMtrl.leadTimes.filter((LTime) => { return LTime.id !== leadTimeId });
+      caseMtrl.leadTimes = newLeadTimes
+      dispatch({ type: UPDATE_LEADTIME, payload: caseMtrl });
+
+    } else {
+      console.log('Not this caseMtrl');
+    }
+  }
+
 
   return (
     <PurContext.Provider
@@ -501,6 +600,9 @@ const PurState = (props) => {
         uploadHsCode,
         clearOsError,
         openMtrlLeadTime,
+        addLeadTime,
+        updateLeadTime,
+        deleteLeadTime,
       }}
     >
       {props.children}

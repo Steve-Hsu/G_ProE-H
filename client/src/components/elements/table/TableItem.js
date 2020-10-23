@@ -2,6 +2,7 @@ import React, { useContext, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import PopoverContext from '../../../context/popover/popoverContext';
 import SrMtrl from '../../30_srMtrl/30_01_srMtrl';
+import MtrlLeadTime from '../../50_po/50_06_mrtlLeadTime';
 
 import Mtrl from '../../20_cases/1_6_Mtrl';
 
@@ -89,9 +90,11 @@ const TableItem = ({
     <Fragment>
       {purpose === '1_CaseForm' && isEditingMtrl == true ? (
         <Mtrl key={subject.id} mtrl={subject} />
-      ) : (purpose === 'srMtrlSelector' && checkSrMtrlId(id)) ||
-        (purpose === 'quoSrMtrlSelector' && checkSrMtrlId(id)) ? (
-            <SrMtrl srMtrl={subject} currentPath={currentPath} />
+      ) : purpose === 'srMtrlSelector' && checkSrMtrlId(id) ||
+        purpose === 'quoSrMtrlSelector' && checkSrMtrlId(id) ? (
+            <SrMtrl srMtrl={subject} currentPath={currentPath} idx={idx} />
+          ) : purpose === 'leadTimePage' && checkSrMtrlId(id) ? (
+            <MtrlLeadTime caseMtrl={subject} idx={idx} />
           ) : purpose === 'purCaseSelector' && subject.poDate !== null ? null : (
             <div
               className='flexBox bd-light bd-no-t bg-cp-elem hover-cp-2'
