@@ -90,8 +90,8 @@ const MrtlLeadTime = ({ caseMtrl, idx }) => {
                   style={{ width: '10rem' }}
                 />
               ) : (
-                  <div className='sq-block bd-radius-s bg-cp-2-light-c center-content w-20vw'>
-                    All Qty is set leadTime.
+                  <div className='sq-block bd-radius-s bg-cp-1-light bd-light center-content' style={{ width: '13rem' }}>
+                    <i className="fas fa-check-circle fc-success mr-05"></i> All Qty is set leadTime.
                   </div>
                 )}
             </div>

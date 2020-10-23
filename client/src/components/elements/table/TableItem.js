@@ -109,40 +109,74 @@ const TableItem = ({
               {displayTitles.map((title) => {
                 if (title[Object.keys(title)[0]]) {
                   //   console.log('the length of dispalytitles', trueInDisplayTitles); // Test Code
-                  if (Object.keys(title)[0] == 'descriptions') {
-                    return (
-                      <div
-                        style={cellStyle(
+                  const theTitle = Object.keys(title)[0]
+                  switch (theTitle) {
+                    case 'descriptions':
+                      return (
+                        <div
+                          style={cellStyle(
+                            Object.keys(title)[0],
+                            trueInDisplayTitles
+                          )}
+                          key={`${Object.keys(title)[0]}${subject.id}`}
+                        >
+                          {subject[Object.keys(title)[0]].map((des, idx) => (
+                            <div
+                              key={`${des}OfNum${idx}Of${subject.id}`}
+                              className='mr-1'
+                              style={{
+                                whiteSpace: 'nowrap',
+                              }}
+                            >
+                              <div> {des}</div>
+                            </div>
+                          ))}
+                        </div>
+                      )
+                    case 'poConfirmed':
+                      const PoConfirmed = subject.price ? true : false;
+                      return (
+                        <div className='center-content' style={cellStyle(
                           Object.keys(title)[0],
                           trueInDisplayTitles
-                        )}
-                        key={`${Object.keys(title)[0]}${subject.id}`}
-                      >
-                        {subject[Object.keys(title)[0]].map((des, idx) => (
-                          <div
-                            key={`${des}OfNum${idx}Of${subject.id}`}
-                            className='mr-1'
-                            style={{
-                              whiteSpace: 'nowrap',
-                            }}
-                          >
-                            <div> {des}</div>
-                          </div>
-                        ))}
-                      </div>
-                    );
-                  } else {
-                    return (
-                      <div
-                        style={cellStyle(
+                        )}>
+                          {PoConfirmed ? (<i className="fas fa-check-circle fc-success"></i>) : <span className='fc-danger'>Not Confirmed</span>}
+
+                        </div>
+                      )
+                    case 'leadTimeSetUp':
+                      const LeadTimesSetUp = subject.leadTimes ? true : false;
+                      let resultDiv = (<span className='fc-danger'>Not finished</span>)
+                      if (LeadTimesSetUp) {
+                        const totalMtrlQty = subject.purchaseQtySumUp + subject.purchaseLossQtySumUp + subject.purchaseMoqQty;
+                        const leadTimeQty = subject.leadTimes.reduce((x, curr) => {
+                          return x += curr.qty
+                        }, 0)
+                        if (totalMtrlQty == leadTimeQty) {
+                          resultDiv = (<i className="fas fa-check-circle fc-success"></i>)
+                        }
+                      }
+                      return (
+                        <div className='center-content' style={cellStyle(
                           Object.keys(title)[0],
                           trueInDisplayTitles
-                        )}
-                        key={`${Object.keys(title)[0]}${subject.id}`}
-                      >
-                        {subject[Object.keys(title)[0]]}
-                      </div>
-                    );
+                        )}>
+                          {resultDiv}
+                        </div>
+                      )
+
+                    default:
+                      return (
+                        <div
+                          style={cellStyle(
+                            Object.keys(title)[0],
+                            trueInDisplayTitles
+                          )}
+                          key={`${Object.keys(title)[0]}${subject.id}`}
+                        >
+                          {subject[Object.keys(title)[0]]}
+                        </div>
+                      );
                   }
                 } else {
                   return null;

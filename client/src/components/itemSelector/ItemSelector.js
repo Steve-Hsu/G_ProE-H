@@ -142,7 +142,8 @@ export const ItemSelector = ({ props, purpose, currentPath }) => {
         { ref_no: true },
         { mColor: true },
         { mSizeSPEC: true },
-        { Qty: true },
+        { poConfirmed: true },
+        { leadTimeSetUp: true },
       ];
       goBack = (e) => {
         e.preventDefault();

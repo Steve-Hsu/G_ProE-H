@@ -116,7 +116,7 @@ const Table = ({
         {displayTitles.map((obj) => {
 
           const theTitle = Object.keys(obj)[0]
-          if (theTitle) {
+          if (obj[Object.keys(obj)[0]]) {
             let showTitle = ''
             switch (theTitle) {
               case 'cNo':
@@ -136,6 +136,12 @@ const Table = ({
                 break;
               case 'mSizeSPEC':
                 showTitle = 'SPEC'
+                break;
+              case 'poConfirmed':
+                showTitle = 'PO confirmed'
+                break;
+              case 'leadTimeSetUp':
+                showTitle = 'Leadtime Set up'
                 break;
               default:
                 showTitle = theTitle
