@@ -221,6 +221,10 @@ router.post('/', authUser, async (req, res) => {
                 });
               }
 
+              // Round it number to 2 decimal
+              const roundRequiredMQty = Math.round((cspt.requiredMQty + Number.EPSILON) * 100) / 100;
+              const roundLossQtySumUp = Math.round((purchaseLossQtySumUp + Number.EPSILON) * 100) / 100;
+
               // New caseMtrls
               caseMtrls.push({
                 id: uuidv4() + myModule.generateId(),
@@ -229,10 +233,13 @@ router.post('/', authUser, async (req, res) => {
                 ref_no: ref_no,
                 mColor: cspt.mColor,
                 mSizeSPEC: cspt.mSizeSPEC,
-                purchaseQtySumUp: cspt.requiredMQty,
-                purchaseLossQtySumUp: purchaseLossQtySumUp,
+                purchaseQtySumUp: roundRequiredMQty,
+                // purchaseQtySumUp: cspt.requiredMQty,
+                purchaseLossQtySumUp: roundLossQtySumUp,
+                // purchaseLossQtySumUp: purchaseLossQtySumUp,
                 purchaseMoqQty: 0,
                 hsCode: null,
+                item: itemNameOfTheMtrl,
               });
             } else {
               // existCaseMtrl.purchaseQtySumUp += cspt.requiredMQty;
@@ -244,6 +251,10 @@ router.post('/', authUser, async (req, res) => {
                   }
                   caseMtrl.purchaseQtySumUp += cspt.requiredMQty;
                   caseMtrl.purchaseLossQtySumUp += purchaseLossQtySumUp;
+                  // Round it number to 2 decimal
+                  // Round the number in the final, so the number rounded will be closer to original number.
+                  caseMtrl.purchaseQtySumUp = Math.round((caseMtrl.purchaseQtySumUp + Number.EPSILON) * 100) / 100;
+                  caseMtrl.purchaseLossQtySumUp = Math.round((caseMtrl.purchaseLossQtySumUp + Number.EPSILON) * 100) / 100;
                 }
               });
             }
@@ -658,10 +669,11 @@ router.post('/purchaseorder/:osId', authUser, async (req, res) => {
   }
 });
 
-// @route   POST api/purchase/updatehscode/:osId
+// @route   POST api/purchase/updatecasemtrl/:osId
 // @desc    Update the HS-CODE in the caseMtrls of the orderSummary
+// @desc    Update the leadtime in the caseMtrls of the orderSummary by upload entire caseMtrls 
 // @access  Private
-router.post('/updatehscode/:osId', authUser, async (req, res) => {
+router.post('/updatecasemtrl/:osId', authUser, async (req, res) => {
   console.log('Start upload Po'); // Test Code
   let user = await User.findById(req.user.id);
   //Check if multiple login, if yes, do nothing
@@ -700,3 +712,46 @@ router.post('/updatehscode/:osId', authUser, async (req, res) => {
   }
 });
 module.exports = router;
+
+// @route   POST api/purchase/updatecasemtrl/:osId
+// @desc    Update the leadtime in the caseMtrls of the orderSummary by upload entire caseMtrls 
+// @access  Private
+// router.post('/updateleadtime/:osId', authUser, async (req, res) => {
+//   console.log('Start upload Po leadTime'); // Test Code
+//   let user = await User.findById(req.user.id);
+//   //Check if multiple login, if yes, do nothing
+//   const token = req.header('x-auth-token');
+//   if (user.sKey !== token) {
+//     const msg = { err: 'multiple user login, please login again.' }
+//     console.log(msg)
+//     return res.json([msg])
+//   }
+//   //Check if the user have the right
+//   if (!user.po) {
+//     return res.status(400).json({ msg: 'Out of authority' });
+//   }
+//   const comId = req.user.company;
+//   const osId = req.params.osId;
+//   console.log('the OSId', osId);
+//   const { inputCaseMtrls } = req.body;
+//   console.log('the caseMtrls', inputCaseMtrls[0]);
+//   try {
+//     await OS.updateOne(
+//       {
+//         company: comId,
+//         _id: osId,
+//       },
+//       {
+//         $set: {
+//           caseMtrls: inputCaseMtrls,
+//         },
+//       }
+//     );
+//     const msg = 'The hs-code is uploaded.';
+//     console.log(msg);
+//     return res.json({ msg: msg });
+//   } catch (err) {
+//     console.log(err);
+//   }
+// });
+// module.exports = router;

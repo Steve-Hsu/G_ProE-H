@@ -87,16 +87,21 @@ const BoardItem = ({
                 No.
             {idx + 1}
               </div>
-              <div>{subject.supplier}</div>
+              <div>{subject.supplier ? subject.supplier : (
+                <span className='fc-danger'>
+                  <i className="fas fa-exclamation-triangle"></i>{' '}
+                   Error, No supplier designated. Cancel the Order Summary, and check the materials in the cases again.
+                </span>
+              )}</div>
               {subject.poConfirmDate ? (
                 <div
                   className='flexBox w-100'
                   style={{
                     position: 'absolute',
                     bottom: '0.5rem',
-                    marginLeft: '-1rem',
-                    paddingLeft: '1rem',
-                    paddingRight: '1rem',
+                    marginLeft: '-0.5rem',
+                    paddingLeft: '0.5rem',
+                    paddingRight: '0.5rem',
                   }}
                 >
                   <LockedBadge

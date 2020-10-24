@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 //Context
 import PurContext from '../../context/pur/purContext';
+import PopoverContext from '../../context/popover/popoverContext'
 
 //Component
 import GoBackBtnSpinSmall from '../elements/btns/GoBackBtnSpinSmall';
@@ -10,8 +11,10 @@ import MrtlLeadTimeItem from '../50_po/50_06_01_mtrlLeadTimeItem';
 
 const MrtlLeadTime = ({ caseMtrl, idx }) => {
   const purContext = useContext(PurContext)
-  const { openMtrlLeadTime, addLeadTime, updateLeadTime, deleteLeadTime } = purContext;
+  const popoverContext = useContext(PopoverContext)
+  const { openMtrlLeadTime, addLeadTime, updateLeadTime, deleteLeadTime, uploadCaseMtrl } = purContext;
   const { id, purchaseQtySumUp, purchaseLossQtySumUp, purchaseMoqQty, } = caseMtrl;
+  const { toggleLoading } = popoverContext;
 
   const totalMtrlQty = purchaseQtySumUp + purchaseLossQtySumUp + purchaseMoqQty;
   const PoConfirmed = caseMtrl.price ? true : false
@@ -29,7 +32,7 @@ const MrtlLeadTime = ({ caseMtrl, idx }) => {
     }
   }
 
-  const onClick_1 = (e) => {
+  const onClick = (e) => {
     e.preventDefault();
     addLeadTime(id);
   }
@@ -47,6 +50,16 @@ const MrtlLeadTime = ({ caseMtrl, idx }) => {
   }
 
 
+  const submit = async (e) => {
+    e.preventDefault();
+    toggleLoading(true);
+    console.log('order summary is triggered');
+    await uploadCaseMtrl().then(() => {
+      toggleLoading(false);
+    });
+  };
+
+
   return (
     <div
       className=' p-1 round-card bg-cp-elem bd-light flexBox'
@@ -58,7 +71,7 @@ const MrtlLeadTime = ({ caseMtrl, idx }) => {
         <GoBackBtnSpinSmall onClick={goBack} />
       </div>
       <div className='ml-1' style={{ flex: '1 1 auto' }}>
-
+        <form id='updateOsCaseMtrlLeadTime' onSubmit={submit}></form>
         <section className='flexBox' onClick={goBack}>
           <div style={{ flex: '1 1 auto' }}>
             <TopLabelTiny label='Supplier' />
@@ -85,7 +98,7 @@ const MrtlLeadTime = ({ caseMtrl, idx }) => {
               {totalMtrlQty > leadTimeTotalQty() ? (
                 <SqBtnLarge
                   name='mPriceBtn'
-                  onClick={onClick_1}
+                  onClick={onClick}
                   label={<i className="far fa-calendar-alt"> LeadTime ＋</i>}
                   style={{ width: '10rem' }}
                 />

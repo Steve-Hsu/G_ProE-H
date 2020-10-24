@@ -153,11 +153,16 @@ const LeftBar = ({ currentPath }) => {
             label: 'Create Order Summary',
             form: 'purchase',
           };
-        } else {
+        } else if (openPage === 'oSMtrlList') {
           obj = {
             label: 'Save HS-Code',
-            form: 'updateOrderSummary',
-          };
+            form: 'updateOsCaseMtrlHsCode',
+          }
+        } else {
+          obj = {
+            label: 'Save LeadTime',
+            form: 'updateOsCaseMtrlLeadTime',
+          }
         }
 
         break;
@@ -388,7 +393,8 @@ const LeftBar = ({ currentPath }) => {
         {/*Submit BTN Purchase Set */}
         {(currentPage === 'purchase' && openPage === 'caseSelector') ||
           (currentPage === 'purchase' && openPage === 'purchaseOrder') ||
-          (currentPage === 'purchase' && openPage === 'oSMtrlList')
+          (currentPage === 'purchase' && openPage === 'oSMtrlList') ||
+          (currentPath === '/api/purchase' && openPage === 'leadTimePage')
           ? normalSummitBtn()
           : null}
         {/* Other Btns */}

@@ -51,7 +51,7 @@ const SrMtrl = ({ srMtrl, currentPath, idx }) => {
         <GoBackBtnSpinSmall onClick={goBack} />
       </div>
       <div className='ml-1 w-90' style={{ flex: '1 1 auto' }}>
-        <div className='grid-2'>
+        <section className='grid-2' onClick={goBack} >
           <div>
             <TopLabelTiny label='Supplier' />
             <div className='fs-large' id={`supplier${srMtrl._id}`}>
@@ -64,7 +64,7 @@ const SrMtrl = ({ srMtrl, currentPath, idx }) => {
               {srMtrl.ref_no}
             </div>
           </div>
-        </div>
+        </section>
         <div className='flexBox mb-05'>
           <div>
             {currentPath === '/api/case/mprice' && mPricelengthLimit() ? (

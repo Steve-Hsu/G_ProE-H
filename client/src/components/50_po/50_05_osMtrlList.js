@@ -1,18 +1,29 @@
 import React, { useContext } from 'react';
 import PurContext from '../../context/pur/purContext';
+import PopoverContext from '../../context/popover/popoverContext'
+
 import NoAndDateHeader from '../../components/elements/formPart/NoAndDateHeader';
 import FormTitle from '../../components/elements/formPart/FormTitle';
 import OsMtrlListItem from './50_05_01_osMtrlListItem';
 
 const OsMtrlList = () => {
   const purContext = useContext(PurContext);
-  const { currentOrderSummary, uploadHsCode } = purContext;
+  const popoverContext = useContext(PopoverContext)
+  const { currentOrderSummary, uploadCaseMtrl } = purContext;
   const { caseMtrls, suppliers } = currentOrderSummary;
+  const { toggleLoading } = popoverContext;
 
-  const submit = (e) => {
+
+  const submit = async (e) => {
     e.preventDefault();
-    uploadHsCode();
+    toggleLoading(true);
+    console.log('order summary is triggered');
+    await uploadCaseMtrl().then(() => {
+      toggleLoading(false);
+    });
   };
+
+
 
   const confirmedSuppliers = suppliers.map((i) => {
     if (i.poConfirmDate) {
@@ -21,13 +32,18 @@ const OsMtrlList = () => {
       return null;
     }
   });
+
+  const currentMtrlsLength = caseMtrls.filter((osMtrl) => {
+    return confirmedSuppliers.includes(osMtrl.supplier);
+  }).length;
+
   return (
     <div>
       <NoAndDateHeader No={currentOrderSummary.osNo} />
       <FormTitle title='Order Summary' />
-      <form id='updateOrderSummary' onSubmit={submit}></form>
+      <form id='updateOsCaseMtrlHsCode' onSubmit={submit}></form>
       <section id='purchaseListArea' className='mb-2'>
-        <div className='fs-lead'>Materials</div>
+        <div className='fs-lead'>Materials <span className='ml-05 fs-small fc-gray-4'>{currentMtrlsLength} Items</span></div>
         <div className='grid-OsMtrl bd-light bg-cp-2-light m-0 p-0 fs-small'>
           {[
             'No',
@@ -67,7 +83,7 @@ const OsMtrlList = () => {
         <div className='mt-05 h-scatter-content'>
           <div></div>
           <div>{`Total : ${caseMtrls.filter((i) => confirmedSuppliers.includes(i.supplier))
-              .length
+            .length
             } materials`}</div>
         </div>
       </section>

@@ -139,7 +139,7 @@ const TableItem = ({
                         <div className='center-content' style={cellStyle(
                           Object.keys(title)[0],
                           trueInDisplayTitles
-                        )}>
+                        )} key={`${Object.keys(title)[0]}${subject.id}`}>
                           {PoConfirmed ? (<i className="fas fa-check-circle fc-success"></i>) : <span className='fc-danger'>Not Confirmed</span>}
 
                         </div>
@@ -160,7 +160,7 @@ const TableItem = ({
                         <div className='center-content' style={cellStyle(
                           Object.keys(title)[0],
                           trueInDisplayTitles
-                        )}>
+                        )} key={`${Object.keys(title)[0]}${subject.id}`}>
                           {resultDiv}
                         </div>
                       )

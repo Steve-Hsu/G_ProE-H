@@ -421,7 +421,7 @@ const PurState = (props) => {
     dispatch({ type: UPDATE_HSCODE, payload: payload });
   };
 
-  const uploadHsCode = async () => {
+  const uploadCaseMtrl = async () => {
     const config = {
       headers: {
         'Content-Type': 'application/json',
@@ -432,7 +432,7 @@ const PurState = (props) => {
     };
     try {
       const res = await axios.post(
-        `/api/purchase/updatehscode/${currentOrderSummary._id}`,
+        `/api/purchase/updatecasemtrl/${currentOrderSummary._id}`,
         body,
         config
       );
@@ -483,24 +483,29 @@ const PurState = (props) => {
           item = caseMtrl.item.toLowerCase();
           switch (item) {
             case 'fabric':
-              predictLeadTime = now.getTime() + 30 * 24 * 60 * 60 * 1000;
+              predictLeadTime = now.getTime() + 32 * 24 * 60 * 60 * 1000;
               break;
             default:
-              predictLeadTime = now.getTime() + 15 * 24 * 60 * 60 * 1000;
+              predictLeadTime = now.getTime() + 17 * 24 * 60 * 60 * 1000;
           }
         }
-        let date = predictLeadTime
-        let qty = Number(totalMtrlQty)
+        let date = new Date(predictLeadTime);
+        console.log("the date original format", date);
+        console.log("the ISO", date.toISOString().slice(0, 10));
+        const leadTimeDate = String(date.toISOString().slice(0, 10));
+        let qty = Math.round((totalMtrlQty + Number.EPSILON) * 100) / 100;
+        // let qty = Number(totalMtrlQty).toFixed(2)
         if (caseMtrl.leadTimes) {
           //If leadTimes existing
           caseMtrl.leadTimes.map((LTime) => {
             qty = qty - LTime.qty
             return null
           })
-          caseMtrl.leadTimes.push({ id: generateId(), date: date, qty: qty })
+          const roundQty = Math.round((qty + Number.EPSILON) * 100) / 100
+          caseMtrl.leadTimes.push({ id: generateId(), date: leadTimeDate, qty: roundQty })
         } else {
           //If leadTime not existing
-          const leadTimes = [{ id: generateId(), date: date, qty: qty }]
+          const leadTimes = [{ id: generateId(), date: leadTimeDate, qty: qty }]
           caseMtrl.leadTimes = leadTimes
         }
 
@@ -542,10 +547,11 @@ const PurState = (props) => {
               Number(value) > qtyEnterMargin ?
                 Number(qtyEnterMargin) :
                 Number(value) :
-              value;
+              value
         }
         return LTime
       })
+      console.log('the valueAsNumber', value)
       dispatch({ type: UPDATE_LEADTIME, payload: caseMtrl })
     } else {
       console.log('Not this caseMtrl');
@@ -597,7 +603,7 @@ const PurState = (props) => {
         getPOTotal,
         evenMoq,
         enterHsCode,
-        uploadHsCode,
+        uploadCaseMtrl,
         clearOsError,
         openMtrlLeadTime,
         addLeadTime,

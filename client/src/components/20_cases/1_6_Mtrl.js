@@ -197,7 +197,7 @@ const Mtrl = ({ mtrl }) => {
       return (
         <>
           <div className='fs-tiny fc-gray-4'>Description</div>
-          {mtrl.descriptions.length == 0 ? (
+          {mtrl.descriptions.length === 0 ? (
             <div key={`${subject}${0}${mtrl.id}`} className='mb-05'>
               <input
                 type='text'
@@ -363,7 +363,7 @@ const Mtrl = ({ mtrl }) => {
           <div></div>
           <div className='mr-1'>
             <div className='fs-tiny transition fc-gray-4'>
-              {mtrl.multipleColor == true ? 'Multiple' : 'Single'}
+              {mtrl.multipleColor === true ? 'Multiple' : 'Single'}
             </div>
             <button
               value={mtrl.id}
@@ -377,7 +377,7 @@ const Mtrl = ({ mtrl }) => {
           </div>
           <div className='mr-1'>
             <div className='fs-tiny  transition fc-gray-4'>
-              {mtrl.multipleSPEC == true ? 'Multiple' : 'Single'}
+              {mtrl.multipleSPEC === true ? 'Multiple' : 'Single'}
             </div>
             <button
               value={mtrl.id}
@@ -391,7 +391,7 @@ const Mtrl = ({ mtrl }) => {
           </div>
           <div className='mr-1'>
             <div className='fs-tiny  transition fc-gray-4'>
-              {mtrl.multipleCSPT == true ? 'Multiple' : 'Single'}
+              {mtrl.multipleCSPT === true ? 'Multiple' : 'Single'}
             </div>
             <button
               value={mtrl.id}
@@ -434,7 +434,7 @@ const Mtrl = ({ mtrl }) => {
               {caseConfirmDate || osNo ? null : toggleSwitchObj('multipleColor')}
             </div>
             <div style={attachedTable('cWay')} className='mt-1'>
-              {mtrl.multipleColor == true ? (
+              {mtrl.multipleColor === true ? (
                 mtrl.mtrlColors.map((mtrlColor) => (
                   <MtrlClr
                     key={mtrlColor.id}
@@ -462,7 +462,7 @@ const Mtrl = ({ mtrl }) => {
               {caseConfirmDate || osNo ? null : toggleSwitchObj('multipleSPEC')}
             </div>
             <div style={attachedTable('size')} className='mt-1'>
-              {mtrl.multipleSPEC == true ? (
+              {mtrl.multipleSPEC === true ? (
                 mtrl.sizeSPECs.map((sizeSPEC) => (
                   <MtrlSizeSPEC
                     key={sizeSPEC.id}
@@ -490,7 +490,7 @@ const Mtrl = ({ mtrl }) => {
               {caseConfirmDate || osNo ? null : toggleSwitchObj('multipleCSPT')}
             </div>
             <div style={attachedTable('cspt')} className='mt-1'>
-              {mtrl.multipleCSPT == true ? (
+              {mtrl.multipleCSPT === true ? (
                 sizes.map((size) => (
                   <MtrlCspt
                     key={`Fragment${size.id}${mtrl.id}`}

@@ -45,6 +45,10 @@ const PurchaseOrder = () => {
 
   let theNumber = 0;
 
+  const currentMtrlsLength = caseMtrls.filter((mtrl) => {
+    return mtrl.supplier === currentPo.supplier;
+  }).length;
+
   const onClick = (e) => {
     e.preventDefault();
     updatePOInform(e);
@@ -65,7 +69,7 @@ const PurchaseOrder = () => {
 
   return (
     <div className=''>
-      {isLoading === true ? <DeletePopover key='PurchaseOrderPopover' /> : null}
+      {/* {isLoading === true ? <DeletePopover key='PurchaseOrderPopover' /> : null} */}
       {/* {currentPoPriceList === [] ? null : (
         <div> */}
       <NoAndDateHeader No={osNo} />
@@ -101,8 +105,8 @@ const PurchaseOrder = () => {
                 />
               </div>
             ) : (
-              <div>{currentPo[i]}</div>
-            )}
+                <div>{currentPo[i]}</div>
+              )}
           </div>
           <div className='showWhenPrint w-100 fs-small'>
             <span className='fw-bold'>{i.toUpperCase()} : </span>
@@ -114,7 +118,7 @@ const PurchaseOrder = () => {
       <br />
       <form id='updatePurchaseOrder' onSubmit={submit}></form>
       <section id='purchaseListArea' className='mb-2'>
-        <div className='fs-lead'>Materials</div>
+        <div className='fs-lead'>Materials <span className='ml-05 fs-small fc-gray-4'>{currentMtrlsLength} Items</span></div>
         <div className='grid-Pur-Mtrl bd-light bg-cp-2-light m-0 p-0 fs-small'>
           {[
             'No',
