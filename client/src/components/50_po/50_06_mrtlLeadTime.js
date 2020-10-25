@@ -72,19 +72,23 @@ const MrtlLeadTime = ({ caseMtrl, idx }) => {
       </div>
       <div className='ml-1' style={{ flex: '1 1 auto' }}>
         <form id='updateOsCaseMtrlLeadTime' onSubmit={submit}></form>
-        <section className='flexBox' onClick={goBack}>
+        <section className='flexBox hover-pointer' onClick={goBack}>
           <div style={{ flex: '1 1 auto' }}>
             <TopLabelTiny label='Supplier' />
             <div className='fs-large' id={`supplier${id}`}>
-              {caseMtrl.supplier}
+              {caseMtrl.supplier ? caseMtrl.supplier : (<span className='fc-danger'>No suuplier</span>)}
             </div>
           </div>
+
           <div style={{ flex: '1 1 auto' }}>
             <TopLabelTiny label='Ref No.' />
             <div className='fs-large' id={`ref_no${id}`}>
-              {caseMtrl.ref_no}
+              {caseMtrl.ref_no ?
+                caseMtrl.ref_no :
+                (<span className='fc-fade-dark'>No Reference number</span>)}
             </div>
           </div>
+
           <div style={{ flex: '1 1 auto' }}>
             <TopLabelTiny label='Quantity' />
             <div className='fs-large' id={`poQty${id}`}>
@@ -92,26 +96,46 @@ const MrtlLeadTime = ({ caseMtrl, idx }) => {
             </div>
           </div>
         </section>
-        <section className='flexBox mb-05'>
-          {PoConfirmed ? (
-            <div>
-              {totalMtrlQty > leadTimeTotalQty() ? (
-                <SqBtnLarge
-                  name='mPriceBtn'
-                  onClick={onClick}
-                  label={<i className="far fa-calendar-alt"> LeadTime ＋</i>}
-                  style={{ width: '10rem' }}
-                />
-              ) : (
-                  <div className='sq-block bd-radius-s bg-cp-1-light bd-light center-content' style={{ width: '13rem' }}>
-                    <i className="fas fa-check-circle fc-success mr-05"></i> All Qty is set leadTime.
-                  </div>
-                )}
+
+        {caseMtrl.mColor && caseMtrl.mSizeSPEC ?
+          (<div className='mb-1'>
+            <TopLabelTiny label='Color / SPEC' />
+            <div className='fs-lead'>
+              {caseMtrl.mColor}{'  '}/{'  '}{caseMtrl.mSizeSPEC}
             </div>
-          ) : null}
+          </div>) :
+          caseMtrl.mColor ?
+            (<div className='mb-1'>
+              <TopLabelTiny label='Color' />
+              <div className='fs-lead'>
+                {caseMtrl.mColor}
+              </div>
+            </div>) :
+            caseMtrl.mSizeSPEC ?
+              (<div className='mb-1'>
+                <TopLabelTiny label='SPEC' />
+                <div className='fs-lead'>
+                  {caseMtrl.mSizeSPEC}
+                </div>
+              </div>) :
+              null}
 
-        </section>
-
+        {PoConfirmed ? (
+          <div>
+            {totalMtrlQty > leadTimeTotalQty() ? (
+              <SqBtnLarge
+                name='mPriceBtn'
+                onClick={onClick}
+                label={<i className="far fa-calendar-alt"> LeadTime ＋</i>}
+                style={{ width: '10rem' }}
+              />
+            ) : (
+                <div className='sq-block bd-radius-s bg-cp-1-light bd-light center-content' style={{ width: '13rem' }}>
+                  <i className="fas fa-check-circle fc-success mr-05"></i> All Qty is set leadTime.
+                </div>
+              )}
+          </div>
+        ) : null}
         {/* LeadTime container */}
         <section>
           {caseMtrl.leadTimes ? caseMtrl.leadTimes.map((LTime, idx) => (
@@ -132,8 +156,29 @@ const MrtlLeadTime = ({ caseMtrl, idx }) => {
       </div>
 
 
-    </div>
+    </div >
   )
 }
 
 export default MrtlLeadTime
+
+  // < section className = 'flexBox' onClick = { goBack } >
+  //         <div style={{ flex: '1 1 auto' }}>
+  //           {/* <TopLabelTiny label='Supplier' /> */}
+  //           <div className='fs-large' id={`space${id}`}>
+  //             {/* {caseMtrl.supplier} */}
+  //           </div>
+  //         </div>
+  //         <div style={{ flex: '1 1 auto' }}>
+  //           <TopLabelTiny label='Color' />
+  //           <div className='fs-large' id={`color${id}`}>
+  //             {caseMtrl.mColor}
+  //           </div>
+  //         </div>
+  //         <div style={{ flex: '1 1 auto' }}>
+  //           <TopLabelTiny label='SPEC' />
+  //           <div className='fs-large' id={`spec${id}`}>
+  //             {caseMtrl.mSizeSPEC}
+  //           </div>
+  //         </div>
+  //       </ >

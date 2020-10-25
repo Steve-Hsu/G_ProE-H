@@ -13,7 +13,7 @@ const OrderSummary = () => {
 
   const purContext = useContext(PurContext);
   const { switchPage, currentOrderSummary } = purContext;
-  const { _id, osNo, cNos, suppliers, osConfirmDate } = currentOrderSummary;
+  const { _id, osNo, cNos, suppliers, osConfirmDate, caseMtrls } = currentOrderSummary;
 
   const onClick_1 = (e) => {
     e.preventDefault();
@@ -70,10 +70,9 @@ const OrderSummary = () => {
       </div>
 
       <Board
-        subjects={suppliers}
-        // displayTitles={suppliers}
+        subjects={[suppliers, caseMtrls]}
         purpose='purchaseOrder'
-        label='Purchase Order'
+        label={<div>{suppliers.length} <span className='fs-normal fc-cp-1'>Purchase Order</span></div>}
         toggleItemAttributes={switchPage}
       />
     </Fragment>

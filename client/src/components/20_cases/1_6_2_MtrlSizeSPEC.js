@@ -28,7 +28,7 @@ const MtrlSizeSPEC = ({ sizeSPEC, mtrlId }) => {
         readOnly={caseConfirmDate || osNo ? true : false}
       />
       <label htmlFor={sizeSPEC.id} className='MPH-input-label'>
-        {multipleSPEC == true ? `For ${sizeLable}` : 'For all Size'}
+        {multipleSPEC == true ? `${sizeLable}` : 'For all Size'}
       </label>
     </div>
   );

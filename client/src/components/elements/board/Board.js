@@ -1,4 +1,5 @@
 import React from 'react';
+import purContext from '../../../context/pur/purContext';
 import BoardItem from './BoardItem';
 
 const Board = ({
@@ -16,10 +17,12 @@ const Board = ({
       break;
     case 'CaseSelector':
     case 'quoCaseSelector':
+    case 'purCaseSelector':
       target = 'client';
       break;
     case 'srMtrlSelector':
     case 'quoSrMtrlSelector':
+    case 'leadTimePage':
       target = 'supplier';
       break;
     case 'purchaseOrder':
@@ -31,6 +34,7 @@ const Board = ({
 
   // Big swither
   if (target !== 'noTargetBoard') {
+    // @Standard Board
     const categories = (switcher) => {
       const valueOfCategories = subjects.map((subject) => {
         let str = '';
@@ -94,6 +98,17 @@ const Board = ({
         case 'unique':
           // console.log('the uniques', uniques); // Test Code
           return uniques;
+        case 'noPoCase':
+          const lengthOfnoPoCase = uniques.map((uni) => {
+            if (uni) {
+              let re = new RegExp(`\\b${uni}\\b`, 'i');
+              return subjects.filter((subject) => re.test(subject[target]) && subject.poDate === null)
+                .length;
+            } else {
+              return 0;
+            }
+          });
+          return lengthOfnoPoCase
         default:
       }
     };
@@ -106,25 +121,31 @@ const Board = ({
           } else {
             return (
               <div key={`boardOf${cate}`} className='my-05 bg-cp-bg round-area'>
-                <div className='grid-4 p-1'>
-                  <div className='fc-cp-2'>{cate.toUpperCase()}</div>
-                  <div className='fc-cp-1'>
-                    The number of this category is{' '}
-                    {categories('lengthOfItems')[idx]}
+                <div className='flexBox p-1'>
+                  <div className='fc-cp-2 fs-lead mr-1'>{cate.toUpperCase()}</div>
+                  <div className='fc-cp-1 center-content'>
+                    {purpose === 'purCaseSelector' ? (
+                      <span>
+                        {categories('noPoCase')[idx]}{' '}Items
+                      </span>
+                    ) :
+                      (<span>
+                        {categories('lengthOfItems')[idx]}{' '}Items
+                      </span>)}
                   </div>
                 </div>
                 <div className='center-content'>
                   <div className='boardParent' key={`flexBoxOf${cate}`}>
                     {subjects.map((subject, subject_idx) => {
                       var re = new RegExp(`\\b${subject[target]}\\b`, 'i');
+
                       switch (subject[target]) {
                         case undefined:
                           if (cate === 'empty') {
                             return (
                               <BoardItem
-                                key={`empty${
-                                  subject.id ? subject.id : subject._id
-                                }`}
+                                key={`empty${subject.id ? subject.id : subject._id
+                                  }`}
                                 id={subject.id ? subject.id : subject._id}
                                 purpose={purpose}
                                 displayTitles={displayTitles}
@@ -142,9 +163,8 @@ const Board = ({
                           if (cate === 'undefined') {
                             return (
                               <BoardItem
-                                key={`empty${
-                                  subject.id ? subject.id : subject._id
-                                }`}
+                                key={`empty${subject.id ? subject.id : subject._id
+                                  }`}
                                 id={subject.id ? subject.id : subject._id}
                                 purpose={purpose}
                                 displayTitles={displayTitles}
@@ -167,26 +187,31 @@ const Board = ({
                             // );
                             // console.log('the re', re);
                             // console.log('The cate', cate);
-                            return (
-                              <BoardItem
-                                key={`empty${
-                                  subject.id ? subject.id : subject._id
-                                }`}
-                                id={subject.id ? subject.id : subject._id}
-                                purpose={purpose}
-                                displayTitles={displayTitles}
-                                // target={target}
-                                // subjects={subjects}
-                                subject={subject}
-                                toggleItemAttributes={toggleItemAttributes}
-                                idx={subject_idx}
-                                currentPath={currentPath}
-                              />
-                            );
+                            if (purpose === 'purCaseSelector' && subject.poDate !== null) {
+                              return null
+                            } else {
+                              return (
+                                <BoardItem
+                                  key={`empty${subject.id ? subject.id : subject._id
+                                    }`}
+                                  id={subject.id ? subject.id : subject._id}
+                                  purpose={purpose}
+                                  displayTitles={displayTitles}
+                                  // target={target}
+                                  // subjects={subjects}
+                                  subject={subject}
+                                  toggleItemAttributes={toggleItemAttributes}
+                                  idx={subject_idx}
+                                  currentPath={currentPath}
+                                />
+                              );
+                            }
                           } else {
                             return null;
                           }
+
                       }
+
                     })}
                   </div>
                 </div>
@@ -197,25 +222,32 @@ const Board = ({
       </div>
     );
   } else {
+    // @No target board
+    let loopItems = subjects
+    if (purpose = 'purchaseOrder') {
+      loopItems = subjects[0]
+    }
     return (
       <div>
         <div className='my-05 bg-cp-bg round-area'>
-          <div className='grid-4 p-1'>
-            <div className='fc-cp-2'>{label}</div>
-            <div className='fc-cp-1'>
-              The number of {label} is {subjects.length}
+          <div className='flexBox fc-cp-2 fs-lead p-1'>
+            <div className='mr-2'>{label}</div>
+            <div>
+              {subjects[1].length}
+              <span className='fs-normal fc-cp-1'>{purpose === 'purchaseOrder' ? ' materials' : ' Items'}</span>
             </div>
           </div>
           <div className='center-content'>
             <div className='boardParent' key={`flexBoxOf${purpose}`}>
-              {subjects.map((subject, subject_idx) => {
+              {loopItems.map((subject, subject_idx) => {
                 return (
                   <BoardItem
                     key={`${subject.id || subject._id}${subject_idx}`}
                     id={`${subject.id || subject._id}${subject_idx}`}
                     purpose={purpose}
-                    displayTitles={[]}
-                    // subjects={subjects}
+                    displayTitles={purpose === 'purchaseOrder' ?
+                      subjects[1].filter((s) => s.supplier === subject.supplier).length
+                      : []}
                     subject={subject}
                     toggleItemAttributes={toggleItemAttributes}
                     idx={subject_idx}

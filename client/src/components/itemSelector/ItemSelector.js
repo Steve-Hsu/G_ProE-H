@@ -65,6 +65,7 @@ export const ItemSelector = ({ props, purpose, currentPath }) => {
       subjects = caseList;
       displayTitles = [
         { cNo: true },
+        { style: true },
         { caseType: true },
         { client: true },
         { merchandiser: true },

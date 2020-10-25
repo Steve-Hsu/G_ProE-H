@@ -497,13 +497,16 @@ const PurState = (props) => {
         // let qty = Number(totalMtrlQty).toFixed(2)
         if (caseMtrl.leadTimes) {
           //If leadTimes existing
-          caseMtrl.leadTimes.map((LTime) => {
-            qty = qty - LTime.qty
-            return null
-          })
-          const roundQty = Math.round((qty + Number.EPSILON) * 100) / 100
-          // setUpQty is for garment to set up to see which style will be fulfilled it materials in advance.
-          caseMtrl.leadTimes.push({ id: generateId(), date: leadTimeDate, qty: roundQty, setUpQty: roundQty })
+          if (caseMtrl.leadTimes.length < 31) {
+            //Limit the number of items in leadTimes under 31 to prevent too mush items crashing the app.
+            caseMtrl.leadTimes.map((LTime) => {
+              qty = qty - LTime.qty
+              return null
+            })
+            const roundQty = Math.round((qty + Number.EPSILON) * 100) / 100
+            // setUpQty is for garment to set up to see which style will be fulfilled it materials in advance.
+            caseMtrl.leadTimes.push({ id: generateId(), date: leadTimeDate, qty: roundQty, setUpQty: roundQty })
+          }
         } else {
           //If leadTime not existing
           const leadTimes = [{ id: generateId(), date: leadTimeDate, qty: qty, setUpQty: qty }]

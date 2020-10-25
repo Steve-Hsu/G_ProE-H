@@ -5,6 +5,7 @@ import SrMtrl from '../../30_srMtrl/30_01_srMtrl';
 
 import Mtrl from '../../20_cases/1_6_Mtrl';
 import LockedBadge from '../badge/LockedBadge';
+import MtrlLeadTime from '../../50_po/50_06_mrtlLeadTime';
 
 
 const BoardItem = ({
@@ -25,6 +26,7 @@ const BoardItem = ({
 
   const onClick = (e) => {
     // console.log('Hit onClick'); // test Codes
+
     switch (purpose) {
       case 'CaseSelector':
         e.target.name = 'isEditingCase';
@@ -48,7 +50,9 @@ const BoardItem = ({
       case 'srMtrlSelector':
       case 'quoSrMtrlSelector':
       case 'purCaseSelector':
-        toggleItemAttributes[0](subject._id);
+      case 'leadTimePage':
+        const theId = subject._id || subject.id;
+        toggleItemAttributes[0](theId);
         break;
       case 'purchaseOrder':
         toggleItemAttributes('purchaseOrder', subject);
@@ -77,22 +81,36 @@ const BoardItem = ({
         (purpose === 'quoSrMtrlSelector' &&
           toggleItemAttributes[1].includes(id)) ? (
             <SrMtrl srMtrl={subject} currentPath={currentPath} idx={idx} />
+          ) : purpose === 'leadTimePage' && toggleItemAttributes[1].includes(id) ? (
+            <MtrlLeadTime caseMtrl={subject} idx={idx} />
           ) : purpose === 'purchaseOrder' ? (
+            //BoardItem for purchaseOrder, the orderSummary
             <div
               className='boardChild round-card bg-cp-elem bd-light hover-cp-2 p-05'
               style={{ position: 'relative' }}
               onClick={onClick}
             >
-              <div className='fs-small fc-cp-2-c'>
-                No.
-            {idx + 1}
+              <div className='fs-small fc-fade-dark'>
+                No.{idx + 1}
               </div>
-              <div>{subject.supplier ? subject.supplier : (
-                <span className='fc-danger'>
-                  <i className="fas fa-exclamation-triangle"></i>{' '}
+              <div>
+                {subject.supplier ? (
+                  <div>
+                    <div className='fs-lead fw-bold'>
+                      {subject.supplier}
+                    </div>
+                    <div className='fs-small'>
+                      {displayTitles}{' '}materials
+                    </div>
+                  </div>
+
+                ) : (
+                    <span className='fc-danger'>
+                      <i className="fas fa-exclamation-triangle"></i>{' '}
                    Error, No supplier designated. Cancel the Order Summary, and check the materials in the cases again.
-                </span>
-              )}</div>
+                    </span>
+                  )}
+              </div>
               {subject.poConfirmDate ? (
                 <div
                   className='flexBox w-100'
@@ -118,46 +136,69 @@ const BoardItem = ({
               ) : null}
             </div>
           ) : (
-              <div
-                className='boardChild round-card bg-cp-elem bd-light hover-cp-2 p-05'
-                style={selectedBackGround(id)}
-                onClick={onClick}
-              >
-                <div className='fs-small fc-cp-2-c'>
-                  No.
+                //Standard boardItems
+                <div
+                  className='boardChild round-card bg-cp-elem bd-light hover-cp-2 p-05'
+                  style={selectedBackGround(id)}
+                  onClick={onClick}
+                >
+                  <div className='fs-small fc-gray-5'>
+                    No.
                   {idx + 1}
+                  </div>
+                  {displayTitles.map((title) => {
+                    // console.log(title) // test Code
+                    const keyOftitle = Object.keys(title)[0];
+                    let className = 'fs-tiny'
+                    //Switch for class, or the style and value of the divs
+                    let returnedDiv = subject[keyOftitle];
+                    switch (keyOftitle) {
+                      case 'cNo':
+                        className = 'fw-bold fs-normal'
+                        break;
+                      case 'style':
+                        className = 'fw-bold fs-tiny fc-cp-2-c'
+                        break;
+                      case 'supplier':
+                        className = 'fw-bold fs-lead'
+                        break;
+                      case 'ref_no':
+                        className = 'fs-normal'
+                        break;
+                      case 'position':
+                        className = 'mb-05 fs-tiny'
+                        break;
+                      case 'descriptions':
+                        className = 'mb-05 fs-tiny'
+                        returnedDiv = subject[keyOftitle].map((d) => `${d} `);
+                        break;
+                      case 'poConfirmed':
+                        const PoConfirmed = subject.price ? true : false;
+                        returnedDiv = PoConfirmed ?
+                          (<i className="fas fa-check-circle fc-success"> PO Confirmed</i>) :
+                          <i className="fas fa-times-circle fc-danger"> PO Not Confirmed</i>
+                        break;
+                      case 'leadTimeSetUp':
+                        const LeadTimesSetUp = subject.leadTimes ? true : false;
+                        returnedDiv = LeadTimesSetUp ?
+                          (<i className="fas fa-check-circle fc-success"> Leadtime OK</i>) :
+                          <i className="fas fa-times-circle fc-danger"> Not Finish</i>
+                        break;
+                      default:
+                    }
+                    //Switch for the result
+
+                    return (
+                      <div className={className}
+                        key={`${keyOftitle}${subject.id ? subject.id : subject._id
+                          }`}
+                      >
+                        {returnedDiv}
+                      </div>
+                    );
+                  })}
                 </div>
-                {displayTitles.map((title) => {
-                  // console.log(title) // test Code
-                  const keyOftitle = Object.keys(title)[0];
-                  let className = 'fs-tiny'
-                  switch (keyOftitle) {
-                    case 'cNo':
-                      className = 'fw-bold fs-normal'
-                      break;
-                    case 'supplier':
-                      className = 'fw-bold fs-lead'
-                      break;
-                    case 'ref_no':
-                      className = 'fs-normal'
-                      break;
-                    case 'position':
-                    case 'descriptions':
-                      className = 'mb-05 fs-tiny'
-                      break;
-                    default:
-                  }
-                  return (
-                    <div className={className}
-                      key={`${keyOftitle}${subject.id ? subject.id : subject._id
-                        }`}
-                    >
-                      {keyOftitle === 'descriptions' ? subject[keyOftitle].map((d) => `${d} `) : subject[keyOftitle]}
-                    </div>
-                  );
-                })}
-              </div>
-            )}
+              )}
     </Fragment>
   );
 };

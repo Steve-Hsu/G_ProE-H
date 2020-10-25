@@ -39,6 +39,7 @@ const LeftBar = ({ currentPath }) => {
     caseConfirmDate,
     toggleCaseConfirmDate,
     merchandiser,
+    caseList,
   } = casesContext;
   const {
     isQuotating,
@@ -49,7 +50,7 @@ const LeftBar = ({ currentPath }) => {
     downLoadmtrlPrice,
   } = quoContext;
 
-  const { openPage, togglePoConfirmDate, currentPo } = purContext;
+  const { openPage, togglePoConfirmDate, currentPo, selectedCases, osList } = purContext;
   const { toggleLoading } = popoverContext
 
   const theCase = quotation.theCase;
@@ -391,10 +392,10 @@ const LeftBar = ({ currentPath }) => {
             ? normalSummitBtn()
             : null}
         {/*Submit BTN Purchase Set */}
-        {(currentPage === 'purchase' && openPage === 'caseSelector') ||
+        {(currentPage === 'purchase' && openPage === 'caseSelector' && selectedCases.length !== 0) ||
           (currentPage === 'purchase' && openPage === 'purchaseOrder') ||
           (currentPage === 'purchase' && openPage === 'oSMtrlList') ||
-          (currentPath === '/api/purchase' && openPage === 'leadTimePage')
+          (currentPage === 'purchase' && openPage === 'leadTimePage')
           ? normalSummitBtn()
           : null}
         {/* Other Btns */}
@@ -566,12 +567,29 @@ const LeftBar = ({ currentPath }) => {
             <Fragment>
               {printOutElement()}
               {openPage === 'purchaseOrder' ?
-
                 confirmArea('Confrim the PO', 'PO Has Confirmed', 'Not Confirmed', currentPo.poConfirmDate, togglePoConfirmDate)
-
                 : null}
             </Fragment>
-          ) : null}
+          ) : (currentPath === '/api/purchase' && openPage === 'caseSelector') ? (
+            <section className='round-area bd-light bg-cp-1 mt-1'>
+              <div className='fw-bold'>
+                {selectedCases.length === 0 ?
+                  <i className="fas fa-exclamation-circle"> Click and select case</i> :
+                  <i className="fas fa-check"> Selected Case : </i>}
+              </div>
+              {selectedCases.length === 0 ? null : selectedCases.map((sc) => {
+                return (<div className='center-content fs-small' key={`selectedCaseId${sc}`}>{caseList.find(({ _id }) => _id === sc).cNo}</div>)
+              })}
+            </section>
+          ) : (currentPath === '/api/purchase' && openPage === 'osSelector' && osList.length === 0) ?
+              (<section className='round-area bd-light bg-cp-1 mt-1'>
+                <i className="fas fa-exclamation-circle"> No order summary found.</i>
+                <div className='fs-small'>
+                  Please go back to page "Select case, Make order summary", make an order summary first.
+                </div>
+              </section>
+              )
+              : null}
       </div>
     </div>
   );

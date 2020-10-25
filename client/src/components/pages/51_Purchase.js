@@ -32,7 +32,7 @@ const Purchase = (props) => {
     props.history.push('/api/case/director');
   };
 
-  const onSubmit_1 = async (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     toggleLoading(true);
     console.log('order summary is triggered');
@@ -61,7 +61,7 @@ const Purchase = (props) => {
       {openPage === 'caseSelector' ? (
         <div className='grid-1-4'>
           <LeftBar currentPath={currentPath} />
-          <form id='purchase' onSubmit={onSubmit_1}>
+          <form id='purchase' onSubmit={onSubmit}>
             <ItemSelector props={props} purpose='purCaseSelector' />
           </form>
         </div>

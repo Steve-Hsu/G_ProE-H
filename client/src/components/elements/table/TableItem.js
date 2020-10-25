@@ -51,7 +51,9 @@ const TableItem = ({
       case 'srMtrlSelector':
       case 'quoSrMtrlSelector':
       case 'purCaseSelector':
-        toggleItemAttributes[0](subject._id);
+      case 'leadTimePage':
+        const theId = subject._id || subject.id;
+        toggleItemAttributes[0](theId);
         break;
       case 'osSelector':
         // e.target.name = 'osSelector'
@@ -59,9 +61,6 @@ const TableItem = ({
         toggleItemAttributes[0](subject);
         toggleItemAttributes[1]('orderSummary');
 
-        break;
-      case 'leadTimePage':
-        toggleItemAttributes[0](subject.id);
         break;
       default:
     }
@@ -97,7 +96,7 @@ const TableItem = ({
             <MtrlLeadTime caseMtrl={subject} idx={idx} />
           ) : purpose === 'purCaseSelector' && subject.poDate !== null ? null : (
             <div
-              className='flexBox bd-light bd-no-t bg-cp-elem hover-cp-2'
+              className='flexBox bd-light bd-no-t bg-cp-elem hover-cp-2 fs-small'
               onClick={onClick}
               style={selectedBackGround(id)}
             // style={{ background: 'red' }}

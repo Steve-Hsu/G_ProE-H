@@ -51,7 +51,7 @@ const SrMtrl = ({ srMtrl, currentPath, idx }) => {
         <GoBackBtnSpinSmall onClick={goBack} />
       </div>
       <div className='ml-1 w-90' style={{ flex: '1 1 auto' }}>
-        <section className='grid-2' onClick={goBack} >
+        <section className='grid-2 hover-pointer' onClick={goBack} >
           <div>
             <TopLabelTiny label='Supplier' />
             <div className='fs-large' id={`supplier${srMtrl._id}`}>

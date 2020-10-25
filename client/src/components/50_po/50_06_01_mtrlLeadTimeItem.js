@@ -10,6 +10,8 @@ const MtrlLeadTimeItem = ({ id, caseMtrlId, date, qty, unit, idx, updateLeadTime
       updateLeadTime(e, caseMtrlId);
    }
 
+   //Originally, I set the value of date as number, so we need this func 'dataFormat' to convert the Number to String in format for input['type'='date'].
+   //But now, I set the value of date as String in format for input['type'='date'] so we can either delete this func or keep it, since it won't affect the app, it still can convert the String back to number and make it String again for the func Date() can treat both number or String of date in right format
    const dateFormat = () => {
       const d = new Date(date)
       const value = d.toISOString().slice(0, 10)

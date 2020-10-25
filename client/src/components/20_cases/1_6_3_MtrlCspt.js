@@ -44,7 +44,7 @@ const MtrlCspt = ({ size, mtrl }) => {
         readOnly={caseConfirmDate || osNo ? true : false}
       />
       <label htmlFor={cspt.id} className='MPH-input-label'>
-        {multipleCSPT == true ? `For ${size.gSize}` : 'For all Size'}
+        {multipleCSPT == true ? `${size.gSize}` : 'For all Size'}
       </label>
     </div>
     //   ) : null}

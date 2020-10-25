@@ -2029,6 +2029,10 @@ input[type='submit']:focus {
   transition: all 0.3s;
 }
 
+.hover-pointer:hover {
+  cursor: pointer;
+}
+
 .hover-no:hover,
 .hover-0:hover {
   color: var(--cp-1_2);

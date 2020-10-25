@@ -29,7 +29,7 @@ const MtrlClr = ({ mtrlColor, mtrlId }) => {
         readOnly={caseConfirmDate || osNo ? true : false}
       />
       <label htmlFor={mtrlColor.id} className='MPH-input-label'>
-        {multipleColor == true ? `For ${cWayLabel.includes("Empty-ColorWay_Duplicated") ? cWayLabel.slice(26) : cWayLabel}` : 'For all ColorWay'}
+        {multipleColor == true ? `${cWayLabel.includes(String("Empty-ColorWay_Duplicated").toUpperCase()) ? cWayLabel.slice(26) : cWayLabel}` : 'For all ColorWay'}
       </label>
     </div>
   );
