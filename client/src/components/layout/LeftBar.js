@@ -98,14 +98,17 @@ const LeftBar = ({ currentPath }) => {
     toggleMtrlCard();
   };
 
-  const onClickQuo = () => {
+  const onClickQuo = async () => {
+    toggleLoading(true)
     const body = {
       quoNo: currentQuoForm.quoNo,
       quoFormId: currentQuoForm._id,
       quoSizes: currentQuoForm.quoSizes,
       quocWays: currentQuoForm.quocWays,
     };
-    downLoadmtrlPrice(body);
+    downLoadmtrlPrice(body).then(() => {
+      toggleLoading(false)
+    });
   };
 
   const updateBtnlabel = () => {

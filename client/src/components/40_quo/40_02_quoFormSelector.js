@@ -20,7 +20,7 @@ const QuoForm = () => {
 
   const addNewQuotation = async (e) => {
     e.preventDefault();
-    toggleLoading();
+    toggleLoading(true);
     await uploadQuoForm(isQuotating, true)
       .then((result) => {
         if (result) {
@@ -32,7 +32,7 @@ const QuoForm = () => {
         }
       })
       .then(() => {
-        toggleLoading();
+        toggleLoading(false);
         console.log('New Quotation form is added.');
       });
   };

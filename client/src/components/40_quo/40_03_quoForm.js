@@ -23,7 +23,7 @@ const QuoForm = () => {
   const popoverContext = useContext(PopoverContext);
   const {
     switchQuoForm,
-    downLoadmtrlPrice,
+    // downLoadmtrlPrice,
     currentQuoForm,
     uploadQuoForm,
     isQuotating,
@@ -88,21 +88,24 @@ const QuoForm = () => {
     updateCurrentQuoForm(e);
   };
 
-  const onClick = (e) => {
+  const onClick = async (e) => {
     e.preventDefault();
     switch (e.target.name) {
       case 'goBackBtn':
         switchQuoForm(null);
         break;
-      case 'quotationBtn':
-        const body = {
-          quoNo: quoNo,
-          quoFormId: _id,
-          quoSizes: quoSizes,
-          quocWays: quocWays,
-        };
-        downLoadmtrlPrice(body);
-        break;
+      // case 'quotationBtn':
+      //   toggleLoading(true);
+      //   const body = {
+      //     quoNo: quoNo,
+      //     quoFormId: _id,
+      //     quoSizes: quoSizes,
+      //     quocWays: quocWays,
+      //   };
+      //   await downLoadmtrlPrice(body).then(() => {
+      //     toggleLoading(false);
+      //   });
+      //   break;
       case 'addOtherExpense':
       case 'addCondition':
       case 'deleteCondition':
