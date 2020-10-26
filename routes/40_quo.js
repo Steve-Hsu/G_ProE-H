@@ -755,7 +755,7 @@ router.put('/quotateadvise', authUser, async (req, res) => {
     }
     return result;
   }, 0);
-  console.log('The totalgQty of the color & size selected', totalgQty); // Test Code
+  // console.log('The totalgQty of the color & size selected', totalgQty); // Test Code
 
   //@ Start main counting ------------------------------------------------
   const insertmtrlQuotation = new Promise(async (resolve, reject) => {
@@ -833,11 +833,11 @@ router.put('/quotateadvise', authUser, async (req, res) => {
               return reject("The Size Don't have any quantity");
             }
 
-            console.log(
-              'selectedgQtyOfTheSize of the size',
-              quoSizesNum + 1,
-              selectedgQtyOfTheSize
-            ); // Test Code
+            // console.log(
+            //   'selectedgQtyOfTheSize of the size',
+            //   quoSizesNum + 1,
+            //   selectedgQtyOfTheSize
+            // ); // Test Code
 
             // weithgOftheSize actually is the wieght of the selected quantity
             const wieghtOfTheSelectedgQty = selectedgQtyOfTheSize / totalgQty;
@@ -861,7 +861,7 @@ router.put('/quotateadvise', authUser, async (req, res) => {
                     resolve([0, 0]);
                   } else {
                     const cWayId = garmentcWay.id;
-                    console.log('578, The cWayId', cWayId); // Test Code
+                    // console.log('864, The cWayId', cWayId); // Test Code
 
                     //@_mtrlColor
                     const mtrlColor = mtrl.mtrlColors.find(
@@ -935,136 +935,149 @@ router.put('/quotateadvise', authUser, async (req, res) => {
                           //Unit consform
                           const mPUnit = mPrice.unit;
                           if (mPUnit && mtrlUnit) {
+                            //If you dont' set either the unit for purchase in srMtrl or the unit of cspt in the mtrl of case, then do nothing.
+                            //In here, mPUnit = purchase unit in srMtrl
+                            //In here, mtrlUnit = cspt unit in mtrl of Case.
                             if (mPUnit === mtrlUnit) {
-                              materialQuotation = mPrice.quotation;
+                              //If unit of purchase and case is same, then return the price directly.
+                              // Here set the price of materials, If no quotation of materials, then it return the purchase price of material.
+                              materialQuotation = mPrice.quotation || mPrice.mPrice;
                             } else {
-                              switch (mPUnit) {
-                                case 'yds':
-                                  switch (mtrlUnit) {
-                                    case 'm':
-                                      materialQuotation = Number(
-                                        mPrice.quotation / 0.9144
-                                      );
-                                      break;
-                                    case 'cm':
-                                      materialQuotation = Number(
-                                        mPrice.quotation / 91.44
-                                      );
-                                      break;
-                                    case 'in':
-                                      materialQuotation = Number(
-                                        mPrice.quotation / 36
-                                      );
-                                      break;
-                                    default:
-                                  }
-                                  break;
-                                case 'm':
-                                  switch (mtrlUnit) {
-                                    case 'yds':
-                                      materialQuotation = Number(
-                                        mPrice.quotation * 0.9144
-                                      );
-                                      break;
-                                    case 'cm':
-                                      materialQuotation = Number(
-                                        mPrice.quotation / 100
-                                      );
-                                      break;
-                                    case 'in':
-                                      materialQuotation = Number(
-                                        mPrice.quotation / 39.3701
-                                      );
-                                      break;
-                                    default:
-                                  }
-                                  break;
-                                case 'cm':
-                                  switch (mtrlUnit) {
-                                    case 'yds':
-                                      materialQuotation = Number(
-                                        mPrice.quotation * 91.44
-                                      );
-                                      break;
-                                    case 'm':
-                                      materialQuotation = Number(
-                                        mPrice.quotation * 100
-                                      );
-                                      break;
-                                    case 'in':
-                                      materialQuotation = Number(
-                                        mPrice.quotation * 2.54
-                                      );
-                                      break;
-                                    default:
-                                  }
-                                  break;
-                                case 'in':
-                                  switch (mtrlUnit) {
-                                    case 'yds':
-                                      materialQuotation = Number(
-                                        mPrice.quotation * 36
-                                      );
-                                      break;
-                                    case 'm':
-                                      materialQuotation = Number(
-                                        mPrice.quotation * 39.3701
-                                      );
-                                      break;
-                                    case 'cm':
-                                      materialQuotation = Number(
-                                        mPrice.quotation / 2.54
-                                      );
-                                      break;
-                                    default:
-                                  }
-                                  break;
-                                case 'pcs':
-                                  switch (mtrlUnit) {
-                                    case 'gross':
-                                      materialQuotation = Number(
-                                        mPrice.quotation * 144
-                                      );
-                                      break;
-                                    case 'doz':
-                                      materialQuotation = Number(
-                                        mPrice.quotation * 12
-                                      );
-                                      break;
-                                    default:
-                                  }
-                                  break;
-                                case 'gross':
-                                  switch (mtrlUnit) {
-                                    case 'pcs':
-                                      materialQuotation = Number(
-                                        mPrice.quotation / 144
-                                      );
-                                      break;
-                                    case 'doz':
-                                      materialQuotation = Number(
-                                        mPrice.quotation / 12
-                                      );
-                                      break;
-                                    default:
-                                  }
-                                  break;
-                                case 'doz':
-                                  switch (mtrlUnit) {
-                                    case 'pcs':
-                                      materialQuotation = Number(
-                                        mPrice.quotation / 12
-                                      );
-                                      break;
-                                    case 'gross':
-                                      materialQuotation = Number(
-                                        mPrice.quotation * 12
-                                      );
-                                      break;
-                                    default:
-                                  }
-                                  break;
-                                default:
+                              //If the unit is different, the convert it.
+                              const thePrice = mPrice.quotation || mPrice.mPrice;
+                              if (thePrice === 0) {
+                                //If the materials don't have both the purchase price and quotation then do nothing. Since it is zero, you don't have to convert.
+                              } else {
+                                //Unit convert.
+                                //Notice, the quotation form apply the unit from bom, the Case, since the unit is provided by customer.
+                                switch (mPUnit) {
+                                  case 'yds':
+                                    switch (mtrlUnit) {
+                                      case 'm':
+                                        materialQuotation = Number(
+                                          thePrice / 0.9144
+                                        );
+                                        break;
+                                      case 'cm':
+                                        materialQuotation = Number(
+                                          thePrice / 91.44
+                                        );
+                                        break;
+                                      case 'in':
+                                        materialQuotation = Number(
+                                          thePrice / 36
+                                        );
+                                        break;
+                                      default:
+                                    }
+                                    break;
+                                  case 'm':
+                                    switch (mtrlUnit) {
+                                      case 'yds':
+                                        materialQuotation = Number(
+                                          thePrice * 0.9144
+                                        );
+                                        break;
+                                      case 'cm':
+                                        materialQuotation = Number(
+                                          thePrice / 100
+                                        );
+                                        break;
+                                      case 'in':
+                                        materialQuotation = Number(
+                                          thePrice / 39.3701
+                                        );
+                                        break;
+                                      default:
+                                    }
+                                    break;
+                                  case 'cm':
+                                    switch (mtrlUnit) {
+                                      case 'yds':
+                                        materialQuotation = Number(
+                                          thePrice * 91.44
+                                        );
+                                        break;
+                                      case 'm':
+                                        materialQuotation = Number(
+                                          thePrice * 100
+                                        );
+                                        break;
+                                      case 'in':
+                                        materialQuotation = Number(
+                                          thePrice * 2.54
+                                        );
+                                        break;
+                                      default:
+                                    }
+                                    break;
+                                  case 'in':
+                                    switch (mtrlUnit) {
+                                      case 'yds':
+                                        materialQuotation = Number(
+                                          thePrice * 36
+                                        );
+                                        break;
+                                      case 'm':
+                                        materialQuotation = Number(
+                                          thePrice * 39.3701
+                                        );
+                                        break;
+                                      case 'cm':
+                                        materialQuotation = Number(
+                                          thePrice / 2.54
+                                        );
+                                        break;
+                                      default:
+                                    }
+                                    break;
+                                  case 'pcs':
+                                    switch (mtrlUnit) {
+                                      case 'gross':
+                                        materialQuotation = Number(
+                                          thePrice * 144
+                                        );
+                                        break;
+                                      case 'doz':
+                                        materialQuotation = Number(
+                                          thePrice * 12
+                                        );
+                                        break;
+                                      default:
+                                    }
+                                    break;
+                                  case 'gross':
+                                    switch (mtrlUnit) {
+                                      case 'pcs':
+                                        materialQuotation = Number(
+                                          thePrice / 144
+                                        );
+                                        break;
+                                      case 'doz':
+                                        materialQuotation = Number(
+                                          thePrice / 12
+                                        );
+                                        break;
+                                      default:
+                                    }
+                                    break;
+                                  case 'doz':
+                                    switch (mtrlUnit) {
+                                      case 'pcs':
+                                        materialQuotation = Number(
+                                          thePrice / 12
+                                        );
+                                        break;
+                                      case 'gross':
+                                        materialQuotation = Number(
+                                          thePrice * 12
+                                        );
+                                        break;
+                                      default:
+                                    }
+                                    break;
+                                  default:
+                                }
                               }
                             }
                           } else {
@@ -1098,12 +1111,12 @@ router.put('/quotateadvise', authUser, async (req, res) => {
                           const gQty = gQtyOfTheSize.find(
                             ({ cWay }) => cWay === cWayId
                           );
-                          console.log(
-                            'test code, the gQtyOftheSize',
-                            gQtyOfTheSize,
-                            'the cWayId',
-                            cWayId
-                          );
+                          // console.log(
+                          //   'test code, the gQtyOftheSize',
+                          //   gQtyOfTheSize,
+                          //   'the cWayId',
+                          //   cWayId
+                          // ); // test Code
                           // console.log('617, the gQty', gQty); // Test Code
                           const qtyOfTheSizeAndcWay = gQty.gQty;
                           console.log(
@@ -1131,14 +1144,14 @@ router.put('/quotateadvise', authUser, async (req, res) => {
                           quocWaysNum = quocWaysNum + 1;
 
                           if (quocWaysNum === quocWays.length) {
-                            console.log(
-                              'The colorWeightedPrice',
-                              colorWeightedPrice
-                            ); // Test Code
-                            console.log(
-                              'The colorWeightedPrice',
-                              colorWeightedCSPT
-                            ); // Test Code
+                            // console.log(
+                            //   'The colorWeightedPrice',
+                            //   colorWeightedPrice
+                            // ); // Test Code
+                            // console.log(
+                            //   'The colorWeightedPrice',
+                            //   colorWeightedCSPT
+                            // ); // Test Code
                             resolve([colorWeightedPrice, colorWeightedCSPT]);
                           }
                         }
@@ -1153,14 +1166,14 @@ router.put('/quotateadvise', authUser, async (req, res) => {
               .then((result) => {
                 const colorWeightedPrice = result[0][0];
                 const colorWeightedCSPT = result[0][1];
-                console.log(
-                  'The Promise all_1 colorWeightedPrice',
-                  colorWeightedPrice
-                ); // Test Code
-                console.log(
-                  'The Promise all_1 colorWeightedCSPT',
-                  colorWeightedCSPT
-                ); // Test Code
+                // console.log(
+                //   'The Promise all_1 colorWeightedPrice',
+                //   colorWeightedPrice
+                // ); // Test Code
+                // console.log(
+                //   'The Promise all_1 colorWeightedCSPT',
+                //   colorWeightedCSPT
+                // ); // Test Code
 
                 // If one of the 2 index equlas to zero, skip the calculating.
                 if (colorWeightedPrice === 0 || wieghtOfTheSelectedgQty === 0) {
@@ -1187,12 +1200,12 @@ router.put('/quotateadvise', authUser, async (req, res) => {
               })
               .then((result) => {
                 quoSizesNum = quoSizesNum + 1;
-                console.log(
-                  'The quoSizesNum',
-                  quoSizesNum,
-                  'the quoSizes.length',
-                  quoSizes.length
-                );
+                // console.log(
+                //   'The quoSizesNum',
+                //   quoSizesNum,
+                //   'the quoSizes.length',
+                //   quoSizes.length
+                // ); // Test Code
                 if (quoSizesNum === quoSizes.length) {
                   return resolve(result);
                 }
@@ -1210,20 +1223,27 @@ router.put('/quotateadvise', authUser, async (req, res) => {
       // Connect to mongoDB updload the AVGPRICE
       Promise.all([getWeightedAVGPriceAndAVGCSPT])
         .then(async (result) => {
-          let AVGPrice = result[0][0]; //Rounding number in 2nd decimal place
-          let AVGCSPT = result[0][1];
+          let AVGPrice = Number(result[0][0]); //Rounding number in 2nd decimal place
+          let AVGCSPT = Number(result[0][1]);
           // const AVGPrice = result[0][0].toFixed(2); //Rounding number in 2nd decimal place
           // const AVGCSPT = result[0][1].toFixed(2);
           let mtrlPrice = 0;
           if (AVGPrice === 0 || AVGCSPT === 0) {
           } else {
-            AVGPrice = AVGPrice.toFixed(3);
-            AVGCSPT = AVGCSPT.toFixed(3);
-            mtrlPrice = Number(AVGPrice * AVGCSPT).toFixed(3);
+            mtrlPrice = Number(AVGPrice * AVGCSPT)
           }
 
           console.log('The Promise all_2 AVGPrice ', AVGPrice); // Test Code
           console.log('The Promise all_2 AVGCSPT ', AVGCSPT); // Test Code
+
+          //Fix the number to 2 decimal number
+          const finalAVGPrice = AVGPrice !== 0 ? Math.round((AVGPrice + Number.EPSILON) * 100) / 100 : 0;
+          const finalAVGCSPT = AVGCSPT !== 0 ? Math.round((AVGCSPT + Number.EPSILON) * 100) / 100 : 0;
+          const finalMtrlPrice = mtrlPrice !== 0 ? Math.round((mtrlPrice + Number.EPSILON) * 100) / 100 : 0;
+
+          console.log('The finalAVGPrice', finalAVGPrice) // Test Code
+          console.log('The finalAVGCSPT', finalAVGCSPT) // Test Code
+          console.log('The finalMtrlPrice', finalMtrlPrice) // Test Code
 
           await QuoForm.findOneAndUpdate(
             {
@@ -1236,9 +1256,9 @@ router.put('/quotateadvise', authUser, async (req, res) => {
             {
               $set: {
                 quotatedQty: Number(totalgQty),
-                'mQuos.$.mQuoAddvised': AVGPrice,
-                'mQuos.$.csptAddvised': AVGCSPT,
-                'mQuos.$.materialFinalQuotation': mtrlPrice,
+                'mQuos.$.mQuoAddvised': finalAVGPrice,
+                'mQuos.$.csptAddvised': finalAVGCSPT,
+                'mQuos.$.materialFinalQuotation': finalMtrlPrice,
               },
             }
           );
@@ -1279,25 +1299,26 @@ router.put('/quotateadvise', authUser, async (req, res) => {
               FOB
             ); // Test Code
 
-            await QuoForm.updateOne(
+            const quoForms = await QuoForm.findOneAndUpdate(
               {
                 company: comId,
-                quoHead: quoHeadId,
+                _id: quoFormId,
               },
               {
                 mQuosTotal: mQuosTotal,
                 otherExpensesTotal: otherExpensesTotal,
                 fob: Number(FOB).toFixed(3),
-              }
+              },
+              { new: true }
             );
 
-            const quoForms = await QuoForm.find(
-              {
-                company: comId,
-                quoHead: quoHeadId,
-              },
-              { company: 0 }
-            );
+            // const quoForms = await QuoForm.find(
+            //   {
+            //     company: comId,
+            //     quoHead: quoHeadId,
+            //   },
+            //   { company: 0 }
+            // );
 
             console.log('The Promise all_2 resolove '); // Test Code
             return resolve(quoForms);

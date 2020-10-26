@@ -16,6 +16,7 @@ import {
   CURRETQUOFORM_UPDATE,
   CURRETQUOFORM_MQUOS_UPDATE,
   UPDATE_ERROR,
+  QUOFORM_REPLACE_ONE,
 } from '../types';
 
 const QuoState = (props) => {
@@ -169,7 +170,7 @@ const QuoState = (props) => {
   };
 
   const downLoadmtrlPrice = async (body) => {
-    const quoFormId = body.quoFormId;
+    // const quoFormId = body.quoFormId;
     const config = {
       headers: {
         'Content-Type': 'application/json',
@@ -178,12 +179,15 @@ const QuoState = (props) => {
 
     const res = await axios.put(`/api/quogarment/quotateadvise/`, body, config);
 
-    const quoForm = res.data.filter((i) => {
-      return i._id === quoFormId;
-    });
-    dispatch({ type: QUOFORM_UPDATE, payload: res.data });
-    dispatch({ type: CURRETQUOFORM_MQUOS_UPDATE, payload: quoForm[0] });
-    // dispatch({ type: CURRETQUOFORM_UPDATE, payload: quoForm[0] });
+    // const quoForm = res.data.filter((i) => {
+    //   return i._id === quoFormId;
+    // });
+
+    dispatch({ type: QUOFORM_REPLACE_ONE, payload: res.data });
+    // dispatch({ type: QUOFORM_UPDATE, payload: res.data });
+    dispatch({ type: CURRETQUOFORM_MQUOS_UPDATE, payload: res.data });
+    // dispatch({ type: CURRETQUOFORM_MQUOS_UPDATE, payload: quoForm[0] });
+
   };
 
   const deleteQuoForm = async (body) => {

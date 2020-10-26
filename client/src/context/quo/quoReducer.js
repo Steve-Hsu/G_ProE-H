@@ -10,6 +10,7 @@ import {
   CURRETQUOFORM_UPDATE,
   CURRETQUOFORM_MQUOS_UPDATE,
   UPDATE_ERROR,
+  QUOFORM_REPLACE_ONE,
 } from '../types';
 
 export default (state, action) => {
@@ -55,6 +56,19 @@ export default (state, action) => {
         quotation: {
           ...state.quotation,
           quoForms: action.payload,
+        },
+      };
+    case QUOFORM_REPLACE_ONE:
+      return {
+        ...state,
+        quotation: {
+          ...state.quotation,
+          quoForms: state.quotation.quoForms.map((qF) => {
+            if (qF._id === action.payload._id) {
+              qF = action.payload;
+            }
+            return qF
+          }),
         },
       };
     case CURRETQUOFORM_UPDATE:
