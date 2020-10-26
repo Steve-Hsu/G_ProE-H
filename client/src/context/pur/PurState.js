@@ -20,7 +20,7 @@ import {
   UPDATE_ERROR,
   UPDATE_EDITING_LIST,
   UPDATE_LEADTIME,
-  AFTER_MAKEOS,
+  CLEAR_SELECTEDCASE,
   // UPDATE_CASEMTRL,
 } from '../types';
 
@@ -103,7 +103,7 @@ const PurState = (props) => {
             dispatch({ type: UPDATE_ERROR, payload: null });
           }, 3500);
         } else {
-          dispatch({ type: AFTER_MAKEOS });
+          dispatch({ type: CLEAR_SELECTEDCASE });
           // dispatch({ type: PURPAGE_SWITCH, payload: 'osSelector' });
           // dispatch({ type: OS_CURRENT, payload: null });
           // getOsList();
