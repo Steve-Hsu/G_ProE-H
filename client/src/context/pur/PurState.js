@@ -20,6 +20,7 @@ import {
   UPDATE_ERROR,
   UPDATE_EDITING_LIST,
   UPDATE_LEADTIME,
+  AFTER_MAKEOS,
   // UPDATE_CASEMTRL,
 } from '../types';
 
@@ -94,17 +95,22 @@ const PurState = (props) => {
     // const res = await axios.post('/api/purchase', selectedCases, config);
     try {
       await axios.post('/api/purchase', selectedCases, config).then((result) => {
-        if (result[0]) {
-          const err = result[0].err
+        if (result.data.err) {
+          const err = result.data.err
           console.log('Multiple user login~!')
           dispatch({ type: UPDATE_ERROR, payload: err });
           setTimeout(() => {
             dispatch({ type: UPDATE_ERROR, payload: null });
           }, 3500);
         } else {
-          switchPage('osSelector');
+          dispatch({ type: AFTER_MAKEOS });
+          // dispatch({ type: PURPAGE_SWITCH, payload: 'osSelector' });
+          // dispatch({ type: OS_CURRENT, payload: null });
+          // getOsList();
           console.log('Upload Order Summary');
         }
+        console.log(result)
+        // dispatch({ type: OS_LIST_DOWNLOAD, payload: result.data });
         return result
       })
     } catch (err) {
@@ -147,17 +153,6 @@ const PurState = (props) => {
       // dispatch({ type: PO_CURRENT, payload: id });
       // break;
     }
-
-    // if (value) {
-    //   if (value === 'osSelector') {
-    //     dispatch({ type: PURPAGE_SWITCH, payload: value });
-    //     dispatch({ type: OS_CURRENT, payload: null });
-    //   } else {
-    //     dispatch({ type: PURPAGE_SWITCH, payload: value });
-    //   }
-    // } else {
-    //   dispatch({ type: PURPAGE_SWITCH, payload: null });
-    // }
   };
 
   const getOsList = async () => {

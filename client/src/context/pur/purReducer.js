@@ -14,6 +14,7 @@ import {
   UPDATE_ERROR,
   UPDATE_EDITING_LIST,
   UPDATE_LEADTIME,
+  AFTER_MAKEOS,
   // UPDATE_CASEMTRL,
 } from '../types';
 
@@ -140,6 +141,12 @@ export default (state, action) => {
             return i;
           }),
         },
+      }
+    case AFTER_MAKEOS:
+      return {
+        ...state,
+        // openPage: 'osSelector',
+        selectedCases: [],
       }
     default:
   }

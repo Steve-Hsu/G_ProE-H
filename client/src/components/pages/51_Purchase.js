@@ -38,6 +38,7 @@ const Purchase = (props) => {
     console.log('order summary is triggered');
     await createOrderSummary(selectedCases).then(() => {
       toggleLoading(false);
+      switchPage('osSelector');
     });
   };
 

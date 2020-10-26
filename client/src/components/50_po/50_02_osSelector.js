@@ -19,10 +19,9 @@ const OsSelector = () => {
   const { toggleLoading } = popoverContext
 
   useEffect(() => {
-    // alert('Try get os List');
     toggleLoading(true)
-    getOsList().then(()=>{
-       toggleLoading(false)
+    getOsList().then(() => {
+      toggleLoading(false)
     });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

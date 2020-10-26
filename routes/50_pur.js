@@ -53,8 +53,8 @@ router.post('/', authUser, async (req, res) => {
   const token = req.header('x-auth-token');
   if (user.sKey !== token) {
     const msg = { err: 'multiple user login, please login again.' }
-    console.log(msg)
-    return res.json([msg])
+    console.log(msg);
+    return res.json(msg);
   }
   //Check if the user have the right
   if (!user.po) {
@@ -285,36 +285,40 @@ router.post('/', authUser, async (req, res) => {
   //@ Create an Order Summary to OS collection -------------------------------------------------
   Promise.all([insertCaseMtrls])
     .then(() => {
-      console.log('The promise all start');
-      const orderSummary = new OS({
-        company: comId,
-        osNo: newOsNO,
-        caseIds: caseIds,
-        cNos: cNoList,
-        clients: clientList,
-        suppliers: supplierList,
-        caseMtrls: caseMtrls,
-      });
+      const finalPromise = new Promise(async (resolve) => {
+        console.log('The promise all start');
+        const orderSummary = new OS({
+          company: comId,
+          osNo: newOsNO,
+          caseIds: caseIds,
+          cNos: cNoList,
+          clients: clientList,
+          suppliers: supplierList,
+          caseMtrls: caseMtrls,
+        });
 
-      orderSummary.save();
-      console.log('The order summary is generated');
-    })
-    .then(async () => {
-      caseIds.map(async (caseId) => {
-        await Case.updateOne(
-          { company: comId, _id: caseId },
-          { $currentDate: { poDate: Date }, $set: { osNo: newOsNO } }
+        await orderSummary.save();
+        resolve();
+        console.log('The order summary is generated');
+
+      }).then(async () => {
+        //Update the poDate and osNo for the case.
+        caseIds.map(async (caseId) => {
+          await Case.updateOne(
+            { company: comId, _id: caseId },
+            { $currentDate: { poDate: Date }, $set: { osNo: newOsNO } }
+          );
+        });
+      })
+
+      Promise.all([finalPromise]).then(async () => {
+        const result = await OS.find(
+          { company: comId },
+          { company: 0 }
         );
-      });
-    })
-    .then(async () => {
-      const result = await OS.findOne(
-        { company: comId, osNo: newOsNO },
-        { company: 0 }
-      );
-      // const msg = 'the order summary is made'
-      // return res.json(msg);
-      return res.json(result)
+        return res.json(result)
+      })
+
     })
     .catch((err) => {
       console.log(err);
