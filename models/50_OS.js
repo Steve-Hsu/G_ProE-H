@@ -74,9 +74,9 @@ const OSSchema = mongoose.Schema({
   ],
   caseMtrls: [
     {
-      id: {
-        type: String
-      },
+      // id: {
+      //   type: String
+      // },
       cases: {
         type: Array
       },
@@ -107,6 +107,9 @@ const OSSchema = mongoose.Schema({
       },
       item: {
         type: String,
+      },
+      price: {
+        type: Object,
       }
     }
   ],
@@ -119,7 +122,7 @@ const OSSchema = mongoose.Schema({
     type: Date,
     default: null,
   },
-  ltConfirmDate: {
+  osLtConfirmDate: {
     // As the ltConfirmDate is made, the setup of style can be start. lt = LeadTime.
     type: Date,
     default: null,

@@ -62,7 +62,7 @@ export const ItemSelector = ({ props, purpose, currentPath }) => {
     case 'CaseSelector':
     case 'quoCaseSelector':
     case 'purCaseSelector':
-      subjects = caseList;
+
       displayTitles = [
         { cNo: true },
         { style: true },
@@ -73,6 +73,7 @@ export const ItemSelector = ({ props, purpose, currentPath }) => {
       ];
       switch (purpose) {
         case 'CaseSelector':
+          subjects = caseList;
           const aFunc = async (id) => {
             toggleLoading(true);
             await downloadCase(id).then(() => {
@@ -85,6 +86,7 @@ export const ItemSelector = ({ props, purpose, currentPath }) => {
           };
           break;
         case 'quoCaseSelector':
+          subjects = caseList;
           const quoFunc = async (cNo) => {
             console.log('hit hit ');
             toggleLoading(true);
@@ -98,6 +100,7 @@ export const ItemSelector = ({ props, purpose, currentPath }) => {
           };
           break;
         case 'purCaseSelector':
+          subjects = caseList.filter((i) => i.caseConfirmDate !== null);
           attributes = [selectCase, selectedCases];
           goBack = () => {
             props.history.push('/api/case/director');

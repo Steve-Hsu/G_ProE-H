@@ -398,9 +398,10 @@ const PurState = (props) => {
     } else {
       newPurchasedMoqQty = moq - totalQty + 1;
     }
+    const theMoqValue = Math.round((newPurchasedMoqQty + Number.EPSILON) * 100) / 100
     const payload = {
       id: id,
-      newPurchasedMoqQty: newPurchasedMoqQty,
+      newPurchasedMoqQty: theMoqValue,
     };
 
     dispatch({ type: UPDATE_MOQPOQTY, payload: payload });
@@ -466,7 +467,7 @@ const PurState = (props) => {
   };
 
   const addLeadTime = (caseMtrlId) => {
-    let caseMtrl = currentOrderSummary.caseMtrls.find(({ id }) => id === caseMtrlId);
+    let caseMtrl = currentOrderSummary.caseMtrls.find(({ _id }) => _id === caseMtrlId);
     if (caseMtrl) {
       const totalMtrlQty = caseMtrl.purchaseQtySumUp + caseMtrl.purchaseLossQtySumUp + caseMtrl.purchaseMoqQty;
       let item = 'undefined';
@@ -518,7 +519,7 @@ const PurState = (props) => {
   }
 
   const updateLeadTime = (e, caseMtrlId) => {
-    let caseMtrl = currentOrderSummary.caseMtrls.find(({ id }) => id === caseMtrlId);
+    let caseMtrl = currentOrderSummary.caseMtrls.find(({ _id }) => _id === caseMtrlId);
     if (caseMtrl) {
       const value = e.target.value
       const updateAttribute = e.target.name
@@ -564,7 +565,7 @@ const PurState = (props) => {
     const caseMtrlId = e.target.name;
     const leadTimeId = e.target.value;
 
-    let caseMtrl = currentOrderSummary.caseMtrls.find(({ id }) => id === caseMtrlId);
+    let caseMtrl = currentOrderSummary.caseMtrls.find(({ _id }) => _id === caseMtrlId);
     console.log('here triggered', caseMtrl)
     console.log('leadTimeId', leadTimeId)
     if (caseMtrl) {

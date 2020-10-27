@@ -13,7 +13,8 @@ const MrtlLeadTime = ({ caseMtrl, idx }) => {
   const purContext = useContext(PurContext)
   const popoverContext = useContext(PopoverContext)
   const { openMtrlLeadTime, addLeadTime, updateLeadTime, deleteLeadTime, uploadCaseMtrl } = purContext;
-  const { id, purchaseQtySumUp, purchaseLossQtySumUp, purchaseMoqQty, } = caseMtrl;
+  const { _id, purchaseQtySumUp, purchaseLossQtySumUp, purchaseMoqQty, } = caseMtrl;
+  const caseMtrlId = _id
   const { toggleLoading } = popoverContext;
 
   const totalMtrlQty = purchaseQtySumUp + purchaseLossQtySumUp + purchaseMoqQty;
@@ -21,7 +22,7 @@ const MrtlLeadTime = ({ caseMtrl, idx }) => {
   const unit = caseMtrl.price ? caseMtrl.price.poUnit : 'PO not confirmed'
 
   const goBack = () => {
-    openMtrlLeadTime(caseMtrl.id)
+    openMtrlLeadTime(caseMtrlId)
   }
 
   const mtrlQtyTitle = () => {
@@ -34,7 +35,7 @@ const MrtlLeadTime = ({ caseMtrl, idx }) => {
 
   const onClick = (e) => {
     e.preventDefault();
-    addLeadTime(id);
+    addLeadTime(caseMtrlId);
   }
 
   const leadTimeTotalQty = () => {
@@ -75,14 +76,14 @@ const MrtlLeadTime = ({ caseMtrl, idx }) => {
         <section className='flexBox hover-pointer' onClick={goBack}>
           <div style={{ flex: '1 1 auto' }}>
             <TopLabelTiny label='Supplier' />
-            <div className='fs-large' id={`supplier${id}`}>
+            <div className='fs-large' id={`supplier${caseMtrlId}`}>
               {caseMtrl.supplier ? caseMtrl.supplier : (<span className='fc-danger'>No suuplier</span>)}
             </div>
           </div>
 
           <div style={{ flex: '1 1 auto' }}>
             <TopLabelTiny label='Ref No.' />
-            <div className='fs-large' id={`ref_no${id}`}>
+            <div className='fs-large' id={`ref_no${caseMtrlId}`}>
               {caseMtrl.ref_no ?
                 caseMtrl.ref_no :
                 (<span className='fc-fade-dark'>No Reference number</span>)}
@@ -91,7 +92,7 @@ const MrtlLeadTime = ({ caseMtrl, idx }) => {
 
           <div style={{ flex: '1 1 auto' }}>
             <TopLabelTiny label='Quantity' />
-            <div className='fs-large' id={`poQty${id}`}>
+            <div className='fs-large' id={`poQty${caseMtrlId}`}>
               {mtrlQtyTitle()}
             </div>
           </div>
@@ -142,7 +143,7 @@ const MrtlLeadTime = ({ caseMtrl, idx }) => {
             <MrtlLeadTimeItem
               key={LTime.id}
               id={LTime.id}
-              caseMtrlId={caseMtrl.id}
+              caseMtrlId={caseMtrlId}
               date={LTime.date}
               qty={LTime.qty}
               unit={unit}

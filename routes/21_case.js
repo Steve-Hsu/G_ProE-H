@@ -9,7 +9,7 @@ const Case = require('../models/20_Case');
 const SRMtrl = require('../models/30_SRMtrl');
 
 // @route   GET api/case/
-// @desc    Read the user's cases from database
+// @desc    Read the company's cases from database
 // @access  Private
 router.get('/', authUser, async (req, res) => {
   const token = req.header('x-auth-token');
@@ -36,6 +36,7 @@ router.get('/', authUser, async (req, res) => {
         style: 1,
         client: 1,
         poDate: 1,
+        caseConfirmDate: 1,
         merchandiser: '',
         quoNo: '',
       },

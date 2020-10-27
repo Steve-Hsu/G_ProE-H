@@ -7,7 +7,7 @@ const OsMtrlListItem = ({ osMtrl, theNumber, className }) => {
   const { enterHsCode } = purContext;
 
   const {
-    id,
+    _id,
     supplier,
     ref_no,
     mColor,
@@ -41,7 +41,7 @@ const OsMtrlListItem = ({ osMtrl, theNumber, className }) => {
       <div className='bd-light bd-no-t v-center-content'>
         <input
           type='text'
-          id={`hsCode${id}`}
+          id={`hsCode${_id}`}
           name='hsCodeInput'
           maxLength='50'
           value={hsCode || ''}

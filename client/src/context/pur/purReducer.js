@@ -45,6 +45,7 @@ export default (state, action) => {
       return {
         ...state,
         openPage: action.payload,
+        editingLeadTime: [],
       };
     case OS_LIST_DOWNLOAD:
       return {
@@ -91,7 +92,7 @@ export default (state, action) => {
         currentOrderSummary: {
           ...state.currentOrderSummary,
           caseMtrls: state.currentOrderSummary.caseMtrls.map((i) => {
-            if (i.id === action.payload.id) {
+            if (i._id === action.payload.id) {
               i.purchaseMoqQty = action.payload.newPurchasedMoqQty;
             }
             return i;
@@ -104,7 +105,7 @@ export default (state, action) => {
         currentOrderSummary: {
           ...state.currentOrderSummary,
           caseMtrls: state.currentOrderSummary.caseMtrls.map((i) => {
-            if (i.id === action.payload.id) {
+            if (i._id === action.payload.id) {
               i.hsCode = action.payload.hsCode;
             }
             return i;
@@ -135,7 +136,7 @@ export default (state, action) => {
         currentOrderSummary: {
           ...state.currentOrderSummary,
           caseMtrls: state.currentOrderSummary.caseMtrls.map((i) => {
-            if (i.id === action.payload.id) {
+            if (i._id === action.payload._id) {
               i = action.payload
             }
             return i;

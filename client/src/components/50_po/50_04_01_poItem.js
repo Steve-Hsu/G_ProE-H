@@ -7,7 +7,7 @@ const PoItem = ({ osMtrl, theNumber }) => {
   const { currentPoPriceList, currentPo, evenMoq } = purContext;
 
   const {
-    id,
+    _id,
     // supplier,
     ref_no,
     mColor,
@@ -17,7 +17,7 @@ const PoItem = ({ osMtrl, theNumber }) => {
     purchaseMoqQty,
   } = osMtrl;
   const currentMtrlPrice = currentPoPriceList.find(
-    ({ osMtrlId }) => osMtrlId === osMtrl.id
+    ({ osMtrlId }) => osMtrlId === osMtrl._id
   );
 
   // The loading may later than the mount of the component, so here set the default value for these variables to ref
@@ -28,19 +28,21 @@ const PoItem = ({ osMtrl, theNumber }) => {
   let moqPrice = 0;
 
   if (osMtrl.price && currentPo.poConfirmDate) {
-    unit = osMtrl.price.poUnit;
-    currency = osMtrl.price.currency;
-    mPrice = osMtrl.price.mPrice;
-    moq = osMtrl.price.moq;
-    moqPrice = osMtrl.price.moqPrice;
+    console.log('the price from caseMtrl')
+    unit = osMtrl.price.poUnit ? osMtrl.price.poUnit : '';
+    currency = osMtrl.price.currency ? osMtrl.price.currency : '';
+    mPrice = osMtrl.price.mPrice ? osMtrl.price.mPrice : 0;
+    moq = osMtrl.price.moq ? osMtrl.price.moq : 0;
+    moqPrice = osMtrl.price.moqPrice ? osMtrl.price.moqPrice : 0;
     // }
   } else {
     if (currentMtrlPrice) {
-      unit = currentMtrlPrice.poUnit;
-      currency = currentMtrlPrice.currency;
-      mPrice = currentMtrlPrice.mPrice;
-      moq = currentMtrlPrice.moq;
-      moqPrice = currentMtrlPrice.moqPrice;
+      console.log('the price form currentMtrlPrice')
+      unit = currentMtrlPrice.poUnit ? currentMtrlPrice.poUnit : '';
+      currency = currentMtrlPrice.currency ? currentMtrlPrice.currency : '';
+      mPrice = currentMtrlPrice.mPrice ? currentMtrlPrice.mPrice : 0;
+      moq = currentMtrlPrice.moq ? currentMtrlPrice.moq : 0;
+      moqPrice = currentMtrlPrice.moqPrice ? currentMtrlPrice.moqPrice : 0;
     }
   }
 
@@ -58,31 +60,37 @@ const PoItem = ({ osMtrl, theNumber }) => {
       return mPrice;
     }
   };
+  console.log()
+  console.log('the moq', moq)
 
   const moqLabel = () => {
     if (moq) {
+      console.log('The moq is defined', moq)
+      console.log('add sum', purchaseQtySumUp + purchaseLossQtySumUp + purchaseMoqQty)
+      console.log('The compare',)
       if (purchaseQtySumUp + purchaseLossQtySumUp + purchaseMoqQty > moq) {
         return null;
       } else {
         return <div className='fs-tiny fc-success'>MOQ Price</div>;
       }
     } else {
+      console.log('The moq is undefined')
       return null;
     }
   };
 
   const onClick = () => {
-    evenMoq(moq, purchaseQtySumUp + purchaseLossQtySumUp, purchaseMoqQty, id);
+    evenMoq(moq, purchaseQtySumUp + purchaseLossQtySumUp, purchaseMoqQty, _id);
   };
 
   const amount =
     Math.round(
       (Number(
         (purchaseQtySumUp + purchaseLossQtySumUp + purchaseMoqQty) *
-          displayPrice()
+        displayPrice()
       ) +
         Number.EPSILON) *
-        100
+      100
     ) / 100;
 
   return (
@@ -162,7 +170,7 @@ const PoItem = ({ osMtrl, theNumber }) => {
                   />
                 </div>
               )
-            ) : null}
+            ) : (<div className='noPrint' style={{ height: ' var(--btn-h-m)', width: '100px' }}></div>)}
           </div>
         ) : null}
 

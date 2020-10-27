@@ -70,7 +70,7 @@ const OsMtrlList = () => {
           if (check) {
             return (
               <OsMtrlListItem
-                key={osMtrl.id}
+                key={osMtrl._id}
                 osMtrl={osMtrl}
                 theNumber={idx + 1}
                 className='noBreak whenPrintFSSmall'
