@@ -119,5 +119,10 @@ const OSSchema = mongoose.Schema({
     type: Date,
     default: null,
   },
+  ltConfirmDate: {
+    // As the ltConfirmDate is made, the setup of style can be start. lt = LeadTime.
+    type: Date,
+    default: null,
+  },
 });
 module.exports = mongoose.model('os', OSSchema);

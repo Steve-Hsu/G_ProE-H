@@ -31,7 +31,7 @@ router.get('/ordersummary', authUser, async (req, res) => {
   }
   const comId = req.user.company;
   const osList = await OS.find({ company: comId }, { company: 0 });
-  console.log('the osList', osList)
+  // console.log('the osList', osList) // test code
   if (osList.length === 0) {
     console.log('No os Found')
 
@@ -454,17 +454,17 @@ router.delete('/deleteos/:osId', authUser, async (req, res) => {
   const osId = req.params.osId;
   const theOS = await OS.findOne(
     { company: comId, _id: osId },
-    { cNos: 1, osConfirmDate: 1 }
+    { caseList: 1, osConfirmDate: 1 }
   );
 
   console.log(osId); // Test Code
   //@ Turn the poDate of cases back to "null"
   // Don't need return any of this result immediately, so don't make any promise here.
-  const caseList = theOS.cNos;
+  const caseList = theOS.caseList;
   const osConfirmDate = theOS.osConfirmDate;
   if (!osConfirmDate) {
     caseList.map(async (c) => {
-      await Case.updateOne({ cNo: c }, { poDate: null, osNo: null });
+      await Case.updateOne({ _id: c.caseId, cNo: c.cNo }, { poDate: null, osNo: null });
     });
 
     await OS.findOneAndDelete({ company: comId, _id: osId }).then(() => {
