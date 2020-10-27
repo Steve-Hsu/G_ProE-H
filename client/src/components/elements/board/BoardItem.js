@@ -180,10 +180,19 @@ const BoardItem = ({
                         break;
                       case 'leadTimeSetUp':
                         const LeadTimesSetUp = subject.leadTimes ? true : false;
-                        returnedDiv = LeadTimesSetUp ?
-                          (<i className="fas fa-check-circle fc-success"> Leadtime OK</i>) :
-                          <i className="fas fa-times-circle fc-danger"> Not Finish</i>
+                        let resultDiv = (<i className="fas fa-times-circle fc-danger"> Not finished</i>)
+                        if (LeadTimesSetUp) {
+                          const totalMtrlQty = subject.purchaseQtySumUp + subject.purchaseLossQtySumUp + subject.purchaseMoqQty;
+                          const leadTimeQty = subject.leadTimes.reduce((x, curr) => {
+                            return x += curr.qty
+                          }, 0)
+                          if (totalMtrlQty == leadTimeQty) {
+                            resultDiv = (<i className="fas fa-check-circle fc-success"> LeadTime OK</i>)
+                          }
+                        }
+                        returnedDiv = resultDiv
                         break;
+
                       default:
                     }
                     //Switch for the result
