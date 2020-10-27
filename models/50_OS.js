@@ -14,22 +14,37 @@ const OSSchema = mongoose.Schema({
   osNo: {
     type: String,
   },
-  caseIds: [
+  // caseIds: [
+  //   {
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: 'case',
+  //   },
+  // ],
+  caseList: [
     {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'case',
+      caseId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'case'
+      },
+      cNo: {
+        type: String
+      },
+      style: {
+        type: String
+      },
+      client: {
+        type: String
+      },
+      caseType: {
+        type: String
+      }
     },
   ],
-  cNos: [
-    {
-      type: String,
-    },
-  ],
-  clients: [
-    {
-      type: String,
-    },
-  ],
+  // clients: [
+  //   {
+  //     type: String,
+  //   },
+  // ],
   suppliers: [
     {
       supplier: {
@@ -57,7 +72,44 @@ const OSSchema = mongoose.Schema({
       },
     },
   ],
-  caseMtrls: [],
+  caseMtrls: [
+    {
+      id: {
+        type: String
+      },
+      cases: {
+        type: Array
+      },
+      supplier: {
+        type: String
+      },
+      ref_no: {
+        type: String
+      },
+      mColor: {
+        type: String
+      },
+      mSizeSPEC: {
+        type: String
+      },
+      purchaseQtySumUp: {
+        type: Number
+      },
+      purchaseLossQtySumUp: {
+        type: Number
+      },
+      purchaseMoqQty: {
+        type: Number
+      },
+      hsCode: {
+        type: String,
+        default: null
+      },
+      item: {
+        type: String,
+      }
+    }
+  ],
   date: {
     type: Date,
     default: Date.now,

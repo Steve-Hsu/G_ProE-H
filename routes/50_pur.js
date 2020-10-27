@@ -102,8 +102,8 @@ router.post('/', authUser, async (req, res) => {
   const newOsNO = comSymbol + twoDigitYear + 'POS' + '_' + newOsNumber;
 
   //@ Define the elements for OS -------------------------------------------------
-  let cNoList = [];
-  let clientList = [];
+  let caseList = [];
+  // let clientList = [];
   let supplierList = [];
   let caseMtrls = [];
 
@@ -139,8 +139,14 @@ router.post('/', authUser, async (req, res) => {
           return resolve();
         }
       } else {
-        cNoList.push(theCase.cNo);
-        clientList.push(theCase.clients);
+        caseList.push({
+          caseId: caseId,
+          cNo: theCase.cNo,
+          style: theCase.style,
+          client: theCase.client,
+          caseType: theCase.caseType
+        });
+        // clientList.push(theCase.clients);
         mtrls.map((mtrl) => {
           let csptNum = 0;
           // const mtrlId = mtrl.id;
@@ -290,9 +296,9 @@ router.post('/', authUser, async (req, res) => {
         const orderSummary = new OS({
           company: comId,
           osNo: newOsNO,
-          caseIds: caseIds,
-          cNos: cNoList,
-          clients: clientList,
+          // caseIds: caseIds,
+          caseList: caseList,
+          // clients: clientList,
           suppliers: supplierList,
           caseMtrls: caseMtrls,
         });

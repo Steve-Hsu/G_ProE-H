@@ -13,7 +13,7 @@ const OrderSummary = () => {
 
   const purContext = useContext(PurContext);
   const { switchPage, currentOrderSummary } = purContext;
-  const { _id, osNo, cNos, suppliers, osConfirmDate, caseMtrls } = currentOrderSummary;
+  const { _id, osNo, caseList, suppliers, osConfirmDate, caseMtrls } = currentOrderSummary;
 
   const onClick_1 = (e) => {
     e.preventDefault();
@@ -44,10 +44,10 @@ const OrderSummary = () => {
 
         <div>
           The case purchased :{' '}
-          {cNos.map((cNo) => {
+          {caseList.map((CS) => {
             return (
-              <span key={cNo} className='ml-05'>
-                {cNo}
+              <span key={CS._id} className='ml-05'>
+                {CS.cNo}
               </span>
             );
           })}
