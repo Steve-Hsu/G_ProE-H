@@ -110,6 +110,11 @@ const OSSchema = mongoose.Schema({
       },
       price: {
         type: Object,
+        default: null
+      },
+      leadTimes: {
+        type: Array,
+        default: null
       }
     }
   ],

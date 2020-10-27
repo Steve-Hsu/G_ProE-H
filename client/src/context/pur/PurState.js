@@ -519,6 +519,7 @@ const PurState = (props) => {
   }
 
   const updateLeadTime = (e, caseMtrlId) => {
+    // e.preventDefault();
     let caseMtrl = currentOrderSummary.caseMtrls.find(({ _id }) => _id === caseMtrlId);
     if (caseMtrl) {
       const value = e.target.value
@@ -542,15 +543,15 @@ const PurState = (props) => {
 
       caseMtrl = caseMtrl.leadTimes.map((LTime) => {
         if (LTime.id === leadTimeId) {
-          LTime.setUpQty = Number(value) > qtyEnterMargin ?
-            Number(qtyEnterMargin) :
-            Number(value);
-          LTime[updateAttribute] =
-            updateAttribute == 'qty' ?
-              Number(value) > qtyEnterMargin ?
-                Number(qtyEnterMargin) :
-                Number(value) :
-              value
+          if (updateAttribute == 'qty') {
+            const theQty = Number(value) > qtyEnterMargin ?
+              Number(qtyEnterMargin) :
+              Number(value)
+            LTime.setUpQty = theQty;
+            LTime.qty = theQty;
+          } else {
+            LTime.date = value
+          }
         }
         return LTime
       })
