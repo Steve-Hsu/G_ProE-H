@@ -115,6 +115,10 @@ const OSSchema = mongoose.Schema({
       leadTimes: {
         type: Array,
         default: null
+      },
+      leadTimeComplete: {
+        type: Boolean,
+        default: false
       }
     }
   ],

@@ -466,6 +466,30 @@ const PurState = (props) => {
     }
   };
 
+  //This checkLtComplete is an internal method, don't used outside the PurState.js. Therefore, don't need to export it to Provider.
+  //This method return "true" or "false"
+  const checkLtComplete = async (caseMtrl) => {
+    const newCaseMtrl = caseMtrl
+    const { purchaseQtySumUp, purchaseLossQtySumUp, purchaseMoqQty, leadTimes } = newCaseMtrl
+    const CMQtySum = purchaseQtySumUp + purchaseLossQtySumUp + purchaseMoqQty
+    // if (leadTimes) {
+
+    const ltQtySum = await leadTimes.reduce((result, curr) => {
+      result += curr.qty
+      return result
+    }, 0)
+
+    console.log('the ltQtySum', ltQtySum, 'theCMQtySum', CMQtySum)
+    if (ltQtySum < CMQtySum) {
+      console.log('false returned.')
+      return false
+    } else {
+      console.log('true returned.')
+      return true
+    }
+
+  }
+
   const addLeadTime = (caseMtrlId) => {
     let caseMtrl = currentOrderSummary.caseMtrls.find(({ _id }) => _id === caseMtrlId);
     if (caseMtrl) {
@@ -475,23 +499,26 @@ const PurState = (props) => {
       let predictLeadTime = now.getTime() + 15 * 24 * 60 * 60 * 1000;
       const PoConfirmed = caseMtrl.price ? true : false;
       if (PoConfirmed) {
-        if (caseMtrl.item) {
-          item = caseMtrl.item.toLowerCase();
-          switch (item) {
-            case 'fabric':
-              predictLeadTime = now.getTime() + 32 * 24 * 60 * 60 * 1000;
-              break;
-            default:
-              predictLeadTime = now.getTime() + 17 * 24 * 60 * 60 * 1000;
+        const checkIfLTComplete = new Promise((resolve) => {
+
+
+          if (caseMtrl.item) {
+            item = caseMtrl.item.toLowerCase();
+            switch (item) {
+              case 'fabric':
+                predictLeadTime = now.getTime() + 32 * 24 * 60 * 60 * 1000;
+                break;
+              default:
+                predictLeadTime = now.getTime() + 17 * 24 * 60 * 60 * 1000;
+            }
           }
-        }
-        let date = new Date(predictLeadTime);
-        console.log("the date original format", date);
-        console.log("the ISO", date.toISOString().slice(0, 10));
-        const leadTimeDate = String(date.toISOString().slice(0, 10));
-        let qty = Math.round((totalMtrlQty + Number.EPSILON) * 100) / 100;
-        // let qty = Number(totalMtrlQty).toFixed(2)
-        if (caseMtrl.leadTimes) {
+          let date = new Date(predictLeadTime);
+          console.log("the date original format", date);
+          console.log("the ISO", date.toISOString().slice(0, 10));
+          const leadTimeDate = String(date.toISOString().slice(0, 10));
+          let qty = Math.round((totalMtrlQty + Number.EPSILON) * 100) / 100;
+          // let qty = Number(totalMtrlQty).toFixed(2)
+          // if (caseMtrl.leadTimes.length === 0) {
           //If leadTimes existing
           if (caseMtrl.leadTimes.length < 31) {
             //Limit the number of items in leadTimes under 31 to prevent too mush items crashing the app.
@@ -502,14 +529,25 @@ const PurState = (props) => {
             const roundQty = Math.round((qty + Number.EPSILON) * 100) / 100
             // setUpQty is for garment to set up to see which style will be fulfilled it materials in advance.
             caseMtrl.leadTimes.push({ id: generateId(), date: leadTimeDate, qty: roundQty, setUpQty: roundQty })
-          }
-        } else {
-          //If leadTime not existing
-          const leadTimes = [{ id: generateId(), date: leadTimeDate, qty: qty, setUpQty: qty }]
-          caseMtrl.leadTimes = leadTimes
-        }
 
-        dispatch({ type: UPDATE_LEADTIME, payload: caseMtrl })
+
+          }
+          // } else {
+          //   //If leadTime not existing
+          //   const leadTimes = [{ id: generateId(), date: leadTimeDate, qty: qty, setUpQty: qty }]
+          //   caseMtrl.leadTimes = leadTimes
+          // }
+          setTimeout(() => {
+            resolve(caseMtrl)
+          }, 200)
+
+        })
+
+        Promise.all([checkIfLTComplete]).then(async (result) => {
+          let caseMtrl = result[0]
+          caseMtrl.leadTimeComplete = await checkLtComplete(caseMtrl)
+          dispatch({ type: UPDATE_LEADTIME, payload: caseMtrl })
+        })
       } else {
         console.log('Po not confirmed');
       }
@@ -522,41 +560,60 @@ const PurState = (props) => {
     // e.preventDefault();
     let caseMtrl = currentOrderSummary.caseMtrls.find(({ _id }) => _id === caseMtrlId);
     if (caseMtrl) {
-      const value = e.target.value
-      const updateAttribute = e.target.name
-      const leadTimeId = e.target.id
-      const totalMtrlQty = caseMtrl.purchaseQtySumUp + caseMtrl.purchaseLossQtySumUp + caseMtrl.purchaseMoqQty;
+      const checkLTComplete = new Promise(async (resolve) => {
+        const value = e.target.value
+        const updateAttribute = e.target.name
+        const leadTimeId = e.target.id
+        const totalMtrlQty = caseMtrl.purchaseQtySumUp + caseMtrl.purchaseLossQtySumUp + caseMtrl.purchaseMoqQty;
 
-      let leadTimeQty = 0
-      if (caseMtrl.leadTimes) {
-        caseMtrl.leadTimes.map((LTime) => {
-          if (LTime.id !== leadTimeId) {
-            leadTimeQty += LTime.qty
+        let leadTimeQty = 0
+        if (caseMtrl.leadTimes) {
+          caseMtrl.leadTimes.map((LTime) => {
+            if (LTime.id !== leadTimeId) {
+              leadTimeQty += LTime.qty
+            }
+            return LTime
+          })
+        }
+        console.log('LeadTimeQty', leadTimeQty)
+
+        const qtyEnterMargin = totalMtrlQty - leadTimeQty
+
+
+        await caseMtrl.leadTimes.map((LTime) => {
+          if (LTime.id === leadTimeId) {
+            if (updateAttribute == 'qty') {
+              const theQty = Number(value) > qtyEnterMargin ?
+                Number(qtyEnterMargin) :
+                Number(value)
+              LTime.setUpQty = theQty;
+              LTime.qty = theQty;
+            } else {
+              LTime.date = value
+            }
           }
           return LTime
         })
-      }
-      console.log('LeadTimeQty', leadTimeQty)
-
-      const qtyEnterMargin = totalMtrlQty - leadTimeQty
-
-
-      caseMtrl = caseMtrl.leadTimes.map((LTime) => {
-        if (LTime.id === leadTimeId) {
-          if (updateAttribute == 'qty') {
-            const theQty = Number(value) > qtyEnterMargin ?
-              Number(qtyEnterMargin) :
-              Number(value)
-            LTime.setUpQty = theQty;
-            LTime.qty = theQty;
-          } else {
-            LTime.date = value
-          }
-        }
-        return LTime
+        const result = caseMtrl
+        resolve(result)
       })
-      console.log('the valueAsNumber', value)
-      dispatch({ type: UPDATE_LEADTIME, payload: caseMtrl })
+
+      Promise.all([checkLTComplete]).then(async (result) => {
+        let caseMtrl = result[0]
+        const check = await checkLtComplete(caseMtrl)
+        console.log('the check', check)
+        if (check) {
+          caseMtrl.leadTimeComplete = true
+          const trueResult = caseMtrl
+          console.log('trueResult', trueResult.leadTimeComplete)
+          dispatch({ type: UPDATE_LEADTIME, payload: trueResult })
+        } else {
+          caseMtrl.leadTimeComplete = false
+          const falseResult = caseMtrl
+          console.log('falseResult', falseResult.leadTimeComplete)
+          dispatch({ type: UPDATE_LEADTIME, payload: falseResult })
+        }
+      })
     } else {
       console.log('Not this caseMtrl');
     }
@@ -572,6 +629,7 @@ const PurState = (props) => {
     if (caseMtrl) {
       const newLeadTimes = caseMtrl.leadTimes.filter((LTime) => { return LTime.id !== leadTimeId });
       caseMtrl.leadTimes = newLeadTimes
+      caseMtrl.leadTimeComplete = false
       dispatch({ type: UPDATE_LEADTIME, payload: caseMtrl });
 
     } else {

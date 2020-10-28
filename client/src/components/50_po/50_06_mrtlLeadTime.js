@@ -13,7 +13,7 @@ const MrtlLeadTime = ({ caseMtrl, idx }) => {
   const purContext = useContext(PurContext)
   const popoverContext = useContext(PopoverContext)
   const { openMtrlLeadTime, addLeadTime, updateLeadTime, deleteLeadTime, uploadCaseMtrl } = purContext;
-  const { _id, purchaseQtySumUp, purchaseLossQtySumUp, purchaseMoqQty, } = caseMtrl;
+  const { _id, purchaseQtySumUp, purchaseLossQtySumUp, purchaseMoqQty, leadTimeComplete } = caseMtrl;
   const caseMtrlId = _id
   const { toggleLoading } = popoverContext;
 
@@ -37,19 +37,6 @@ const MrtlLeadTime = ({ caseMtrl, idx }) => {
     e.preventDefault();
     addLeadTime(caseMtrlId);
   }
-
-  const leadTimeTotalQty = () => {
-    if (caseMtrl.leadTimes) {
-      let number = 0
-      caseMtrl.leadTimes.map((LTime) => {
-        number += LTime.qty;
-      })
-      return number
-    } else {
-      return 0
-    }
-  }
-
 
   const submit = async (e) => {
     e.preventDefault();
@@ -123,7 +110,7 @@ const MrtlLeadTime = ({ caseMtrl, idx }) => {
 
         {PoConfirmed ? (
           <div>
-            {totalMtrlQty > leadTimeTotalQty() ? (
+            {!leadTimeComplete ? (
               <SqBtnLarge
                 name='mPriceBtn'
                 onClick={onClick}
