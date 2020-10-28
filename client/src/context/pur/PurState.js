@@ -496,30 +496,43 @@ const PurState = (props) => {
       const totalMtrlQty = caseMtrl.purchaseQtySumUp + caseMtrl.purchaseLossQtySumUp + caseMtrl.purchaseMoqQty;
       let item = 'undefined';
       let now = new Date();
-      let predictLeadTime = now.getTime() + 15 * 24 * 60 * 60 * 1000;
+
       const PoConfirmed = caseMtrl.price ? true : false;
       if (PoConfirmed) {
         const checkIfLTComplete = new Promise((resolve) => {
 
-
-          if (caseMtrl.item) {
-            item = caseMtrl.item.toLowerCase();
-            switch (item) {
-              case 'fabric':
-                predictLeadTime = now.getTime() + 32 * 24 * 60 * 60 * 1000;
-                break;
-              default:
-                predictLeadTime = now.getTime() + 17 * 24 * 60 * 60 * 1000;
+          let dateCounting = null;
+          let date = null;
+          if (caseMtrl.leadTimes.length === 0) {
+            let predictLeadTime = now.getTime() + 15 * 24 * 60 * 60 * 1000;
+            if (caseMtrl.item) {
+              item = caseMtrl.item.toLowerCase();
+              switch (item) {
+                case 'fabric':
+                  predictLeadTime = now.getTime() + 32 * 24 * 60 * 60 * 1000;
+                  break;
+                default:
+                  predictLeadTime = now.getTime() + 17 * 24 * 60 * 60 * 1000;
+              }
             }
+            dateCounting = new Date(predictLeadTime);
+          } else {
+            //Convert string back to Date in Number format.
+            const lastLeadTime = new Date(caseMtrl.leadTimes[caseMtrl.leadTimes.length - 1].date)
+            const newDate = lastLeadTime.getTime() + 4 * 24 * 60 * 60 * 1000;
+            dateCounting = new Date(newDate);
           }
-          let date = new Date(predictLeadTime);
-          console.log("the date original format", date);
-          console.log("the ISO", date.toISOString().slice(0, 10));
+          const checkSunAndSat = dateCounting.toString().slice(0, 3)
+          if (checkSunAndSat === 'Sun' || checkSunAndSat === 'Sat') {
+            const addDay = checkSunAndSat === 'Sun' ? 1 : 2;
+            const fixSunAndSatDate = new Date(dateCounting).getTime() + addDay * 24 * 60 * 60 * 1000;
+            date = new Date(fixSunAndSatDate)
+          } else {
+            date = new Date(dateCounting)
+          }
+          // console.log("the ISO", date.toISOString().slice(0, 10)); // test Code
           const leadTimeDate = String(date.toISOString().slice(0, 10));
           let qty = Math.round((totalMtrlQty + Number.EPSILON) * 100) / 100;
-          // let qty = Number(totalMtrlQty).toFixed(2)
-          // if (caseMtrl.leadTimes.length === 0) {
-          //If leadTimes existing
           if (caseMtrl.leadTimes.length < 31) {
             //Limit the number of items in leadTimes under 31 to prevent too mush items crashing the app.
             caseMtrl.leadTimes.map((LTime) => {
@@ -532,11 +545,7 @@ const PurState = (props) => {
 
 
           }
-          // } else {
-          //   //If leadTime not existing
-          //   const leadTimes = [{ id: generateId(), date: leadTimeDate, qty: qty, setUpQty: qty }]
-          //   caseMtrl.leadTimes = leadTimes
-          // }
+
           setTimeout(() => {
             resolve(caseMtrl)
           }, 200)
