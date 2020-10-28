@@ -721,24 +721,52 @@ router.post('/updatecasemtrl/:osId', authUser, async (req, res) => {
   console.log('the OSId', osId);
   const { inputCaseMtrls } = req.body;
   console.log('the caseMtrls', inputCaseMtrls[0]);
+  const checkLTComplete = await inputCaseMtrls.filter((cs) => {
+    return cs.leadTimeComplete === false
+  })
+
+  let msg = ''
   try {
-    await OS.updateOne(
-      {
-        company: comId,
-        _id: osId,
-      },
-      {
-        $set: {
-          caseMtrls: inputCaseMtrls,
+    if (checkLTComplete.length > 0) {
+      const resultOs = await OS.findOneAndUpdate(
+        {
+          company: comId,
+          _id: osId,
         },
-      }
-    );
-    const msg = 'The hs-code is uploaded.';
-    console.log(msg);
-    return res.json({ msg: msg });
+        {
+          $set: {
+            osLtConfirmDate: null,
+            caseMtrls: inputCaseMtrls,
+          },
+        },
+        { new: true }
+      );
+      msg = 'The caseMtrls is uploaded.';
+      console.log(msg);
+      return res.json(resultOs);
+    } else {
+      const resultOs = await OS.findOneAndUpdate(
+        {
+          company: comId,
+          _id: osId,
+        },
+        {
+          $currentDate: { osLtConfirmDate: Date },
+          $set: {
+            caseMtrls: inputCaseMtrls,
+          },
+        },
+        { new: true }
+      );
+      msg = 'The caseMtrl is uploaded and the leadTime date is updated.';
+      console.log(msg);
+      return res.json(resultOs);
+    }
   } catch (err) {
     console.log(err);
   }
+
+
 });
 module.exports = router;
 

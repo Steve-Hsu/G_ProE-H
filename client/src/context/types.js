@@ -120,6 +120,7 @@ export const DEFAULT = 'DEFAULT';
 export const PURPAGE_SWITCH = 'PURPAGE_SWITCH';
 export const OS_LIST_DOWNLOAD = 'OS_LIST_DOWNLOAD';
 export const OS_CURRENT = 'OS_CURRENT';
+export const OS_UPDATE = 'OS_UPDATE';
 export const PO_CURRENT = 'PO_CURRENT';
 export const PO_CURRENT_MTRLPRICE = 'PO_CURRENT_MTRLPRICE';
 export const OS_DELETE = 'OS_DELETE';

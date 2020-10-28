@@ -5,6 +5,7 @@ import {
   PURPAGE_SWITCH,
   OS_LIST_DOWNLOAD,
   OS_CURRENT,
+  OS_UPDATE,
   PO_CURRENT,
   PO_CURRENT_MTRLPRICE,
   OS_DELETE,
@@ -52,6 +53,17 @@ export default (state, action) => {
         ...state,
         osList: action.payload,
       };
+    case OS_UPDATE:
+      return {
+        ...state,
+        osList: state.osList.map((os) => {
+          if (os._id === action.payload._id) {
+            os = action.payload
+          }
+          return os
+        }),
+        currentOrderSummary: action.payload,
+      }
     case OS_CURRENT:
       return {
         ...state,

@@ -11,6 +11,7 @@ import {
   PURPAGE_SWITCH,
   OS_LIST_DOWNLOAD,
   OS_CURRENT,
+  OS_UPDATE,
   PO_CURRENT,
   PO_CURRENT_MTRLPRICE,
   OS_DELETE,
@@ -441,6 +442,7 @@ const PurState = (props) => {
         }, 3500);
       } else {
         console.log('Upload hs-code succeed');
+        dispatch({ type: OS_UPDATE, payload: res.data })
       }
     } catch (err) {
       console.log(err.msg, 'Upload hs-code failed');
