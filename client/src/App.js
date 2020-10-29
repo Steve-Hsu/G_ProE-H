@@ -12,6 +12,7 @@ import CaseMerchandiser from './components/pages/22_CaseMerchandiser';
 import MPrice from './components/pages/31_MPrice';
 import Quotation from './components/pages/41_Quotation';
 import Purchase from './components/pages/51_Purchase';
+import CompleteSet from './components/pages/61_CompleteSet';
 //ComRouter
 import ComLogin from './components/authPage/10_ComLogin';
 import UserLogin from './components/authPage/20_UserLogin';
@@ -111,6 +112,10 @@ const App = () => {
                                   <PrivateUserRoute
                                     path='/api/purchase'
                                     component={Purchase}
+                                  />
+                                  <PrivateUserRoute
+                                    path='/api/completeset'
+                                    component={CompleteSet}
                                   />
                                   {/* This NotFound return a page when the previous page is not found. */}
                                   <Route component={NotFound} />

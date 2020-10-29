@@ -71,7 +71,7 @@ const Purchase = (props) => {
           <LeftBar currentPath={currentPath} />
           <div className='container container-with-navbar'>
             <GoBackBtn onClick={goBack} />
-            <OsSelector />
+            <OsSelector purpose='osSelector' />
           </div>
         </div>
       ) : openPage === 'orderSummary' ? (
@@ -82,7 +82,7 @@ const Purchase = (props) => {
               go back
             </button> */}
             <GoBackBtn onClick={goOsSelector} />
-            <OrderSummary />
+            <OrderSummary purpose='purchaseOrder' />
           </div>
         </div>
       ) : openPage === 'purchaseOrder' ? (

@@ -7,7 +7,7 @@ import DeletePopover from '../layout/DeletePopover';
 import LockedBadge from '../elements/badge/LockedBadge';
 import SqBtnLarge from '../elements/btns/SqBtnLarge';
 
-const OrderSummary = () => {
+const OrderSummary = ({ purpose }) => {
   const popoverContext = useContext(PopoverContext);
   const { popover, current, togglePopover } = popoverContext;
 
@@ -23,6 +23,14 @@ const OrderSummary = () => {
   const onClick_2 = (e) => {
     e.preventDefault();
     switchPage('leadTimePage')
+  }
+
+  const subjects = () => {
+    if (purpose === 'purchaseOrder') {
+      return [suppliers, caseMtrls]
+    } else if (purpose === 'completeSetOfCase') {
+      return [caseList, caseList]
+    }
   }
 
   return (
@@ -54,25 +62,27 @@ const OrderSummary = () => {
         </div>
         <div className='h-scatter-content'>
           <div></div>
-          <div className='flexBox'>
+          {purpose === 'purchaseOrder' ? (<div className='flexBox'>
             <SqBtnLarge onClick={onClick_1} label='List' className='mr-05' />
             <SqBtnLarge onClick={onClick_2} label='Lead Time' />
-          </div>
+          </div>) : null}
+
         </div>
         {osConfirmDate !== null ? (
           <LockedBadge
             labels={[
               'All the Purchase Order is confirmed.',
-              'The date is sent to accounting Department',
+              'The order summary submitted to Accounting Department',
             ]}
           />
         ) : null}
       </div>
 
       <Board
-        subjects={[suppliers, caseMtrls]}
-        purpose='purchaseOrder'
-        label={<div>{suppliers.length} <span className='fs-normal fc-cp-1'>Purchase Order</span></div>}
+        subjects={subjects()}
+        // purpose='order'
+        purpose={purpose}
+        label={purpose === 'purchaseOrder' ? (<div>{suppliers.length} <span className='fs-normal fc-cp-1'>Purchase Order</span></div>) : null}
         toggleItemAttributes={switchPage}
       />
     </Fragment>

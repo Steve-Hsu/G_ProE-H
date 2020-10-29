@@ -5,6 +5,7 @@ const Banner = ({ purpose, onClick, label, className }) => {
     switch (purpose) {
       case 'case':
       case 'mPrice':
+      case 'completeset':
         return (
           <div className={`card bd-radius-s bd-light bg-cp-1 w-100 h-20vh ${className}`}>
             <a onClick={onClick} className='cursor'>

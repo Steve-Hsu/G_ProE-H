@@ -56,11 +56,11 @@ const TableItem = ({
         toggleItemAttributes[0](theId);
         break;
       case 'osSelector':
+      case 'csOsSelector':
         // e.target.name = 'osSelector'
         console.log('The osSelector click is triggered');
         toggleItemAttributes[0](subject);
-        toggleItemAttributes[1]('orderSummary');
-
+        toggleItemAttributes[1](purpose === 'osSelector' ? 'orderSummary' : 'csCaseSelector');
         break;
       default:
     }

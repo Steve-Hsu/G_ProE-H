@@ -5,7 +5,8 @@ import PopoverContext from '../../context/popover/popoverContext'
 //@ Child component
 // import OsItem from './50_02_01_osItem';
 
-const OsSelector = () => {
+const OsSelector = ({ purpose }) => {
+
   const purContext = useContext(PurContext);
   const popoverContext = useContext(PopoverContext)
   const {
@@ -15,6 +16,7 @@ const OsSelector = () => {
     switchOsCurrent,
     switchPage,
   } = purContext;
+
 
   const { toggleLoading } = popoverContext
 
@@ -32,7 +34,7 @@ const OsSelector = () => {
     // <div>test</div>
     <Table
       subjects={osList}
-      purpose='osSelector'
+      purpose={purpose}
       toggleItemAttributes={[switchOsCurrent, switchPage]}
       displayTitles={[{ osNo: true }]}
     />

@@ -26,6 +26,7 @@ const Board = ({
       target = 'supplier';
       break;
     case 'purchaseOrder':
+    case 'completeSetOfCase':
       target = 'noTargetBoard';
       break;
 
@@ -224,7 +225,7 @@ const Board = ({
   } else {
     // @No target board
     let loopItems = subjects
-    if (purpose = 'purchaseOrder') {
+    if (purpose === 'purchaseOrder' || purpose === 'completeSetOfCase') {
       loopItems = subjects[0]
     }
     return (
@@ -247,7 +248,14 @@ const Board = ({
                     purpose={purpose}
                     displayTitles={purpose === 'purchaseOrder' ?
                       subjects[1].filter((s) => s.supplier === subject.supplier).length
-                      : []}
+                      : purpose === 'completeSetOfCase' ? [
+                        { cNo: true },
+                        { style: true },
+                        { caseType: true },
+                        { client: true },
+                        { merchandiser: true },
+                        { quoNo: true },
+                      ] : []}
                     subject={subject}
                     toggleItemAttributes={toggleItemAttributes}
                     idx={subject_idx}

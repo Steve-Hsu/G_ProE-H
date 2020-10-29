@@ -148,6 +148,9 @@ const PurState = (props) => {
       case 'leadTimePage':
         dispatch({ type: PURPAGE_SWITCH, payload: value });
         break;
+      case 'csCaseSelector':
+        dispatch({ type: PURPAGE_SWITCH, payload: value });
+        break;
       default:
         console.log('no value is triggered ');
       // dispatch({ type: PURPAGE_SWITCH, payload: value });
