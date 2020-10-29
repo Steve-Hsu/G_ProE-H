@@ -13,6 +13,7 @@ const OSSchema = mongoose.Schema({
   },
   osNo: {
     type: String,
+    unique: true,
   },
   // caseIds: [
   //   {

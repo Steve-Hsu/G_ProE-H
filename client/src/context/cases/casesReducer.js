@@ -155,6 +155,7 @@ export default (state, action) => {
         merchandiser: null,
         lastUpdateBy: null,
         updateDate: null,
+        caseConfirmDate: null,
       };
     case CASENO_CLEAR:
       return {

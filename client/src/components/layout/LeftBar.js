@@ -488,10 +488,11 @@ const LeftBar = ({ currentPath }) => {
                 </div> */}
                   {/* <div> */}
                   {cNo === null ? null : (
+
                     <div>
-                      {merchandiser === userName ? (<div className='mt-1'>
+                      {merchandiser === userName ? osNo === null ? (<div className='mt-1'>
                         {confirmArea('Confirm the Case', 'Case is Confirmed', 'Not Confirmed', caseConfirmDate, toggleCaseConfirmDate)}
-                      </div>) : null}
+                      </div>) : null : null}
 
                       <input
                         type='submit'

@@ -81,7 +81,7 @@ router.post('/', authUser, async (req, res) => {
       { osNo: { $regex: comSymbol + twoDigitYear + 'POS', $options: 'i' } }, // Query the same cases in same year by cNo, It promises return cases of same company in same year
     ],
   }).sort({
-    date: -1,
+    osNo: 1,
   });
   const makingOsNumber = new Promise((resolve) => {
     const checkOsNumber = new Promise((resolve) => {
@@ -91,16 +91,18 @@ router.post('/', authUser, async (req, res) => {
         //Check the number of os, include the new os.
         //for example, If current os number is 5, then the new os would be 6th os.
         osQty = Number(osQty + oss.length);
-        oss.map((os, idx) => {
-          const checkOsNo = os.osNo.slice(0, -String(idx + 1).length) + String(idx + 1)
-          console.log("the checkOsNo", checkOsNo)
-          if (os.osNo !== checkOsNo) {
+        for (var idx = 0; idx < oss.length; idx++) {
+          const checkOsNo = oss[idx].osNo.slice(0, -String(idx + 1).length) + String(idx + 1)
+          // console.log("the checkOsNo", checkOsNo) // Test code
+          if (oss[idx].osNo !== checkOsNo) {
             osQty = Number(idx + 1)
+            resolve()
+            break;
           }
           if (idx + 1 === oss.length) {
             resolve()
           }
-        })
+        }
       }
     })
 

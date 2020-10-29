@@ -41,7 +41,7 @@ router.get('/', authUser, async (req, res) => {
         quoNo: '',
       },
     },
-  ]).sort({ date: -1 });
+  ]).sort({ cNo: 1 });
 
   let insertList = await new Promise((resolve, reject) => {
     if (caseList.length > 0) {
@@ -620,30 +620,8 @@ router.post(
       let strDate = new Date(); // By default Date empty constructor give you Date.now
       let shortYear = strDate.getFullYear();
       let twoDigitYear = shortYear.toString().substr(-2); // Add this line
-
-      const cases = await Case.find({
-        $and: [
-          { company: req.user.company },
-          { cNo: { $regex: comSymbol + twoDigitYear + 'C', $options: 'i' } }, // Query the same cases in same year by cNo, It promises return cases of same company in same year
-        ],
-      }).sort({
-        date: -1,
-      });
       let caseQty = 1;
-      if (cases.length < 1) {
-      } else {
-        caseQty = Number(caseQty + cases.length);
-      }
-
-      const digits = 5 - caseQty.toString().length;
-
-      const caseNumber = [];
-      for (let i = 1; i <= digits; i++) {
-        caseNumber.push('0');
-      }
-
-      caseNumber.push(caseQty);
-
+      let newCNO = '';
       //Define caseType
       let caseTypeSymbol = 'T';
       switch (caseType) {
@@ -659,18 +637,63 @@ router.post(
         default:
       }
 
-      let newCaseNumber = caseNumber.toString().split(',').join('');
-      let newCNO =
-        comSymbol +
-        twoDigitYear +
-        'C' +
-        '_' +
-        newCaseNumber +
-        '_' +
-        caseTypeSymbol;
+      const cases = await Case.find({
+        $and: [
+          { company: req.user.company },
+          { cNo: { $regex: comSymbol + twoDigitYear + 'C', $options: 'i' } }, // Query the same cases in same year by cNo, It promises return cases of same company in same year
+        ],
+      }).sort({
+        cNo: 1,
+      });
 
+      const makingCaseNumber = new Promise((resolve) => {
+        const checkCaseNumber = new Promise((resolve) => {
+          if (cases.length < 1) {
+            resolve()
+          } else {
+            //Check the number of case, include the new case.
+            //for example, If current case number is 5, then the new case would be 6th case.
+            caseQty = Number(caseQty + cases.length);
+            for (var idx = 0; idx < cases.length; idx++) {
+              const checkCaseNo = cases[idx].cNo.slice(0, -(String(idx + 1).length + 2))
+                + String(idx + 1)
+                + '_'
+                + caseTypeSymbol;
+              console.log("the existing case No", cases[idx].cNo) // Test Code
+              console.log("the checkCaseNo", checkCaseNo) // Test Code
+              if (cases[idx].cNo.slice(0, -2) !== checkCaseNo.slice(0, -2)) {
+                caseQty = Number(idx + 1)
+                resolve();
+                break;
+              }
+              if (idx + 1 === cases.length) {
+                resolve()
+              }
+            }
+
+          }
+        })
+        Promise.all([checkCaseNumber]).then(() => {
+          const digits = 5 - caseQty.toString().length;
+          const caseNumber = [];
+          for (let i = 1; i <= digits; i++) {
+            caseNumber.push('0');
+          }
+          caseNumber.push(caseQty);
+          let newCaseNumber = caseNumber.toString().split(',').join('');
+          newCNO =
+            comSymbol +
+            twoDigitYear +
+            'C' +
+            '_' +
+            newCaseNumber +
+            '_' +
+            caseTypeSymbol;
+          return resolve()
+        })
+      })
       // Promise.all([trimedcWays, numberThegQty, trimedSizes, trimedMtrls])
-      Promise.all([trimedcWays, numberThegQty, trimedMtrls])
+      Promise.all([trimedcWays, numberThegQty, trimedMtrls, makingCaseNumber])
         .then(async () => {
           const newCase = new Case({
             user: req.user.id,
