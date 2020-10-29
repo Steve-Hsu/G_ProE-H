@@ -13,7 +13,7 @@ const OrderSummary = ({ purpose }) => {
 
   const purContext = useContext(PurContext);
   const { switchPage, currentOrderSummary } = purContext;
-  const { _id, osNo, caseList, suppliers, osConfirmDate, caseMtrls } = currentOrderSummary;
+  const { _id, osNo, caseList, suppliers, osConfirmDate, caseMtrls } = currentOrderSummary ? currentOrderSummary : null;
 
   const onClick_1 = (e) => {
     e.preventDefault();

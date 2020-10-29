@@ -83,6 +83,7 @@ export default (state, action) => {
       return {
         ...state,
         openPage: 'osSelector',
+        currentOrderSummary: null,
         osList: state.osList.filter((os) => {
           return os._id !== action.payload;
         }),

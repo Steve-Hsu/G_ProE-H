@@ -50,8 +50,9 @@ const LeftBar = ({ currentPath }) => {
     downLoadmtrlPrice,
   } = quoContext;
 
-  const { openPage, togglePoConfirmDate, currentPo, selectedCases, osList } = purContext;
-  const { toggleLoading } = popoverContext
+  const { openPage, togglePoConfirmDate, currentPo, selectedCases, osList, currentOrderSummary } = purContext;
+  // const { currentOsCaseList } = currentOrderSummary.caseList ? currentOrderSummary.caseList : [];
+  const { toggleLoading } = popoverContext;
 
   const theCase = quotation.theCase;
 
@@ -593,6 +594,22 @@ const LeftBar = ({ currentPath }) => {
               </section>
               )
               : null}
+        {/* @CompleteSet Set */}
+        {(currentPath === '/api/completeset' && openPage === 'csCaseSelector') ? (
+          <section className='round-area bd-light bg-cp-1 mt-1'>
+            <div className='fw-bold'>
+              Arrange the order of production
+            </div>
+            {currentOrderSummary.caseList.map((OsCase) => {
+              return (
+                <div key={`OsCase${OsCase._id}`} className='round-area' >
+                  OsCase
+                  {OsCase.cNo}
+                </div>
+              )
+            })}
+          </section>
+        ) : null}
       </div>
     </div>
   );
