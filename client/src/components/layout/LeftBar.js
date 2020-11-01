@@ -493,24 +493,28 @@ const LeftBar = ({ currentPath }) => {
   let theWidth = 0
 
   const mouseDownHandler = (e) => {
-    draggingEle = e.target;
-    // Calculate the mouse position
-    const rect = draggingEle.getBoundingClientRect();
-    // x = e.pageX
-    // y = e.pageY
-    x = e.pageX - rect.left;
-    y = e.pageY - rect.top;
-    console.log('the e.pageY', e.pageY)
-    console.log('the rect.top', rect.top)
-    console.log('the y', y)
-    console.log('the y of client', e.clientY)
-    console.log('the width of e.target', rect.width)
-    theWidth = rect.width
-    // Attach the listeners to `document`
-    //This event mousemove is keeping triggered while you hold the item.
-    document.addEventListener('mousemove', mouseMoveHandler);
-    //This event fired once you let go the mouse.
-    document.addEventListener('mouseup', mouseUpHandler);
+    if (isDragginStarted) {
+      //Prevent doudle select, if user's dragging, can't trigger this func drag another div
+    } else {
+      draggingEle = e.target;
+      // Calculate the mouse position
+      const rect = draggingEle.getBoundingClientRect();
+      // x = e.pageX
+      // y = e.pageY
+      x = e.pageX - rect.left;
+      y = e.pageY - rect.top;
+      console.log('the e.pageY', e.pageY)
+      console.log('the rect.top', rect.top)
+      console.log('the y', y)
+      console.log('the y of client', e.clientY)
+      console.log('the width of e.target', rect.width)
+      theWidth = rect.width
+      // Attach the listeners to `document`
+      //This event mousemove is keeping triggered while you hold the item.
+      document.addEventListener('mousemove', mouseMoveHandler);
+      // //This event fired once you let go the mouse.
+      document.addEventListener('mouseup', mouseUpHandler);
+    }
   };
 
   const mouseMoveHandler = (e) => {
@@ -531,6 +535,8 @@ const LeftBar = ({ currentPath }) => {
       placeholder.classList.add('p-05')
       placeholder.classList.add('fw-bold')
       placeholder.classList.add('fc-cp-2-c')
+      placeholder.style.height = `${draggingRect.height}px`;
+
 
       placeholder.setAttribute('id', 'placeHolder')
       draggingEle.parentNode.insertBefore(
@@ -538,27 +544,12 @@ const LeftBar = ({ currentPath }) => {
         draggingEle.nextSibling
       );
 
-      // Set the placeholder's height
-      placeholder.style.height = `${draggingRect.height}px`;
-
-      // container.childNodes.forEach((div, idx) => {
-      //   if (div.id === 'placeholder') {
-      //     return index = idx + 1
-      //   }
-      // })
-      // let nodes = document.getElementsByTagName('*');
-      // index = container.childNodes.indexOf(placeholder)
-
-
-
-
-
     }
     // Get the 
     // Set position for dragging element
     draggingEle.style.position = 'absolute';
-    // Steve: Don't konw why the positoin in y axis is not correct so I adjust it by adding '-60'
-    draggingEle.style.top = `${e.pageY - y - 60}px`;
+    // Steve: Don't konw why the positoin in y axis is not correct so I adjust it by adding '-55'
+    draggingEle.style.top = `${e.pageY - y - 55}px`;
     draggingEle.style.left = `${e.pageX - x}px`;
     // Steve: I setting the width of the draggedEle by it original width.
     draggingEle.style.width = `${theWidth}px`
@@ -649,7 +640,7 @@ const LeftBar = ({ currentPath }) => {
     //   console.log(i.id)
     // })
 
-    theWidth = 0
+    // theWidth = 0
   };
 
   const isAbove = function (nodeA, nodeB) {

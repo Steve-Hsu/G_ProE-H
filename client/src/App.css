@@ -970,6 +970,7 @@ input[type='submit']:focus {
     color: var(--gray-4);
   }
 }
+
 /* Usage : Use a div with class .MPH-input-group to warp a input and babel, the input will transform it size when focused. */
 .MPH-input-group {
   transition: all 0.3s;
@@ -2056,6 +2057,29 @@ input[type='submit']:focus {
   cursor: -moz-grabbing;
   cursor: -webkit-grabbing;
 }
+
+/* @List of osCases */
+/* .animationHeight {
+  animation: growHeight 1s 1;
+  -webkit-animation: growHeight 1s 1;
+}
+@-webkit-keyframes growHeight {
+  0% {
+    height: 0px;
+  }
+  25% {
+    height: 25px;
+  }
+  50% {
+    height: 50px;
+  }
+  75% {
+    height: 55px;
+  }
+  100% {
+    height: 60px;
+  }
+} */
 
 /* @Loader */
 /* @Loading spinner */
