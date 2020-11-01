@@ -2002,7 +2002,7 @@ input[type='submit']:focus {
   opacity: 0;
 }
 
-/* @ Hover React */
+/* @Hover React */
 .hover-cp-2:hover {
   background: var(--cp-1_2);
   transition: ease-out 0.3s;
@@ -2041,6 +2041,20 @@ input[type='submit']:focus {
   /* border: 1px solid rgba(255, 255, 255, 0); */
   outline: none;
   transition: all 0.2s;
+}
+
+/* @Cursor */
+.grabbable {
+  cursor: move; /* fallback if grab cursor is unsupported */
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+  /* transition: 0.1s cubic-bezier(0.1, 0.5, 0.1, 0.5); */
+}
+.grabbable:active {
+  cursor: grabbing;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
 }
 
 /* @Loader */

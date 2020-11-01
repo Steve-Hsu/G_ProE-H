@@ -352,6 +352,277 @@ const LeftBar = ({ currentPath }) => {
     )
   }
 
+  //@ Drag functions for completeset
+  // Functions for drag and drop
+  // const allListDiv = () => {
+  //   let rectArr = []
+  //   let idArry = []
+  //   if (currentPath === '/api/completeset' && openPage === 'csCaseSelector') {
+  //     if (currentOrderSummary) {
+  //       if (currentOrderSummary.caseList) {
+  //         currentOrderSummary.caseList.map((OsCase) => {
+  //           rectArr.push(document.getElementById(`OsCase${OsCase._id}`).getBoundingClientRect())
+  //           idArry.push(`${OsCase._id}`)
+  //         })
+  //       } else {
+  //       }
+  //     }
+  //   }
+  //   let rects = rectArr
+  //   let ids = idArry
+  //   return { rects, ids }
+  // }
+
+
+  // const checkUpOrDown = (draggedDiv, droppableDiv) => {
+  //   const topOfDraggedDiv = draggedDiv.getBoundingClientRect().top
+  //   const topOfDroppableDiv = droppableDiv.getBoundingClientRect().top
+  //   if (topOfDraggedDiv === topOfDroppableDiv) {
+  //     return 'same'
+  //   } else if (topOfDraggedDiv < topOfDroppableDiv) {
+  //     return 'up'
+  //   } else {
+  //     return 'down'
+  //   }
+  // }
+
+
+
+  // const movingWhenOver = (UpOrDown, draggedDiv, droppableDiv) => {
+  //   if (UpOrDown === 'same') {
+  //   } else if (UpOrDown === 'up') {
+  //     let startPoint = false
+  //     const allDiv = allListDiv()
+  //     allDiv.ids.map((id, idx) => {
+  //       const targetId = `OsCaseChild${id}`
+  //       if (startPoint) {
+  //         const theDiv = document.getElementById(targetId)
+  //         // console.log(allDiv.rects[idx - 1].top)
+  //         // if (targetId !== droppableDiv.id) {
+  //         let b = 'yellow'
+  //         const topPointForMoving = allDiv.rects[idx - 1].top
+  //         console.log("allDiv top", topPointForMoving)
+  //         console.log('the content ', theDiv.innerHTML)
+  //         theDiv.style = `background:${b}; transform: translateY(-${theDiv.getBoundingClientRect().height}px); transition: all 0.5s;`
+  //         // theDiv.style.top = allDiv.rects[idx - 1].top
+  //         console.log("theDiv after move", theDiv.getBoundingClientRect().top)
+  //         // } else {
+  //         //   theDiv.style = 'height: 5rem'
+  //         //   console.log("yes i'm the problem div,", theDiv.innerHTML)
+  //         // }
+  //       }
+  //       if (targetId === draggedDiv.id) {
+  //         startPoint = true
+  //       }
+
+  //       if (targetId === droppableDiv.id) {
+  //         startPoint = false
+  //         console.log('called')
+  //       }
+
+  //     })
+
+  //   } else {
+
+  //   }
+  // }
+
+  // // CallBacks for darg and drop
+  // let draggedElement = null
+  // let draggedObject = null
+  // const bodyRect = document.body.getBoundingClientRect()
+
+  // const handleDragStart = (e) => {
+  //   draggedObject = e.target
+  //   draggedElement = e.target.innerHTML
+  //   let red = 'red'
+  //   e.target.style = `background: ${red}`
+  //   movingWhenOver(e)
+  // }
+  // const dragLeave = (e) => {
+  //   if (e.target.innerHTML === draggedElement) {
+  //     e.target.style = 'opacity:0'
+  //   } else {
+  //     e.target.style = 'background:var(--cp-1_1-light)'
+  //   }
+
+  // }
+
+  // const dragEnter = (e) => {
+  //   console.log(e.target.id)
+
+  //   movingWhenOver(checkUpOrDown(draggedObject, e.target), draggedObject, e.target)
+
+  // }
+
+  // const dragOver = (e) => {
+  //   e.preventDefault()
+  //   if (e.target.innerHTML === draggedElement) {
+  //     e.target.style = 'cursor:grab'
+  //   } else {
+  //     e.target.style = 'background:var(--cp-1_2); cursor:grab'
+  //   }
+  //   // console.log(e.target.id)
+
+  // }
+
+  // const handleDragEnd = (e) => {
+  //   e.target.style = 'background:var(--cp-1_1-light)'
+  // }
+
+  // const handleDrop = (e) => {
+  //   e.preventDefault();
+  //   let currentHTML = e.target.innerHTML
+  //   if (draggedElement !== e.target.innerHTML) {
+  //     e.target.innerHTML = draggedElement
+  //     draggedObject.innerHTML = currentHTML
+  //   }
+  //   e.target.style = 'opacity:1; background:var(--cp-1_1-light)'
+  // }
+
+  //@Drag and drop function 2 test ==-----
+  //https://htmldom.dev/drag-and-drop-element-in-a-list/
+  // The current dragging item
+  let draggingEle;
+  // The current position of mouse relative to the dragging element
+  let x = 0
+  let y = 0
+  let placeholder;
+  // The flag to switch dragging or not dragging
+  let isDragginStarted = false;
+  let theWidth = 0
+
+  const mouseDownHandler = (e) => {
+    draggingEle = e.target;
+    // Calculate the mouse position
+    const rect = draggingEle.getBoundingClientRect();
+    // x = e.pageX
+    // y = e.pageY
+    x = e.pageX - rect.left;
+    y = e.pageY - rect.top;
+    console.log('the e.pageY', e.pageY)
+    console.log('the rect.top', rect.top)
+    console.log('the y', y)
+    console.log('the y of client', e.clientY)
+    console.log('the width of e.target', rect.width)
+    theWidth = rect.width
+    // Attach the listeners to `document`
+    //This event mousemove is keeping triggered while you hold the item.
+    document.addEventListener('mousemove', mouseMoveHandler);
+    //This event fired once you let go the mouse.
+    document.addEventListener('mouseup', mouseUpHandler);
+  };
+
+  const mouseMoveHandler = (e) => {
+    console.log('the mouse moving')
+    const draggingRect = draggingEle.getBoundingClientRect();
+    if (!isDragginStarted) {
+      // Update the flag
+      isDragginStarted = true;
+
+      // Let the placeholder take the height of dragging element
+      // So the next element won't move up
+      placeholder = document.createElement('div');
+      placeholder.classList.add('placeholder');
+      placeholder.setAttribute('id', 'placeHolder')
+      draggingEle.parentNode.insertBefore(
+        placeholder,
+        draggingEle.nextSibling
+      );
+
+      // Set the placeholder's height
+      placeholder.style.height = `${draggingRect.height}px`;
+
+    }
+    // Get the 
+    // Set position for dragging element
+    draggingEle.style.position = 'absolute';
+    // Steve: Don't konw why the positoin in y axis is not correct so I adjust it by adding '-60'
+    draggingEle.style.top = `${e.pageY - y - 60}px`;
+    draggingEle.style.left = `${e.pageX - x}px`;
+    // Steve: I setting the width of the draggedEle by it original width.
+    draggingEle.style.width = `${theWidth}px`
+    console.log('The width of div when moving', theWidth)
+
+    // nextEle
+    //As user moves the item around, we define the previous and next sibling items:
+    const prevEle = draggingEle.previousElementSibling;
+    const nextEle = placeholder.nextElementSibling;
+
+    // User moves item to the top
+    if (prevEle && isAbove(draggingEle, prevEle)) {
+      // The current order    -> The new order
+      // prevEle              -> placeholder
+      // draggingEle          -> draggingEle
+      // placeholder          -> prevEle
+      swap(placeholder, draggingEle);
+      swap(placeholder, prevEle);
+      return;
+    }
+    // User moves the dragging element to the bottom
+    if (nextEle && isAbove(nextEle, draggingEle)) {
+      // The current order    -> The new order
+      // draggingEle          -> nextEle
+      // placeholder          -> placeholder
+      // nextEle              -> draggingEle
+      swap(nextEle, placeholder);
+      swap(nextEle, draggingEle);
+    }
+  };
+
+  const swap = function (nodeA, nodeB) {
+    const parentA = nodeA.parentNode;
+    const siblingA = nodeA.nextSibling === nodeB ? nodeA : nodeA.nextSibling;
+
+    // Move `nodeA` to before the `nodeB`
+    nodeB.parentNode.insertBefore(nodeA, nodeB);
+
+    // Move `nodeB` to before the sibling of `nodeA`
+    parentA.insertBefore(nodeB, siblingA);
+  };
+
+  const mouseUpHandler = function () {
+    let thePlaceholder = document.getElementById('placeHolder')
+    if (thePlaceholder) {
+      // console.log("the placeholder", placeholder)
+      // console.log("the placeholder parentNode", placeholder.parentNode)
+      // Remove the placeholder
+
+      thePlaceholder.remove()
+      // placeholder && placeholder.parentNode.removeChild(placeholder);
+      // placeholder && placeholder.parentNode.removeChild(placeholder);
+      // Reset the flag
+      isDragginStarted = false;
+
+      // Remove the position styles
+      draggingEle.style.removeProperty('top');
+      draggingEle.style.removeProperty('left');
+      draggingEle.style.removeProperty('position');
+
+      x = null;
+      y = null;
+      draggingEle = null;
+
+      // Remove the handlers of `mousemove` and `mouseup`
+      document.removeEventListener('mousemove', mouseMoveHandler);
+      document.removeEventListener('mouseup', mouseUpHandler);
+    }
+
+    let container = document.getElementById('osCaseListContainer')
+    let print = container.childNodes
+    console.log(print)
+    theWidth = 0
+  };
+
+  const isAbove = function (nodeA, nodeB) {
+    // Get the bounding rectangle of nodes
+    const rectA = nodeA.getBoundingClientRect();
+    const rectB = nodeB.getBoundingClientRect();
+
+    return (rectA.top + rectA.height / 2 < rectB.top + rectB.height / 2);
+  };
+
+
   return (
     <div
       className='container-with-navbar leftbar bg-white bd-light bd-no-t h-100 noPrint'
@@ -601,14 +872,38 @@ const LeftBar = ({ currentPath }) => {
             <div className='fw-bold'>
               Arrange the order of production
             </div>
-            {currentOrderSummary.caseList.map((OsCase) => {
+            <div id='osCaseListContainer'>
+              {currentOrderSummary.caseList.map((OsCase) => {
+                return (
+                  <div
+                    key={`OsCase${OsCase._id}`}
+                    id={`OsCase${OsCase._id}`}
+                    className='round-area bd-light bg-cp-1-light grabbable'
+                    onMouseDown={mouseDownHandler}
+                  >
+                    {OsCase.cNo}
+                  </div>
+                )
+              })}
+            </div>
+            {/* {currentOrderSummary.caseList.map((OsCase) => {
               return (
-                <div key={`OsCase${OsCase._id}`} className='round-area' >
+                <div key={`OsCase${OsCase._id}`}
+                  id={`OsCase${OsCase._id}`}
+                  className='round-area bd-light bg-cp-1-light grabbable'
+                  onDragStart={handleDragStart}
+                  onDragLeave={dragLeave}
+                  onDragEnter={dragEnter}
+                  onDragOver={dragOver}
+                  onDragEnd={handleDragEnd}
+                  onDrop={handleDrop}
+                  draggable='true'
+                >
                   OsCase
                   {OsCase.cNo}
                 </div>
               )
-            })}
+            })} */}
           </section>
         ) : null}
       </div>
