@@ -516,14 +516,22 @@ const LeftBar = ({ currentPath }) => {
   const mouseMoveHandler = (e) => {
     console.log('the mouse moving')
     const draggingRect = draggingEle.getBoundingClientRect();
+    let container = document.getElementById('osCaseListContainer')
+    let index = 0
     if (!isDragginStarted) {
       // Update the flag
       isDragginStarted = true;
 
+
+
       // Let the placeholder take the height of dragging element
       // So the next element won't move up
       placeholder = document.createElement('div');
-      placeholder.classList.add('placeholder');
+      placeholder.classList.add('v-center-content')
+      placeholder.classList.add('p-05')
+      placeholder.classList.add('fw-bold')
+      placeholder.classList.add('fc-cp-2-c')
+
       placeholder.setAttribute('id', 'placeHolder')
       draggingEle.parentNode.insertBefore(
         placeholder,
@@ -532,6 +540,18 @@ const LeftBar = ({ currentPath }) => {
 
       // Set the placeholder's height
       placeholder.style.height = `${draggingRect.height}px`;
+
+      // container.childNodes.forEach((div, idx) => {
+      //   if (div.id === 'placeholder') {
+      //     return index = idx + 1
+      //   }
+      // })
+      // let nodes = document.getElementsByTagName('*');
+      // index = container.childNodes.indexOf(placeholder)
+
+
+
+
 
     }
     // Get the 
@@ -542,7 +562,9 @@ const LeftBar = ({ currentPath }) => {
     draggingEle.style.left = `${e.pageX - x}px`;
     // Steve: I setting the width of the draggedEle by it original width.
     draggingEle.style.width = `${theWidth}px`
-    console.log('The width of div when moving', theWidth)
+    draggingEle.style.background = `var(--cp-1_2)`
+    draggingEle.style.cursor = 'grabbing'
+    // console.log('The width of div when moving', theWidth)
 
     // nextEle
     //As user moves the item around, we define the previous and next sibling items:
@@ -555,6 +577,8 @@ const LeftBar = ({ currentPath }) => {
       // prevEle              -> placeholder
       // draggingEle          -> draggingEle
       // placeholder          -> prevEle
+      console.log("the preEle", prevEle)
+      console.log("the nextEle", nextEle)
       swap(placeholder, draggingEle);
       swap(placeholder, prevEle);
       return;
@@ -568,6 +592,9 @@ const LeftBar = ({ currentPath }) => {
       swap(nextEle, placeholder);
       swap(nextEle, draggingEle);
     }
+    var arr = Array.prototype.slice.call(container.childNodes);
+    index = arr.indexOf(placeholder); // The index of your element :)
+    placeholder.innerHTML = index
   };
 
   const swap = function (nodeA, nodeB) {
@@ -595,9 +622,13 @@ const LeftBar = ({ currentPath }) => {
       isDragginStarted = false;
 
       // Remove the position styles
+      // draggingEle.style = 'transition: 0.3s cubic-bezier(0.2, 1, 0.1, 1)'
       draggingEle.style.removeProperty('top');
       draggingEle.style.removeProperty('left');
       draggingEle.style.removeProperty('position');
+      draggingEle.style.removeProperty('width');
+      draggingEle.style.removeProperty('background');
+      draggingEle.style.removeProperty('cursor');
 
       x = null;
       y = null;
@@ -610,7 +641,14 @@ const LeftBar = ({ currentPath }) => {
 
     let container = document.getElementById('osCaseListContainer')
     let print = container.childNodes
+    console.log('the container', container)
     console.log(print)
+
+    // print.forEach((i, idx) => {
+    //   console.log("idx ", idx)
+    //   console.log(i.id)
+    // })
+
     theWidth = 0
   };
 
