@@ -421,13 +421,14 @@ const PurState = (props) => {
     dispatch({ type: UPDATE_HSCODE, payload: payload });
   };
 
-  const uploadCaseMtrl = async () => {
+  const uploadCaseMtrl = async (whatToUpdate) => {
     const config = {
       headers: {
         'Content-Type': 'application/json',
       },
     };
     const body = {
+      updateFor: whatToUpdate,
       inputCaseMtrls: currentOrderSummary.caseMtrls,
     };
     try {

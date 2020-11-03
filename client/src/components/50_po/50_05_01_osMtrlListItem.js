@@ -14,7 +14,7 @@ const OsMtrlListItem = ({ osMtrl, theNumber, className }) => {
     mSizeSPEC,
     purchaseQtySumUp,
     purchaseLossQtySumUp,
-    purchaseMoqQty,
+    // purchaseMoqQty,
     price,
     hsCode,
   } = osMtrl;

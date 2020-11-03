@@ -71,6 +71,8 @@ app.use('/api/quogarment', require('./routes/40_quo'));
 app.use('/api/purchase', require('./routes/50_pur'));
 // Query cases of Purchase
 app.use('/api/purchase/query', require('./routes/51_queryPur'));
+// Complete Set
+app.use('/api/completeset', require('./routes/60_completeSet'));
 
 /// @Server static assets in production
 if (process.env.NODE_ENV === 'production') {

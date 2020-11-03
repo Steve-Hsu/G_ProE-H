@@ -18,7 +18,7 @@ const OsMtrlList = () => {
     e.preventDefault();
     toggleLoading(true);
     console.log('order summary is triggered');
-    await uploadCaseMtrl().then(() => {
+    await uploadCaseMtrl('hsCode').then(() => {
       toggleLoading(false);
     });
   };

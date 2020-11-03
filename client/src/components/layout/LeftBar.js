@@ -163,7 +163,7 @@ const LeftBar = ({ currentPath }) => {
             label: 'Save HS-Code',
             form: 'updateOsCaseMtrlHsCode',
           }
-        } else {
+        } else if (openPage === 'leadTimePage') {
           obj = {
             label: 'Save LeadTime',
             form: 'updateOsCaseMtrlLeadTime',

@@ -15,12 +15,6 @@ const OSSchema = mongoose.Schema({
     type: String,
     unique: true,
   },
-  // caseIds: [
-  //   {
-  //     type: mongoose.Schema.Types.ObjectId,
-  //     ref: 'case',
-  //   },
-  // ],
   caseList: [
     {
       caseId: {
@@ -41,11 +35,6 @@ const OSSchema = mongoose.Schema({
       }
     },
   ],
-  // clients: [
-  //   {
-  //     type: String,
-  //   },
-  // ],
   suppliers: [
     {
       supplier: {
@@ -75,9 +64,6 @@ const OSSchema = mongoose.Schema({
   ],
   caseMtrls: [
     {
-      // id: {
-      //   type: String
-      // },
       cases: {
         type: Array
       },
@@ -129,11 +115,13 @@ const OSSchema = mongoose.Schema({
   },
   osConfirmDate: {
     // As the osConfirmDate is made, the accounting department receive a applying for payment of this os.
+    // This is to check if the PO is correct. In practice, if you confirmed the PO means it's available to send to supplier and also submit to accounting department.
     type: Date,
     default: null,
   },
   osLtConfirmDate: {
     // As the ltConfirmDate is made, the setup of style can be start. lt = LeadTime.
+    // This attribute update every time if user save the date and all the leadtime of mtrls are confirmed.
     type: Date,
     default: null,
   },

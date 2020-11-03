@@ -38,14 +38,14 @@ const MrtlLeadTime = ({ caseMtrl, idx }) => {
     addLeadTime(caseMtrlId);
   }
 
-  const submit = async (e) => {
-    e.preventDefault();
-    toggleLoading(true);
-    console.log('order summary is triggered');
-    await uploadCaseMtrl().then(() => {
-      toggleLoading(false);
-    });
-  };
+  // const submit = async (e) => {
+  //   e.preventDefault();
+  //   toggleLoading(true);
+  //   console.log('order summary is triggered');
+  //   await uploadCaseMtrl('leadTime').then(() => {
+  //     toggleLoading(false);
+  //   });
+  // };
 
 
   return (
@@ -59,7 +59,7 @@ const MrtlLeadTime = ({ caseMtrl, idx }) => {
         <GoBackBtnSpinSmall onClick={goBack} />
       </div>
       <div className='ml-1' style={{ flex: '1 1 auto' }}>
-        <form id='updateOsCaseMtrlLeadTime' onSubmit={submit}></form>
+        {/* <form id='updateOsCaseMtrlLeadTime' onSubmit={submit}></form> */}
         <section className='flexBox hover-pointer' onClick={goBack}>
           <div style={{ flex: '1 1 auto' }}>
             <TopLabelTiny label='Supplier' />

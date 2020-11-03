@@ -5,8 +5,8 @@ const mongoose = require('mongoose');
 const authUser = require('../middleware/authUser');
 // Not set up yet, for check the value entered by user at the some specific column
 // const { check, validationResult } = require('express-validator');
-const { v4: uuidv4 } = require('uuid');
-const myModule = require('../myModule/myModule');
+// const { v4: uuidv4 } = require('uuid');
+// const myModule = require('../myModule/myModule');
 
 const User = require('../models/10_User');
 const Case = require('../models/20_Case');
@@ -740,7 +740,7 @@ router.post('/updatecasemtrl/:osId', authUser, async (req, res) => {
   const comId = req.user.company;
   const osId = req.params.osId;
   console.log('the OSId', osId);
-  const { inputCaseMtrls } = req.body;
+  const { updateFor, inputCaseMtrls } = req.body;
   console.log('the caseMtrls', inputCaseMtrls[0]);
   const checkLTComplete = await inputCaseMtrls.filter((cs) => {
     return cs.leadTimeComplete === false
@@ -748,23 +748,54 @@ router.post('/updatecasemtrl/:osId', authUser, async (req, res) => {
 
   let msg = ''
   try {
-    if (checkLTComplete.length > 0) {
-      const resultOs = await OS.findOneAndUpdate(
-        {
-          company: comId,
-          _id: osId,
-        },
-        {
-          $set: {
-            osLtConfirmDate: null,
-            caseMtrls: inputCaseMtrls,
+    if (updateFor === 'leadTime') {
+      if (checkLTComplete.length > 0) {
+        const resultOs = await OS.findOneAndUpdate(
+          {
+            company: comId,
+            _id: osId,
           },
-        },
-        { new: true }
-      );
-      msg = 'The caseMtrls is uploaded.';
-      console.log(msg);
-      return res.json(resultOs);
+          {
+            $set: {
+              osLtConfirmDate: null,
+              caseMtrls: inputCaseMtrls,
+            },
+          },
+          { new: true }
+        );
+        msg = 'The leadTime is uploaded.';
+        console.log(msg);
+        return res.json(resultOs);
+      } else {
+        const existingOs = await OS.findOne({ _id: osId })
+        const existingCaseMtrls = existingOs.caseMtrls
+        const checkIfCaseMtrlsUpdated = JSON.stringify(existingCaseMtrls) == JSON.stringify(inputCaseMtrls)
+        console.log('the checkIfCaseMtrlsUpdate', checkIfCaseMtrlsUpdated)
+
+        if (checkIfCaseMtrlsUpdated) {
+          //If the existing CaseMtrls is same don't make any update, just return the existingOs.
+          msg = 'No leadTime updated, return an the existing OS';
+          console.log(msg);
+          return res.json(existingOs);
+        } else {
+          const resultOs = await OS.findOneAndUpdate(
+            {
+              company: comId,
+              _id: osId,
+            },
+            {
+              $currentDate: { osLtConfirmDate: Date },
+              $set: {
+                caseMtrls: inputCaseMtrls,
+              },
+            },
+            { new: true }
+          );
+          msg = 'The caseMtrl is uploaded and the leadTime compleate date is updated.';
+          console.log(msg);
+          return res.json(resultOs);
+        }
+      }
     } else {
       const resultOs = await OS.findOneAndUpdate(
         {
@@ -772,14 +803,13 @@ router.post('/updatecasemtrl/:osId', authUser, async (req, res) => {
           _id: osId,
         },
         {
-          $currentDate: { osLtConfirmDate: Date },
           $set: {
             caseMtrls: inputCaseMtrls,
           },
         },
         { new: true }
       );
-      msg = 'The caseMtrl is uploaded and the leadTime date is updated.';
+      msg = 'The HS-Code is uploaded.';
       console.log(msg);
       return res.json(resultOs);
     }
