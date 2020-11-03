@@ -1,5 +1,6 @@
 //@ Common type -----------------------------------------------------------
 export const UPDATE_ERROR = 'UPDATE_ERROR';
+export const DEFAULT = 'DEFAULT';
 
 //@ Company -----------------------------------------------------------
 export const ADD_COMPANY = 'ADD_COMPANY';
@@ -116,7 +117,6 @@ export const QUOFORM_REPLACE_ONE = 'QUOFORM_REPLACE_ONE'
 
 //@ Pur
 export const SELECTEDCASES_UPDATE = 'SELECTEDCASES_UPDATE';
-export const DEFAULT = 'DEFAULT';
 export const PURPAGE_SWITCH = 'PURPAGE_SWITCH';
 export const OS_LIST_DOWNLOAD = 'OS_LIST_DOWNLOAD';
 export const OS_CURRENT = 'OS_CURRENT';
@@ -129,5 +129,10 @@ export const UPDATE_MOQPOQTY = 'UPDATE_MOQPOQTY';
 export const UPDATE_HSCODE = 'UPDATE_HSCODE';
 export const UPDATE_LEADTIME = 'UPDATE_LEADTIME';
 export const CLEAR_SELECTEDCASE = 'CLEAR_SELECTEDCASE';
+
+//@ Cs - complete set
+export const OS_DOWNLOAD = 'OS_DOWNLOAD';
+export const CSPAGE_SWITCH = 'CSPAGE_SWITCH';
+export const CS_CURRENT = 'CS_CURRENT';
 
 // export const UPDATE_CASEMTRL = 'UPDATE_CASEMTRL';

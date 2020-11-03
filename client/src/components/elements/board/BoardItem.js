@@ -57,6 +57,9 @@ const BoardItem = ({
       case 'purchaseOrder':
         toggleItemAttributes('purchaseOrder', subject);
         break;
+      case 'completeSetOfCase':
+        toggleItemAttributes(subject._id);
+        break;
       default:
     }
   };

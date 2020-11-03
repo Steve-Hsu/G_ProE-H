@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
 const authUser = require('../middleware/authUser');
 // Not set up yet, for check the value entered by user at the some specific column
 // const { check, validationResult } = require('express-validator');
@@ -12,6 +12,7 @@ const User = require('../models/10_User');
 const Case = require('../models/20_Case');
 const SRMtrl = require('../models/30_SRMtrl');
 const OS = require('../models/50_OS');
+const CS = require('../models/60_CS');
 
 // @route   GET api/purchase/ordersummary
 // @desc    Read the compnay's all of order Summary from database
@@ -344,7 +345,44 @@ router.post('/', authUser, async (req, res) => {
           { company: comId },
           { company: 0 }
         );
-        return res.json(result)
+        res.json(result)
+        return result
+      }).then(async (result) => {
+        const newOs = result[0]
+        let csCaseList = [];
+        const inserMtrls = new Promise(async (resolve) => {
+          await newOs.caseList.map(async (c, idx) => {
+            const theCase = await Case.findOne({ _id: c.caseId })
+            let newObj = {
+              caseId: c.caseId,
+              cNo: c.cNo,
+              style: c.style,
+              client: c.client,
+              caseType: c.caseType,
+              cWays: theCase.cWays,
+              sizes: theCase.sizes,
+              gQtys: theCase.gQtys,
+              mtrls: theCase.mtrls
+            }
+            csCaseList.push(newObj)
+            if (idx + 1 === newOs.caseList.length) {
+              resolve()
+            }
+            return;
+          })
+        })
+
+        Promise.all([inserMtrls]).then(async () => {
+          const completeSet = new CS({
+            company: comId,
+            osNo: newOs.osNo,
+            csOrder: [],
+            osLtConfirmDate: null,
+            caseMtrls: newOs.caseMtrls,
+            caseList: csCaseList,
+          });
+          await completeSet.save();
+        })
       })
 
     })
@@ -485,7 +523,7 @@ router.delete('/deleteos/:osId', authUser, async (req, res) => {
   const osId = req.params.osId;
   const theOS = await OS.findOne(
     { company: comId, _id: osId },
-    { caseList: 1, osConfirmDate: 1 }
+    { osNo: 1, caseList: 1, osConfirmDate: 1, }
   );
 
   console.log(osId); // Test Code
@@ -493,10 +531,13 @@ router.delete('/deleteos/:osId', authUser, async (req, res) => {
   // Don't need return any of this result immediately, so don't make any promise here.
   const caseList = theOS.caseList;
   const osConfirmDate = theOS.osConfirmDate;
+  const osNo = theOS.osNo
   if (!osConfirmDate) {
     caseList.map(async (c) => {
       await Case.updateOne({ _id: c.caseId, cNo: c.cNo }, { poDate: null, osNo: null });
     });
+
+    await CS.findOneAndDelete({ company: comId, osNo: osNo })
 
     await OS.findOneAndDelete({ company: comId, _id: osId }).then(() => {
       const returnMsg = `The order summary ${osId} is deleted.`;
@@ -505,6 +546,7 @@ router.delete('/deleteos/:osId', authUser, async (req, res) => {
         msg: returnMsg,
       });
     });
+
   } else {
     const returnMsg = `The order summary ${osId} is confirmed, It can't be delete, for deleting the OS, please cancel all the poConfirmDate in the Po of the os.`;
     console.log(returnMsg);

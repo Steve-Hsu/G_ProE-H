@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import PurContext from '../../context/pur/purContext';
+import CompleteSetContext from '../../context/completeSet/completeSetContext'
 import Table from '../elements/table/Table';
 import PopoverContext from '../../context/popover/popoverContext'
 //@ Child component
@@ -17,32 +18,51 @@ const OsSelector = ({ purpose }) => {
     switchPage,
   } = purContext;
 
+  const completeSetContext = useContext(CompleteSetContext)
+  const {
+    osHeads,
+    getOsHeads,
+    getCs,
+    switchCsPage,
+  } = completeSetContext
+
+  const csPageSwitch = (osNo) => {
+    toggleLoading(true)
+    getCs(osNo).then(() => {
+      switchCsPage('completeSetSelector')
+      toggleLoading(false)
+    })
+
+  }
 
   const { toggleLoading } = popoverContext
 
   useEffect(() => {
     toggleLoading(true)
-    getOsList().then(() => {
-      toggleLoading(false)
-    });
+    if (purpose === 'csOsSelector') {
+      getOsHeads().then(() => {
+        toggleLoading(false)
+      })
+    } else {
+      getOsList().then(() => {
+        toggleLoading(false)
+      });
+    }
+
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [openPage]);
 
   //@ return
   return (
-    // <div>test</div>
+
     <Table
-      subjects={osList}
+      subjects={purpose === 'csOsSelector' ? osHeads : osList}
       purpose={purpose}
-      toggleItemAttributes={[switchOsCurrent, switchPage]}
+      toggleItemAttributes={purpose === 'csOsSelector' ? [csPageSwitch] : [switchOsCurrent, switchPage]}
       displayTitles={[{ osNo: true }]}
     />
-    // <div className='p-1 container container-with-navbar'>
-    //   {osList.map((osItem) => (
-    //     <OsItem key={`caseList${osItem._id}`} osItem={osItem} />
-    //   ))}
-    // </div>
+
   );
 };
 

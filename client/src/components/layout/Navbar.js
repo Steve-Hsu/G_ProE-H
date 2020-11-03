@@ -9,6 +9,7 @@ import CasesContext from '../../context/cases/casesContext';
 import SrMtrlContext from '../../context/srMtrl/srMtrlContext';
 import PopoverContext from '../../context/popover/popoverContext';
 import PurContext from '../../context/pur/purContext';
+import CompleteSetContext from '../../context/completeSet/completeSetContext'
 
 const Navbar = () => {
   const authComContext = useContext(AuthComContext);
@@ -19,6 +20,8 @@ const Navbar = () => {
   const srMtrlContext = useContext(SrMtrlContext);
   const popoverContext = useContext(PopoverContext);
   const purContext = useContext(PurContext);
+  const completeSetContext = useContext(CompleteSetContext)
+
 
   // Destructure
   const acom = authComContext;
@@ -29,6 +32,7 @@ const Navbar = () => {
   const sm = srMtrlContext;
   const p = popoverContext;
   const pur = purContext;
+  const cs = completeSetContext;
 
   useEffect(() => {
     if (c.isUpdated && sm.isUpdated) {
@@ -54,6 +58,7 @@ const Navbar = () => {
     sm.clearSrMtrl();
     p.defaultPopover();
     pur.defaultPurState();
+    cs.defaultCS();
   };
 
   const authComLinks = (

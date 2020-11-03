@@ -3,6 +3,7 @@ import AuthUserContext from '../../context/authUser/authUserContext';
 import CasesContext from '../../context/cases/casesContext';
 import QuoContext from '../../context/quo/quoContext';
 import PurContext from '../../context/pur/purContext';
+import CompleteSetContext from '../../context/completeSet/completeSetContext'
 import PopoverContext from '../../context/popover/popoverContext'
 // import SearchBar from './SearchBar';
 // import Papa from 'papaparse';
@@ -18,6 +19,7 @@ const LeftBar = ({ currentPath }) => {
   const casesContext = useContext(CasesContext);
   const quoContext = useContext(QuoContext);
   const purContext = useContext(PurContext);
+  const completeSetContext = useContext(CompleteSetContext)
   const popoverContext = useContext(PopoverContext)
   const { name } = authUserContext
   const userName = name
@@ -49,10 +51,10 @@ const LeftBar = ({ currentPath }) => {
     currentQuoForm,
     downLoadmtrlPrice,
   } = quoContext;
-
   const { openPage, togglePoConfirmDate, currentPo, selectedCases, osList, currentOrderSummary } = purContext;
-  // const { currentOsCaseList } = currentOrderSummary.caseList ? currentOrderSummary.caseList : [];
+  const { currentOS, csPage } = completeSetContext;
   const { toggleLoading } = popoverContext;
+
 
   const theCase = quotation.theCase;
 
@@ -896,13 +898,13 @@ const LeftBar = ({ currentPath }) => {
               )
               : null}
         {/* @CompleteSet Set */}
-        {(currentPath === '/api/completeset' && openPage === 'csCaseSelector') ? (
+        {(currentPath === '/api/completeset' && csPage === 'completeSetSelector') ? (
           <section className='round-area bd-light bg-cp-1 mt-1'>
             <div className='fw-bold'>
               Arrange the order of production
             </div>
             <div id='osCaseListContainer'>
-              {currentOrderSummary.caseList.map((OsCase) => {
+              {currentOS.caseList.map((OsCase) => {
                 return (
                   <div
                     key={`OsCase${OsCase._id}`}

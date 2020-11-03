@@ -4,18 +4,21 @@ import GoBackBtn from '../elements/btns/GoBackBtn'
 //Context
 import PopoverContext from '../../context/popover/popoverContext';
 import PurContext from '../../context/pur/purContext';
+import CompleteSetContext from '../../context/completeSet/completeSetContext'
 
 //Component
 import LeftBar from '../layout/LeftBar'
 import DeletePopover from '../../components/layout/DeletePopover';
 import OsSelector from '../../components/50_po/50_02_osSelector';
 import OrderSummary from '../50_po/50_03_orderSummary';
+import CompleteSetPage from '../60_completeSet/60_01_completeSetPage'
 
 const CompleteSet = (props) => {
    const currentPath = props.location.pathname;
    const popoverContext = useContext(PopoverContext)
    const { popover, current, toggleLoading, isLoading } = popoverContext;
    const purContext = useContext(PurContext);
+   const completeSetContext = useContext(CompleteSetContext)
    const {
       openPage,
       switchPage,
@@ -24,6 +27,12 @@ const CompleteSet = (props) => {
       osError,
    } = purContext;
 
+   const {
+      csPage,
+      switchCsPage,
+      csError
+   } = completeSetContext
+
 
    const goBack = () => {
       props.history.push('/api/case/director');
@@ -31,14 +40,19 @@ const CompleteSet = (props) => {
 
    const goOsSelector = (e) => {
       e.preventDefault();
-      switchPage('osSelector');
+      switchCsPage(null);
+   };
+
+   const goCsSelector = (e) => {
+      e.preventDefault();
+      switchCsPage('completeSetSelector');
    };
 
 
    return (
       <Fragment >
-         {popover === true || isLoading === true ? <DeletePopover key='quotationpopover' current={current} /> : null}
-         {openPage !== 'csCaseSelector' ? (
+         {popover === true || isLoading === true || csError !== null ? <DeletePopover key='cspopover' current={current} /> : null}
+         {csPage === null ? (
             <div className='grid-1-4'>
                <LeftBar currentPath={currentPath} />
                <div className='container container-with-navbar'>
@@ -46,24 +60,24 @@ const CompleteSet = (props) => {
                   <OsSelector purpose='csOsSelector' />
                </div>
             </div>
-         ) : (
-               <div className='grid-1-4'>
-                  <LeftBar currentPath={currentPath} />
-                  <div className='container container-with-navbar'>
-                     <GoBackBtn onClick={goOsSelector} />
-
-                     <OrderSummary purpose='completeSetOfCase' />
-
-                  </div>
+         ) : csPage === 'completeSetSelector' ? (
+            <div className='grid-1-4'>
+               <LeftBar currentPath={currentPath} />
+               <div className='container container-with-navbar'>
+                  <GoBackBtn onClick={goOsSelector} />
+                  <OrderSummary purpose='completeSetOfCase' />
                </div>
-            )}
-         {/* <div className='grid-1-4'>
-            <LeftBar currentPath={currentPath} />
-            <div className='container container-with-navbar'>
-               <GoBackBtn onClick={goBack} />
-               <OsSelector />
             </div>
-         </div> */}
+         ) : csPage === 'completeSet' ? (
+            <div className='grid-1-4'>
+               <LeftBar currentPath={currentPath} />
+               <div className='container container-with-navbar'>
+                  <GoBackBtn onClick={goCsSelector} />
+                  <CompleteSetPage />
+               </div>
+            </div>
+         ) : null}
+
       </Fragment>
 
    )

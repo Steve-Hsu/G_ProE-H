@@ -1,5 +1,6 @@
 import React, { useContext, Fragment } from 'react';
 import PurContext from '../../context/pur/purContext';
+import CompleteSetContext from '../../context/completeSet/completeSetContext'
 import Board from '../elements/board/Board';
 import DeleteBtnSmall from '../elements/btns/DeleteBtnSmall';
 import PopoverContext from '../../context/popover/popoverContext';
@@ -13,7 +14,16 @@ const OrderSummary = ({ purpose }) => {
 
   const purContext = useContext(PurContext);
   const { switchPage, currentOrderSummary } = purContext;
-  const { _id, osNo, caseList, suppliers, osConfirmDate, caseMtrls } = currentOrderSummary ? currentOrderSummary : null;
+  const completeSetContext = useContext(CompleteSetContext);
+  const { currentOS, openCompleteSet } = completeSetContext
+
+  const { _id, osNo, caseList, suppliers, osConfirmDate, caseMtrls } =
+    purpose === 'purchaseOrder' ?
+      currentOrderSummary
+      :
+      purpose === 'completeSetOfCase' ?
+        currentOS
+        : null
 
   const onClick_1 = (e) => {
     e.preventDefault();
@@ -29,8 +39,19 @@ const OrderSummary = ({ purpose }) => {
     if (purpose === 'purchaseOrder') {
       return [suppliers, caseMtrls]
     } else if (purpose === 'completeSetOfCase') {
-      return [caseList, caseList]
+      return [currentOS.caseList, currentOS.caseList]
     }
+  }
+
+  const toggleFuncs = () => {
+    switch (purpose) {
+      case 'purchaseOrder':
+        return switchPage
+      case 'completeSetOfCase':
+        return openCompleteSet
+      default:
+    }
+
   }
 
   return (
@@ -52,13 +73,13 @@ const OrderSummary = ({ purpose }) => {
 
         <div>
           The case purchased :{' '}
-          {caseList.map((CS) => {
+          {/* {caseList.map((CS) => {
             return (
               <span key={CS._id} className='ml-05'>
                 {CS.cNo}
               </span>
             );
-          })}
+          })} */}
         </div>
         <div className='h-scatter-content'>
           <div></div>
@@ -83,7 +104,7 @@ const OrderSummary = ({ purpose }) => {
         // purpose='order'
         purpose={purpose}
         label={purpose === 'purchaseOrder' ? (<div>{suppliers.length} <span className='fs-normal fc-cp-1'>Purchase Order</span></div>) : null}
-        toggleItemAttributes={switchPage}
+        toggleItemAttributes={toggleFuncs()}
       />
     </Fragment>
   );

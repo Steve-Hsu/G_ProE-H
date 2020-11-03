@@ -5,6 +5,7 @@ import SrMtrlContext from '../../context/srMtrl/srMtrlContext';
 import PopoverContext from '../../context/popover/popoverContext';
 import QuoContext from '../../context/quo/quoContext';
 import PurContext from '../../context/pur/purContext';
+import CompleteSetContext from '../../context/completeSet/completeSetContext'
 import Spinner from '../../components/layout/Spinner';
 import UserContext from '../../context/user/userContext';
 import DeleteBtnSmallNoWarning from '../elements/btns/DeleteBtnSmallNoWarning'
@@ -16,6 +17,7 @@ const DeletePopover = () => {
   const popoverContext = useContext(PopoverContext);
   const purContext = useContext(PurContext);
   const quoContext = useContext(QuoContext);
+  const completeSetContext = useContext(CompleteSetContext)
   const userContext = useContext(UserContext);
   const { _id, cNo, deleteMtrl, deletecWayOrgSize, deleteCase, caseError, clearCaseError } = casesContext;
   const { deleteSRMtrlByMtrl, deleteSrMtrlPrice, srMtrlError, clearSrMtrlError } = srMtrlContext;
@@ -28,9 +30,10 @@ const DeletePopover = () => {
     doubleCheck,
     addDoubleCheckValue,
   } = popoverContext;
-  const { deleteQuoForm, deletemQuo, switchQuoForm, quoError, clearQuoError } = quoContext;
+  const { deleteQuoForm, switchQuoForm, quoError, clearQuoError } = quoContext;
   const { deleteOs, osError, clearOsError } = purContext;
   const { deleteUser, clearCurrent } = userContext;
+  const { csError, clearCsError } = completeSetContext;
   // }
   const onChangeDelete = async (e) => {
     e.preventDefault();
@@ -157,16 +160,16 @@ const DeletePopover = () => {
               <Spinner />
             </div>
           </div>
-        ) : osError !== null || caseError !== null || srMtrlError !== null || quoError !== null ? (<div className='popup-container bd-light bd-radius-s bg-cp-2'>
+        ) : csError !== null || osError !== null || caseError !== null || srMtrlError !== null || quoError !== null ? (<div className='popup-container bd-light bd-radius-s bg-cp-2'>
           <div className='h-10 w-100 h-scatter-content'>
             <div className='h-10 p-1'><i className="fas fa-exclamation-triangle"> Notice : </i></div>
-            <div><DeleteBtnSmallNoWarning className='mr-05' onClick={osError !== null ? clearOsError :
+            <div><DeleteBtnSmallNoWarning className='mr-05' onClick={csError !== null ? clearCsError : osError !== null ? clearOsError :
               caseError !== null ? clearCaseError :
                 srMtrlError !== null ? clearSrMtrlError :
                   quoError !== null ? clearQuoError : null} /></div>
           </div>
           <div className='center-content h-80 w-100 p-1'>
-            {osError || caseError || srMtrlError || quoError}
+            {csError || osError || caseError || srMtrlError || quoError}
           </div>
         </div>) : (
               <div className='popup-container bd-light bd-radius-s bg-cp-2'>
