@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-// const mongoose = require('mongoose');
+const mongoose = require('mongoose');
 const authUser = require('../middleware/authUser');
 // Not set up yet, for check the value entered by user at the some specific column
 // const { check, validationResult } = require('express-validator');
@@ -579,12 +579,23 @@ router.post('/purchaseorder/:osId', authUser, async (req, res) => {
   console.log('The priceList', priceList);
   // console.log('the body', req.body); // test Code
   // the currentPo is the name of the supplier
-  const checkIfConfirmed = supplier.poConfirmDate;
+  const checkIfPoFromBodyConfirmed = supplier.poConfirmDate;
+  const existingOS = await OS.findOne({ company: comId, _id: osId })
+  // const checkIfExistingPoConfirmed = true // for test
+  const checkIfExistingPoConfirmed = existingOS.suppliers.find(({ _id }) => _id == supplier._id).poConfirmDate;
+  console.log("the existing OS", existingOS.suppliers.find(({ _id }) => { console.log("type of _id in suppliers ", typeof _id); return (_id == supplier._id) }))
+  console.log('the type of id', typeof supplier._id)
+
   // console.log('the id of the supplier', supplier._id); // test Code
   // console.log('The conditions of the supplier', supplier.conditions); // Test Code
 
   try {
-    if (checkIfConfirmed) {
+    if (checkIfExistingPoConfirmed && checkIfPoFromBodyConfirmed) {
+      //If the po in cloud and the pushed po both confirmed, update nothing.
+      console.log('Since the existing Po alread confirmed, nothing updated.');
+      return res.json(existingOS);
+    } else if (checkIfExistingPoConfirmed === null && checkIfPoFromBodyConfirmed) {
+      //If the po in cloud not confirmed yet and the pushed Po confirmed, insert price array to the caseMtrls of the supplier and update the poCinfrimDate.
       const updatedSuppliers = await OS.findOneAndUpdate(
         { company: comId, _id: osId, 'suppliers._id': supplier._id },
         {
@@ -684,23 +695,7 @@ router.post('/purchaseorder/:osId', authUser, async (req, res) => {
         return res.json(result);
       }
     } else {
-      // const updatedSuppliers = await OS.findOneAndUpdate(
-      //   { company: comId, _id: osId, 'suppliers._id': supplier._id },
-      //   {
-      //     $set: {
-      //       'suppliers.$.address': supplier.address,
-      //       'suppliers.$.attn': supplier.attn,
-      //       'suppliers.$.email': supplier.email,
-      //       'suppliers.$.tel': supplier.tel,
-      //       'suppliers.$.conditions': supplier.conditions,
-      //       'suppliers.$.poConfirmDate': null,
-      //       caseMtrls: inputCaseMtrls,
-      //     },
-      //   },
-      //   { new: true }
-      //   // { projection: { _id: 0, suppliers: 1 } }
-      // );
-
+      //If both cloud po and pushed po is not confirmed then only update condifions information of the po.
       const caseMtrls = inputCaseMtrls;
       // console.log('the caseMTrls', caseMtrls);
 

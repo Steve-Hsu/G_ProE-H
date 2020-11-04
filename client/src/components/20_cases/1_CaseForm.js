@@ -223,7 +223,7 @@ const CaseForm = ({ props }) => {
                   <div className='v-center-content'>Merchandiser : </div>
                   <div>{cNo === null ? '' : merchandiser}</div>
                   <div className='v-center-content'>Style</div>
-                  <input
+                  {caseConfirmDate === null ? (<input
                     id='caseStyle'
                     type='text'
                     name='style'
@@ -233,42 +233,61 @@ const CaseForm = ({ props }) => {
                     className='bd-light'
                     value={style || ''}
                     required
-                  />
+                  />) : (
+                      <div className='v-center-content'>
+                        {style}
+                      </div>
+                    )}
+
 
                   <div className='v-center-content'>Client</div>
-                  <input
-                    id='caseClient'
-                    type='text'
-                    name='client'
-                    onChange={addCaseValue}
-                    maxLength={clientLength}
-                    // placeholder='.'
-                    className='bd-light'
-                    value={client || ''}
-                    required
-                  />
+                  {caseConfirmDate === null ? (
+                    <input
+                      id='caseClient'
+                      type='text'
+                      name='client'
+                      onChange={addCaseValue}
+                      maxLength={clientLength}
+                      // placeholder='.'
+                      className='bd-light'
+                      value={client || ''}
+                      required
+                    />
+                  ) : (
+                      <div className='v-center-content'>
+                        {client}
+                      </div>
+                    )}
 
                   <div className='v-center-content'>Case Type</div>
-                  <select
-                    id='caseType'
-                    name='caseType'
-                    list='caseTypeList'
-                    onChange={addCaseValue}
-                    className='bd-light'
-                    required
-                  >
-                    {caseTypeList.map((t) => {
-                      return (
-                        <option
-                          key={`${t}-caseType`}
-                          id={`${t}-caseType`}
-                          value={t}
-                        >
-                          {t}
-                        </option>
-                      );
-                    })}
-                  </select>
+                  {caseConfirmDate === null ? (
+                    <select
+                      id='caseType'
+                      name='caseType'
+                      list='caseTypeList'
+                      onChange={addCaseValue}
+                      className='bd-light'
+                      required
+                    >
+                      {caseTypeList.map((t) => {
+                        return (
+                          <option
+                            key={`${t}-caseType`}
+                            id={`${t}-caseType`}
+                            value={t}
+                          >
+                            {t}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  ) : (
+                      <div className='v-center-content'>
+                        {caseType}
+                      </div>
+                    )}
+
+
                 </div>
                 {cNo ? (
                   <div className='grid-1-5 my-1'>

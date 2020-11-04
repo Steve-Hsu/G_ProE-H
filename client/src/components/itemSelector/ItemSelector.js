@@ -144,10 +144,10 @@ export const ItemSelector = ({ props, purpose, currentPath }) => {
           supplier: true,
         },
         { ref_no: true },
-        { mColor: true },
-        { mSizeSPEC: true },
         { poConfirmed: true },
         { leadTimeSetUp: true },
+        { mColor: true },
+        { mSizeSPEC: true },
       ];
       goBack = (e) => {
         e.preventDefault();

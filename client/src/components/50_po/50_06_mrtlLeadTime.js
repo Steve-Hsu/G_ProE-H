@@ -60,7 +60,7 @@ const MrtlLeadTime = ({ caseMtrl, idx }) => {
       </div>
       <div className='ml-1' style={{ flex: '1 1 auto' }}>
         {/* <form id='updateOsCaseMtrlLeadTime' onSubmit={submit}></form> */}
-        <section className='flexBox hover-pointer' onClick={goBack}>
+        <section className='grid-3 hover-pointer' onClick={goBack}>
           <div style={{ flex: '1 1 auto' }}>
             <TopLabelTiny label='Supplier' />
             <div className='fs-large' id={`supplier${caseMtrlId}`}>
