@@ -30,22 +30,24 @@ const CompleteSetState = (props) => {
         const res = await axios.get(`/api/completeset`);
         console.log('getOsHeads triggered')
         // console.log("the res ",res) // test code
-        if (!res.data) {
+        if (res.data.length === 0) {
             console.log('No order summary found!');
             dispatch({ type: UPDATE_ERROR, payload: 'No complete set found' })
             setTimeout(() => {
                 dispatch({ type: UPDATE_ERROR, payload: null })
             }, 3500);
-        } else if (res.data[0].err) {
-            const err = res.data[0].err
-            console.log('Multiple user login~!')
-            dispatch({ type: UPDATE_ERROR, payload: err });
-            setTimeout(() => {
-                dispatch({ type: UPDATE_ERROR, payload: null });
-            }, 3500);
         } else {
-            console.log('download succeed!');
-            dispatch({ type: OS_LIST_DOWNLOAD, payload: res.data });
+            if (res.data[0].err) {
+                const err = res.data[0].err
+                console.log('Multiple user login~!')
+                dispatch({ type: UPDATE_ERROR, payload: err });
+                setTimeout(() => {
+                    dispatch({ type: UPDATE_ERROR, payload: null });
+                }, 3500);
+            } else {
+                console.log('download succeed!');
+                dispatch({ type: OS_LIST_DOWNLOAD, payload: res.data });
+            }
         }
     }
     const getCs = async (osNo) => {

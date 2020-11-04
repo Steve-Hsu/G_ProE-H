@@ -182,7 +182,7 @@ const SrMtrlState = (props) => {
         id: uuidv4() + generateId(),
         mColor: cArr[0],
         sizeSPEC: sArr[0],
-        unit: '',
+        unit: srMaterial.caseUnit,
         currency: '',
         mPrice: '',
         moq: '',

@@ -280,6 +280,7 @@ router.put('/:caseId', authUser, async (req, res) => {
           CSRIC: newCSRIC,
           mtrlColors: [],
           sizeSPECs: [],
+          caseUnit: mtrl.unit,
           mPrices: [],
           company: cases.company,
           mainPrice: null,

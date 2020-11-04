@@ -1283,9 +1283,18 @@ router.put('/quotateadvise', authUser, async (req, res) => {
               },
             ]);
 
-            const cm = addUp[0].cm;
-            const mQuosTotal = addUp[0].mQuosAddUp;
-            const otherExpensesTotal = addUp[0].otherExpensesAddUp;
+            // const cm = addUp[0].cm;
+            const cm = addUp[0] ?
+              Math.round((addUp[0].cm + Number.EPSILON) * 100) / 100
+              : 0
+            // const mQuosTotal = addUp[0].mQuosAddUp;
+            const mQuosTotal = addUp[0].mQuosAddUp ?
+              Math.round((addUp[0].mQuosAddUp + Number.EPSILON) * 100) / 100
+              : 0
+            // const otherExpensesTotal = addUp[0].otherExpensesAddUp;
+            const otherExpensesTotal = addUp[0].otherExpensesAddUpp ?
+              Math.round((addUp[0].otherExpensesAddUpp + Number.EPSILON) * 100) / 100
+              : 0
             const FOB =
               Number(cm) + Number(mQuosTotal) + Number(otherExpensesTotal);
             console.log(
