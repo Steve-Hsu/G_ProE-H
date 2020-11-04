@@ -345,13 +345,13 @@ router.post('/', authUser, async (req, res) => {
           { company: comId },
           { company: 0 }
         );
+        // This is returned to the frontEnd
+        console.log('OsList is returned');
         res.json(result)
-        return result
-      }).then(async (result) => {
-        const newOs = result[0]
+      }).then(async () => {
         let csCaseList = [];
         const inserMtrls = new Promise(async (resolve) => {
-          await newOs.caseList.map(async (c, idx) => {
+          caseList.map(async (c, idx) => {
             const theCase = await Case.findOne({ _id: c.caseId })
             let newObj = {
               caseId: c.caseId,
@@ -365,7 +365,7 @@ router.post('/', authUser, async (req, res) => {
               mtrls: theCase.mtrls
             }
             csCaseList.push(newObj)
-            if (idx + 1 === newOs.caseList.length) {
+            if (idx + 1 === caseList.length) {
               resolve()
             }
             return;
@@ -375,10 +375,10 @@ router.post('/', authUser, async (req, res) => {
         Promise.all([inserMtrls]).then(async () => {
           const completeSet = new CS({
             company: comId,
-            osNo: newOs.osNo,
+            osNo: newOsNO,
             csOrder: [],
             osLtConfirmDate: null,
-            caseMtrls: newOs.caseMtrls,
+            caseMtrls: caseMtrls,
             caseList: csCaseList,
           });
           await completeSet.save();
@@ -539,7 +539,8 @@ router.delete('/deleteos/:osId', authUser, async (req, res) => {
 
     await CS.findOneAndDelete({ company: comId, osNo: osNo })
 
-    await OS.findOneAndDelete({ company: comId, _id: osId }).then(() => {
+    await OS.findOneAndDelete({ company: comId, _id: osId }).then(async () => {
+
       const returnMsg = `The order summary ${osId} is deleted.`;
       console.log(returnMsg);
       return res.json({

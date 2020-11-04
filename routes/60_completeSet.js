@@ -61,15 +61,14 @@ router.get('/getcs/:osNo', authUser, async (req, res) => {
         return res.status(400).json({ msg: 'Out of authority' });
     }
     const comId = req.user.company;
-    const completeSet = await CS.findOne({ company: comId, osNo }, { company: 0 });
+    const completeSet = await CS.findOne({ company: comId, osNo: osNo }, { company: 0 });
     // console.log('the osList', osList) // test code
-    if (completeSet.length === 0) {
-        console.log('No cs Found')
-
-        return res.json({})
-    } else {
+    if (completeSet) {
         console.log('completeSet is returned')
         return res.json(completeSet);
+    } else {
+        console.log('No cs Found')
+        return res.json({})
     }
 });
 
