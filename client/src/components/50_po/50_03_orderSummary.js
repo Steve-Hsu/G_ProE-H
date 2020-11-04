@@ -54,6 +54,8 @@ const OrderSummary = ({ purpose }) => {
 
   }
 
+  console.log("the osConfirmDate", osConfirmDate)
+
   return (
     <Fragment>
       {popover ? <DeletePopover key={current._id} /> : null}
@@ -89,7 +91,8 @@ const OrderSummary = ({ purpose }) => {
           </div>) : null}
 
         </div>
-        {osConfirmDate !== null ? (
+
+        {osConfirmDate ? (
           <LockedBadge
             labels={[
               'All the Purchase Order is confirmed.',
