@@ -161,7 +161,7 @@ const PurState = (props) => {
 
   const getOsList = async () => {
     console.log('I triggered here !!!')
-    const res = await axios.get('/api/purchase/ordersummary');
+    const res = await axios.get('/api/purchase/oslist');
     // console.log("the res ",res) // test code
     if (res.data.length === 0) {
       console.log('No order summary found!');
@@ -182,13 +182,41 @@ const PurState = (props) => {
     }
   };
 
-  const switchOsCurrent = (osItem) => {
+  // getOs is an inner func
+  const getOs = async (osNo) => {
     if (currentOrderSummary === null) {
-      dispatch({ type: OS_CURRENT, payload: osItem });
+      console.log('I triggered here !!!')
+      const res = await axios.get(`/api/purchase/ordersummary/${osNo}`);
+      // console.log("the res ",res) // test code
+      if (!res.data) {
+        console.log('No order summary found!');
+        dispatch({ type: UPDATE_ERROR, payload: 'No complete set found' })
+        setTimeout(() => {
+          dispatch({ type: UPDATE_ERROR, payload: null })
+        }, 3500);
+      } else if (res.data.err) {
+        const err = res.data.err
+        console.log('Multiple user login~!')
+        dispatch({ type: UPDATE_ERROR, payload: err });
+        setTimeout(() => {
+          dispatch({ type: UPDATE_ERROR, payload: null });
+        }, 3500);
+      } else {
+        console.log('download succeed!');
+        dispatch({ type: OS_CURRENT, payload: res.data });
+      }
     } else {
       dispatch({ type: OS_CURRENT, payload: null });
     }
   };
+
+  // const switchOsCurrent = (osNo) => {
+  //   if (currentOrderSummary === null) {
+  //     getOs(osNo)
+  //   } else {
+  //     dispatch({ type: OS_CURRENT, payload: null });
+  //   }
+  // };
 
   const getMaterialPrice = async (currentPo, caseMtrls) => {
     const config = {
@@ -671,7 +699,8 @@ const PurState = (props) => {
         defaultPurState,
         switchPage,
         getOsList,
-        switchOsCurrent,
+        getOs,
+        // switchOsCurrent,
         getMaterialPrice,
         deleteOs,
         updatePOInform,

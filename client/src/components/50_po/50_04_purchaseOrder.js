@@ -17,6 +17,7 @@ const PurchaseOrder = () => {
   const purContext = useContext(PurContext);
   const {
     currentOrderSummary,
+    currentPoPriceList,
     currentPo,
     getMaterialPrice,
     updatePOInform,
@@ -25,7 +26,7 @@ const PurchaseOrder = () => {
   } = purContext;
   const popoverContext = useContext(PopoverContext);
   const { _id, osNo, caseMtrls } = currentOrderSummary;
-  const { isLoading, toggleLoading } = popoverContext;
+  const { toggleLoading } = popoverContext;
 
   // const authUserContext = useContext(AuthUserContext);
   // const { comName, comNameTail, comAddress, comPhone } = authUserContext;
@@ -44,6 +45,7 @@ const PurchaseOrder = () => {
   // let currentMtrls = [];
 
   let theNumber = 0;
+  let totalAmount = 0;
 
   const currentMtrlsLength = caseMtrls.filter((mtrl) => {
     return mtrl.supplier === currentPo.supplier;
@@ -69,19 +71,8 @@ const PurchaseOrder = () => {
 
   return (
     <div className=''>
-      {/* {isLoading === true ? <DeletePopover key='PurchaseOrderPopover' /> : null} */}
-      {/* {currentPoPriceList === [] ? null : (
-        <div> */}
       <NoAndDateHeader No={osNo} />
       <FormTitle title='Purchase Order' />
-      {/* <div>
-        <h1>
-          {comName} {comNameTail}
-        </h1>
-      </div>
-      <div>{comAddress}</div>
-      <div>{comPhone}</div>
-      <br /> */}
       <div className='fs-lead'>
         To : {String(currentPo.supplier).toUpperCase()}
       </div>
@@ -139,10 +130,63 @@ const PurchaseOrder = () => {
         </div>
         {caseMtrls.map((osMtrl) => {
           if (osMtrl.supplier == currentPo.supplier) {
+            const currentMtrlPrice = currentPoPriceList.find(
+              ({ osMtrlId }) => osMtrlId === osMtrl._id
+            );
+            // The loading may later than the mount of the component, so here set the default value for these variables to ref
+            let unit = '';
+            let currency = '';
+            let mPrice = 0;
+            let moq = 0;
+            let moqPrice = 0;
+
+            if (osMtrl.price && currentPo.poConfirmDate) {
+              // If Po is confirmed, return the primce in price of the caseMtrls
+              console.log('the price from caseMtrl')
+              unit = osMtrl.price.poUnit ? osMtrl.price.poUnit : '';
+              currency = osMtrl.price.currency ? osMtrl.price.currency : '';
+              mPrice = osMtrl.price.mPrice ? osMtrl.price.mPrice : 0;
+              moq = osMtrl.price.moq ? osMtrl.price.moq : 0;
+              moqPrice = osMtrl.price.moqPrice ? osMtrl.price.moqPrice : 0;
+            } else {
+              // If Po is not confirmed, return the price get from database.
+              if (currentMtrlPrice) {
+                console.log('the price form currentMtrlPrice')
+                unit = currentMtrlPrice.poUnit ? currentMtrlPrice.poUnit : '';
+                currency = currentMtrlPrice.currency ? currentMtrlPrice.currency : '';
+                mPrice = currentMtrlPrice.mPrice ? currentMtrlPrice.mPrice : 0;
+                moq = currentMtrlPrice.moq ? currentMtrlPrice.moq : 0;
+                moqPrice = currentMtrlPrice.moqPrice ? currentMtrlPrice.moqPrice : 0;
+              }
+            }
+
+            const displayPrice = () => {
+              if (moq) {
+                if (osMtrl.purchaseQtySumUp + osMtrl.purchaseLossQtySumUp + osMtrl.purchaseMoqQty > moq) {
+                  return mPrice;
+                } else {
+                  return moqPrice;
+                }
+              } else {
+                return mPrice;
+              }
+            };
+
             theNumber = theNumber + 1;
-            // console.log(mtrl.supplier);
+            totalAmount += Number(osMtrl.purchaseQtySumUp + osMtrl.purchaseLossQtySumUp + osMtrl.purchaseMoqQty) * displayPrice()
+
+
+
             return (
-              <PoItem key={osMtrl._id} osMtrl={osMtrl} theNumber={theNumber} />
+              <PoItem
+                key={osMtrl._id}
+                osMtrl={osMtrl}
+                theNumber={theNumber}
+                displayPrice={displayPrice}
+                unit={unit}
+                currency={currency}
+                moq={moq}
+              />
             );
           } else {
             return null;
@@ -150,7 +194,14 @@ const PurchaseOrder = () => {
         })}
         <div className='mt-05 h-scatter-content'>
           <div></div>
-          <div>{`Total : `}</div>
+          <div>
+            {`Total : ${Math.round(
+              (Number(
+                totalAmount) +
+                Number.EPSILON) *
+              100
+            ) / 100}`}
+          </div>
         </div>
       </section>
 

@@ -29,7 +29,7 @@ router.get('/', authUser, async (req, res) => {
         return res.status(400).json({ msg: 'Out of authority' });
     }
     const comId = req.user.company;
-    const completeSet = await OS.find({ company: comId }, { company: 0, suppliers: 0, caseMtrls: 0 });
+    const completeSet = await CS.find({ company: comId }, { company: 0, caseMtrls: 0 }).sort({ osNo: 1 });
     // console.log('the osList', osList) // test code
     if (completeSet.length === 0) {
         console.log('No os Found')

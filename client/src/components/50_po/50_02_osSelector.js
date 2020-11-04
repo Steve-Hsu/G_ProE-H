@@ -14,7 +14,8 @@ const OsSelector = ({ purpose }) => {
     osList,
     getOsList,
     openPage,
-    switchOsCurrent,
+    // switchOsCurrent,
+    getOs,
     switchPage,
   } = purContext;
 
@@ -25,6 +26,14 @@ const OsSelector = ({ purpose }) => {
     getCs,
     switchCsPage,
   } = completeSetContext
+
+  const osPageSwitch = (osNo) => {
+    toggleLoading(true)
+    getOs(osNo).then(() => {
+      switchPage(purpose === 'osSelector' ? 'orderSummary' : 'csCaseSelector');
+      toggleLoading(false)
+    })
+  }
 
   const csPageSwitch = (osNo) => {
     toggleLoading(true)
@@ -59,7 +68,7 @@ const OsSelector = ({ purpose }) => {
     <Table
       subjects={purpose === 'csOsSelector' ? osHeads : osList}
       purpose={purpose}
-      toggleItemAttributes={purpose === 'csOsSelector' ? [csPageSwitch] : [switchOsCurrent, switchPage]}
+      toggleItemAttributes={purpose === 'csOsSelector' ? [csPageSwitch] : [osPageSwitch]}
       displayTitles={[{ osNo: true }]}
     />
 

@@ -14,10 +14,10 @@ const SRMtrl = require('../models/30_SRMtrl');
 const OS = require('../models/50_OS');
 const CS = require('../models/60_CS');
 
-// @route   GET api/purchase/ordersummary
-// @desc    Read the compnay's all of order Summary from database
+// @route   GET api/purchase/oslist
+// @desc    Read the compnay's all of order Summary from database, and return limited datas
 // @access  Private
-router.get('/ordersummary', authUser, async (req, res) => {
+router.get('/oslist', authUser, async (req, res) => {
   let user = await User.findById(req.user.id);
   //Check if multiple login, if yes, do nothing
   const token = req.header('x-auth-token');
@@ -31,7 +31,7 @@ router.get('/ordersummary', authUser, async (req, res) => {
     return res.status(400).json({ msg: 'Out of authority' });
   }
   const comId = req.user.company;
-  const osList = await OS.find({ company: comId }, { company: 0 }).sort({ osNo: 1 });
+  const osList = await OS.find({ company: comId }, { company: 0, suppliers: 0, caseMtrls: 0 }).sort({ osNo: 1 });
   // console.log('the osList', osList) // test code
   if (osList.length === 0) {
     console.log('No os Found')
@@ -40,6 +40,37 @@ router.get('/ordersummary', authUser, async (req, res) => {
   } else {
     console.log('osList is returned')
     return res.json(osList);
+  }
+});
+
+
+// @route   GET api/purchase/ordersummary/osNo
+// @desc    get the specific os by osNo
+// @access  Private
+router.get('/ordersummary/:osNo', authUser, async (req, res) => {
+  let user = await User.findById(req.user.id);
+  const osNo = req.params.osNo
+  //Check if multiple login, if yes, do nothing
+  const token = req.header('x-auth-token');
+  if (user.sKey !== token) {
+    const msg = { err: 'Multiple user login, please login again.' }
+    console.log(msg)
+    return res.json([msg])
+  }
+  //Check if the user have the right
+  if (!user.po) {
+    return res.status(400).json({ msg: 'Out of authority' });
+  }
+  const comId = req.user.company;
+  const osList = await OS.findOne({ company: comId, osNo: osNo }, { company: 0 });
+  // console.log('the osList', osList) // test code
+  if (osList) {
+    console.log('osList is returned')
+    return res.json(osList);
+
+  } else {
+    console.log('No os Found')
+    return res.json({})
   }
 });
 

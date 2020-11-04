@@ -2,9 +2,12 @@ import React, { useContext } from 'react';
 import PurContext from '../../context/pur/purContext';
 import SqBtnLarge from '../elements/btns/SqBtnLarge';
 
-const PoItem = ({ osMtrl, theNumber }) => {
+const PoItem = ({ osMtrl, theNumber, displayPrice, unit, currency, moq }) => {
   const purContext = useContext(PurContext);
-  const { currentPoPriceList, currentPo, evenMoq } = purContext;
+  const {
+    // currentPoPriceList, 
+    currentPo,
+    evenMoq } = purContext;
 
   const {
     _id,
@@ -16,50 +19,50 @@ const PoItem = ({ osMtrl, theNumber }) => {
     purchaseLossQtySumUp,
     purchaseMoqQty,
   } = osMtrl;
-  const currentMtrlPrice = currentPoPriceList.find(
-    ({ osMtrlId }) => osMtrlId === osMtrl._id
-  );
+  // const currentMtrlPrice = currentPoPriceList.find(
+  //   ({ osMtrlId }) => osMtrlId === osMtrl._id
+  // );
 
-  // The loading may later than the mount of the component, so here set the default value for these variables to ref
-  let unit = '';
-  let currency = '';
-  let mPrice = 0;
-  let moq = 0;
-  let moqPrice = 0;
+  // // The loading may later than the mount of the component, so here set the default value for these variables to ref
+  // let unit = '';
+  // let currency = '';
+  // let mPrice = 0;
+  // let moq = 0;
+  // let moqPrice = 0;
 
-  if (osMtrl.price && currentPo.poConfirmDate) {
-    console.log('the price from caseMtrl')
-    unit = osMtrl.price.poUnit ? osMtrl.price.poUnit : '';
-    currency = osMtrl.price.currency ? osMtrl.price.currency : '';
-    mPrice = osMtrl.price.mPrice ? osMtrl.price.mPrice : 0;
-    moq = osMtrl.price.moq ? osMtrl.price.moq : 0;
-    moqPrice = osMtrl.price.moqPrice ? osMtrl.price.moqPrice : 0;
-    // }
-  } else {
-    if (currentMtrlPrice) {
-      console.log('the price form currentMtrlPrice')
-      unit = currentMtrlPrice.poUnit ? currentMtrlPrice.poUnit : '';
-      currency = currentMtrlPrice.currency ? currentMtrlPrice.currency : '';
-      mPrice = currentMtrlPrice.mPrice ? currentMtrlPrice.mPrice : 0;
-      moq = currentMtrlPrice.moq ? currentMtrlPrice.moq : 0;
-      moqPrice = currentMtrlPrice.moqPrice ? currentMtrlPrice.moqPrice : 0;
-    }
-  }
+  // if (osMtrl.price && currentPo.poConfirmDate) {
+  //   console.log('the price from caseMtrl')
+  //   unit = osMtrl.price.poUnit ? osMtrl.price.poUnit : '';
+  //   currency = osMtrl.price.currency ? osMtrl.price.currency : '';
+  //   mPrice = osMtrl.price.mPrice ? osMtrl.price.mPrice : 0;
+  //   moq = osMtrl.price.moq ? osMtrl.price.moq : 0;
+  //   moqPrice = osMtrl.price.moqPrice ? osMtrl.price.moqPrice : 0;
+  //   // }
+  // } else {
+  //   if (currentMtrlPrice) {
+  //     console.log('the price form currentMtrlPrice')
+  //     unit = currentMtrlPrice.poUnit ? currentMtrlPrice.poUnit : '';
+  //     currency = currentMtrlPrice.currency ? currentMtrlPrice.currency : '';
+  //     mPrice = currentMtrlPrice.mPrice ? currentMtrlPrice.mPrice : 0;
+  //     moq = currentMtrlPrice.moq ? currentMtrlPrice.moq : 0;
+  //     moqPrice = currentMtrlPrice.moqPrice ? currentMtrlPrice.moqPrice : 0;
+  //   }
+  // }
 
-  const displayPrice = () => {
-    if (moq) {
-      if (purchaseQtySumUp + purchaseLossQtySumUp + purchaseMoqQty > moq) {
-        // return Number(mPrice).toFixed(2);
-        return mPrice;
-      } else {
-        // return Number(moqPrice).toFixed(2);
-        return moqPrice;
-      }
-    } else {
-      // return Number(mPrice).toFixed(2);
-      return mPrice;
-    }
-  };
+  // const displayPrice = () => {
+  //   if (moq) {
+  //     if (purchaseQtySumUp + purchaseLossQtySumUp + purchaseMoqQty > moq) {
+  //       // return Number(mPrice).toFixed(2);
+  //       return mPrice;
+  //     } else {
+  //       // return Number(moqPrice).toFixed(2);
+  //       return moqPrice;
+  //     }
+  //   } else {
+  //     // return Number(mPrice).toFixed(2);
+  //     return mPrice;
+  //   }
+  // };
   console.log()
   console.log('the moq', moq)
 

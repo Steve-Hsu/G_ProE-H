@@ -43,6 +43,16 @@ const OrderSummary = ({ purpose }) => {
     }
   }
 
+  const checkConfirmOfSuppliers = () => {
+    let check = false
+    suppliers.map((s) => {
+      if (s.poConfirmDate) {
+        check = true
+      }
+    })
+    return check
+  }
+
   const toggleFuncs = () => {
     switch (purpose) {
       case 'purchaseOrder':
@@ -86,7 +96,7 @@ const OrderSummary = ({ purpose }) => {
         <div className='h-scatter-content'>
           <div></div>
           {purpose === 'purchaseOrder' ? (<div className='flexBox'>
-            <SqBtnLarge onClick={onClick_1} label='List' className='mr-05' />
+            {checkConfirmOfSuppliers() ? (<SqBtnLarge onClick={onClick_1} label='Enter HS-Code' className='mr-05 fs-small' />) : null}
             <SqBtnLarge onClick={onClick_2} label='Lead Time' />
           </div>) : null}
 

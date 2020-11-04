@@ -55,12 +55,13 @@ const TableItem = ({
         const theId = subject._id || subject.id;
         toggleItemAttributes[0](theId);
         break;
+      // case 'osSelector':
+      //   // e.target.name = 'osSelector'
+      //   console.log('The osSelector click is triggered');
+      //   toggleItemAttributes[0](subject.osNo);
+      //   toggleItemAttributes[1](purpose === 'osSelector' ? 'orderSummary' : 'csCaseSelector');
+      //   break;
       case 'osSelector':
-        // e.target.name = 'osSelector'
-        console.log('The osSelector click is triggered');
-        toggleItemAttributes[0](subject);
-        toggleItemAttributes[1](purpose === 'osSelector' ? 'orderSummary' : 'csCaseSelector');
-        break;
       case 'csOsSelector':
         console.log('The csOsSelector click is triggered');
         toggleItemAttributes[0](subject.osNo);

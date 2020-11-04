@@ -56,14 +56,20 @@ const OsMtrlList = () => {
             'Qantity',
             'Loss',
             'Total',
-          ].map((i) => (
-            <div
-              key={`osTitle${i}`}
-              className='bd-light v-center-content p-05 f-wrap'
-            >
-              {i}
-            </div>
-          ))}
+          ].map((i) => {
+            let className = 'bd-light v-center-content p-05 f-wrap'
+            // if (i === 'HS-Code') {
+            //   className = 'bd-light v-center-content p-05 f-wrap fw-bold'
+            // }
+            return (
+              <div
+                key={`osTitle${i}`}
+                className={className}
+              >
+                {i}
+              </div>
+            )
+          })}
         </div>
         {caseMtrls.map((osMtrl, idx) => {
           const check = confirmedSuppliers.includes(osMtrl.supplier);
