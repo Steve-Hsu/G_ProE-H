@@ -282,8 +282,11 @@ router.post('/', authUser, async (req, res) => {
               }
 
               // Round it number to 2 decimal
-              const roundRequiredMQty = Math.round((cspt.requiredMQty + Number.EPSILON) * 100) / 100;
-              const roundLossQtySumUp = Math.round((purchaseLossQtySumUp + Number.EPSILON) * 100) / 100;
+              // const roundRequiredMQty = Math.round((cspt.requiredMQty + Number.EPSILON) * 100) / 100;
+              // @ 2020/11/04 - I think it is convinent and save cost of time as the purchase number of materials shouldn't have decimal number.
+              // The loss don't allow the decimal ditigal, the smallest number is 1, round up all the decimal number.
+              const celiedRequiredMQty = Math.ceil(cspt.requiredMQty)
+              const ceiledLossQtySumUp = Math.ceil(purchaseLossQtySumUp);
 
               // New caseMtrls
               caseMtrls.push({
@@ -293,9 +296,9 @@ router.post('/', authUser, async (req, res) => {
                 ref_no: ref_no,
                 mColor: cspt.mColor,
                 mSizeSPEC: cspt.mSizeSPEC,
-                purchaseQtySumUp: roundRequiredMQty,
+                purchaseQtySumUp: celiedRequiredMQty,
                 // purchaseQtySumUp: cspt.requiredMQty,
-                purchaseLossQtySumUp: roundLossQtySumUp,
+                purchaseLossQtySumUp: ceiledLossQtySumUp,
                 // purchaseLossQtySumUp: purchaseLossQtySumUp,
                 purchaseMoqQty: 0,
                 hsCode: null,
@@ -313,8 +316,11 @@ router.post('/', authUser, async (req, res) => {
                   caseMtrl.purchaseLossQtySumUp += purchaseLossQtySumUp;
                   // Round it number to 2 decimal
                   // Round the number in the final, so the number rounded will be closer to original number.
-                  caseMtrl.purchaseQtySumUp = Math.round((caseMtrl.purchaseQtySumUp + Number.EPSILON) * 100) / 100;
-                  caseMtrl.purchaseLossQtySumUp = Math.round((caseMtrl.purchaseLossQtySumUp + Number.EPSILON) * 100) / 100;
+                  // caseMtrl.purchaseQtySumUp = Math.round((caseMtrl.purchaseQtySumUp + Number.EPSILON) * 100) / 100;
+                  // caseMtrl.purchaseLossQtySumUp = Math.round((caseMtrl.purchaseLossQtySumUp + Number.EPSILON) * 100) / 100;
+                  // @ 2020/11/04 - I think it is convinent and save cost of time as the purchase number of materials shouldn't have decimal number.
+                  caseMtrl.purchaseQtySumUp = Math.ceil(caseMtrl.purchaseQtySumUp)
+                  caseMtrl.purchaseLossQtySumUp = Math.ceil(caseMtrl.purchaseLossQtySumUp);
                 }
               });
             }
