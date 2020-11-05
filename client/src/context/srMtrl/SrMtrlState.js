@@ -183,7 +183,7 @@ const SrMtrlState = (props) => {
         mColor: cArr[0],
         sizeSPEC: sArr[0],
         unit: srMaterial.caseUnit,
-        currency: '',
+        currency: 'USD',
         mPrice: '',
         moq: '',
         moqPrice: '',

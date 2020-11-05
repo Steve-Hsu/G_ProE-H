@@ -404,7 +404,7 @@ router.put('/quoform/:cNo/uploadquoForm', authUser, async (req, res) => {
               company: comId,
               quoHead: quoHeadId,
               quoNo: quoNo,
-              currency: '',
+              currency: 'USD',
               quoSizes: sizesValue,
               quocWays: cWayValue,
               quotatedQty: 0,
@@ -550,9 +550,12 @@ router.put('/quoform/:cNo/uploadquoForm', authUser, async (req, res) => {
         Promise.all([quotatedQtyCounting, mQuosCounting, otherExpensesCounting])
           .then(async (result) => {
             const quotatedQty = result[0];
-            const mQuosTotal = result[1];
-            const otherExpensesTotal = result[2];
-            const FOB = Number(cm + mQuosTotal + otherExpensesTotal).toFixed(2);
+            const mQuosTotal = Math.round((result[1] + Number.EPSILON) * 100) / 100
+            // const mQuosTotal = result[1];
+            const otherExpensesTotal = Math.round((result[2] + Number.EPSILON) * 100) / 100
+            // const otherExpensesTotal = result[2];
+            const FOB = Math.round((Number(cm + mQuosTotal + otherExpensesTotal) + Number.EPSILON) * 100) / 100
+            // const FOB = Number(cm + mQuosTotal + otherExpensesTotal).toFixed(2);
             // const FOB =
             //   Number(cm) + Number(mQuosTotal) + Number(otherExpensesTotal);
             console.log(cm, '-', mQuosTotal, '-', otherExpensesTotal);

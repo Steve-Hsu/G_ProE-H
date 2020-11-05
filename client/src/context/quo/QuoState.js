@@ -224,27 +224,41 @@ const QuoState = (props) => {
 
   const updateQuoSize = (quoFormId, size) => {
     const quoForms = quotation.quoForms;
-    const quoForm = quoForms.find(({ _id }) => _id === quoFormId);
+    const quoForm = currentQuoForm;
+
     const haveTheQuoSize = quoForm.quoSizes.includes(size);
     if (haveTheQuoSize) {
       quoForm.quoSizes.splice(quoForm.quoSizes.indexOf(size), 1);
     } else {
       quoForm.quoSizes.push(size);
     }
-    dispatch({ type: QUOFORM_UPDATE, payload: quoForms });
+    const updateQuoForms = quoForms.map((qF) => {
+      if (qF._id == quoForm._id) {
+        qF = quoForm
+      }
+      return qF
+    });
+    dispatch({ type: QUOFORM_UPDATE, payload: updateQuoForms });
     dispatch({ type: CURRETQUOFORM_UPDATE, payload: quoForm });
   };
 
   const updateQuocWay = (quoFormId, cWay) => {
     const quoForms = quotation.quoForms;
-    const quoForm = quoForms.find(({ _id }) => _id === quoFormId);
+    const quoForm = currentQuoForm;
+
     const haveTheQuocWay = quoForm.quocWays.includes(cWay);
     if (haveTheQuocWay) {
       quoForm.quocWays.splice(quoForm.quocWays.indexOf(cWay), 1);
     } else {
       quoForm.quocWays.push(cWay);
     }
-    dispatch({ type: QUOFORM_UPDATE, payload: quoForms });
+    const updateQuoForms = quoForms.map((qF) => {
+      if (qF._id == quoForm._id) {
+        qF = quoForm
+      }
+      return qF
+    });
+    dispatch({ type: QUOFORM_UPDATE, payload: updateQuoForms });
     dispatch({ type: CURRETQUOFORM_UPDATE, payload: quoForm });
   };
 

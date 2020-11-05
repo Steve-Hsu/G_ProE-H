@@ -83,10 +83,12 @@ export default (state, action) => {
           ...state.currentQuoForm,
           mQuos: action.payload.mQuos,
           mQuosTotal: action.payload.mQuosTotal,
-          fob:
+          fob: Math.round(((
             Number(state.currentQuoForm.cm) +
             Number(state.currentQuoForm.otherExpensesTotal) +
-            Number(action.payload.mQuosTotal),
+            Number(action.payload.mQuosTotal)
+          ) + Number.EPSILON) * 100) / 100
+
         },
       };
     case UPDATE_ERROR:

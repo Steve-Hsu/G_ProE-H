@@ -36,11 +36,19 @@ const QuoOtherEx = ({ otherExpense, className }) => {
   const addNumber = (e) => {
     e.preventDefault();
     const num = e.target.value;
-    const Max = 9999999;
-    if (String(num).length > String(Max).length) {
-      e.target.value = Max;
+    if (String(num).slice(1, 2) == ".") {
+      if (String(num).length <= 4) {
+        e.target.value = Number(e.target.value)
+      } else {
+        const theValue = String(num).slice(0, 1)
+        e.target.value = Number(theValue) + 1
+      }
+      updateCurrentQuoForm(e);
+    } else if (String(num).length <= 3) {
+      e.target.value = Number(e.target.value)
       updateCurrentQuoForm(e);
     } else {
+      e.target.value = 999;
       updateCurrentQuoForm(e);
     }
   };
