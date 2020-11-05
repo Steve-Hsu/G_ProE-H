@@ -64,7 +64,7 @@ const OSSchema = mongoose.Schema({
   ],
   caseMtrls: [
     {
-      id: {
+      checkCaseMtrlCode: {
         type: String
       },
       cases: {

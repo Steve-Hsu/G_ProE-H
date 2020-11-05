@@ -68,9 +68,9 @@ const PoItem = ({ osMtrl, theNumber, displayPrice, unit, currency, moq }) => {
 
   const moqLabel = () => {
     if (moq) {
-      console.log('The moq is defined', moq)
-      console.log('add sum', purchaseQtySumUp + purchaseLossQtySumUp + purchaseMoqQty)
-      console.log('The compare',)
+      // console.log('The moq is defined', moq)
+      // console.log('add sum', purchaseQtySumUp + purchaseLossQtySumUp + purchaseMoqQty)
+      // console.log('The compare',)
       if (purchaseQtySumUp + purchaseLossQtySumUp + purchaseMoqQty > moq) {
         return null;
       } else {

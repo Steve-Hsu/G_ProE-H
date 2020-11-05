@@ -69,6 +69,24 @@ const PurchaseOrder = () => {
     updatePOInform(e);
   };
 
+  // sort the caseMtrls by it ref_no
+  const loopItems = () => {
+    let arr = []
+    arr = caseMtrls.sort((a, b) => {
+      var refA = a.ref_no.toUpperCase(); // ignore upper and lowerCase;
+      var refB = b.ref_no.toUpperCase(); // ignore upper and lowerCase;
+      if (refA < refB) {
+        return -1;
+      }
+      if (refA > refB) {
+        return 1;
+      }
+      // ref_no must be equal
+      return 0;
+    })
+    return arr
+  }
+
   return (
     <div className=''>
       <NoAndDateHeader No={osNo} />
@@ -128,7 +146,7 @@ const PurchaseOrder = () => {
             </div>
           ))}
         </div>
-        {caseMtrls.map((osMtrl) => {
+        {loopItems().map((osMtrl) => {
           if (osMtrl.supplier == currentPo.supplier) {
             const currentMtrlPrice = currentPoPriceList.find(
               ({ osMtrlId }) => osMtrlId === osMtrl._id

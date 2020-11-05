@@ -290,7 +290,7 @@ router.post('/', authUser, async (req, res) => {
 
               // New caseMtrls
               caseMtrls.push({
-                id: uuidv4() + myModule.generateId(), // Notice: This Id must have, for checking the duplicated Materials right before mongoDB give it an _id
+                checkCaseMtrlCode: uuidv4() + myModule.generateId(), // Notice: This code, or say id, must have, for checking the duplicated Materials right before mongoDB give it an _id
                 cases: [theCase.cNo],
                 supplier: supplier,
                 ref_no: ref_no,
@@ -306,9 +306,9 @@ router.post('/', authUser, async (req, res) => {
               });
             } else {
               // existCaseMtrl.purchaseQtySumUp += cspt.requiredMQty;
-              const currentCaseMtrlId = existCaseMtrl[0].id;
+              const currentCaseMtrlCode = existCaseMtrl[0].checkCaseMtrlCode;
               caseMtrls.map((caseMtrl) => {
-                if (caseMtrl.id === currentCaseMtrlId) {
+                if (caseMtrl.checkCaseMtrlCode === currentCaseMtrlCode) {
                   if (!caseMtrl.cases.includes(theCase.cNo)) {
                     caseMtrl.cases.push(theCase.cNo);
                   }
