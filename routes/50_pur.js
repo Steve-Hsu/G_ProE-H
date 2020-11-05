@@ -5,8 +5,8 @@ const mongoose = require('mongoose');
 const authUser = require('../middleware/authUser');
 // Not set up yet, for check the value entered by user at the some specific column
 // const { check, validationResult } = require('express-validator');
-// const { v4: uuidv4 } = require('uuid');
-// const myModule = require('../myModule/myModule');
+const { v4: uuidv4 } = require('uuid');
+const myModule = require('../myModule/myModule');
 
 const User = require('../models/10_User');
 const Case = require('../models/20_Case');
@@ -267,7 +267,7 @@ router.post('/', authUser, async (req, res) => {
               return true;
             });
 
-            // console.log('The existingCaseMtrl', existCaseMtrl); // Test Code
+            console.log('The existCaseMtrl', existCaseMtrl); // Test Code
 
             if (existCaseMtrl.length === 0) {
               const checkSupplier = supplierList.filter(
@@ -290,7 +290,7 @@ router.post('/', authUser, async (req, res) => {
 
               // New caseMtrls
               caseMtrls.push({
-                // id: uuidv4() + myModule.generateId(),
+                id: uuidv4() + myModule.generateId(), // Notice: This Id must have, for checking the duplicated Materials right before mongoDB give it an _id
                 cases: [theCase.cNo],
                 supplier: supplier,
                 ref_no: ref_no,
@@ -306,9 +306,9 @@ router.post('/', authUser, async (req, res) => {
               });
             } else {
               // existCaseMtrl.purchaseQtySumUp += cspt.requiredMQty;
-              const currentCaseMtrlId = existCaseMtrl[0]._id;
+              const currentCaseMtrlId = existCaseMtrl[0].id;
               caseMtrls.map((caseMtrl) => {
-                if (caseMtrl._id === currentCaseMtrlId) {
+                if (caseMtrl.id === currentCaseMtrlId) {
                   if (!caseMtrl.cases.includes(theCase.cNo)) {
                     caseMtrl.cases.push(theCase.cNo);
                   }
