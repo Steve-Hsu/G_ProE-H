@@ -14,6 +14,7 @@ const MtrlClr = ({ mtrlColor, mtrlId }) => {
   const maxWdsLength = '50';
   const mColorLength = maxWdsLength;
 
+  var re = new RegExp("Empty-ColorWay_Duplicated", 'i')
   return (
     // <div style={{ height: '68px' }}>
     <div className='mr-1'>
@@ -29,7 +30,7 @@ const MtrlClr = ({ mtrlColor, mtrlId }) => {
         readOnly={caseConfirmDate || osNo ? true : false}
       />
       <label htmlFor={mtrlColor.id} className='MPH-input-label'>
-        {multipleColor == true ? `${cWayLabel.includes(String("Empty-ColorWay_Duplicated").toUpperCase()) ? cWayLabel.slice(26) : cWayLabel}` : 'For all ColorWay'}
+        {multipleColor === true ? re.test(cWayLabel) ? cWayLabel.slice(26) : cWayLabel : 'For all ColorWay'}
       </label>
     </div>
   );

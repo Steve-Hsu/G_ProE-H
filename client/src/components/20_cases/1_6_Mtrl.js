@@ -413,7 +413,7 @@ const Mtrl = ({ mtrl }) => {
             </div>
           ) : (
               <Select
-                purpose='unit'
+                purpose='caseUnit'
                 subject={mtrl}
                 onChange={addMtrlValue}
                 required={true}

@@ -41,14 +41,23 @@ const DeletePopover = () => {
 
     switch (current.target) {
       case 'cWay':
-        deletecWayOrgSize('gClr', caseId, current.id);
+        toggleLoading(true);
+        await deletecWayOrgSize('gClr', caseId, current.id).then(() => {
+          toggleLoading(false);
+        });
         break;
       case 'size':
-        deletecWayOrgSize('gSize', caseId, current.id);
+        toggleLoading(true);
+        await deletecWayOrgSize('gSize', caseId, current.id).then(() => {
+          toggleLoading(false);
+        });
         break;
       case 'mtrl':
         deleteSRMtrlByMtrl(comName, comSymbol, current, _id);
-        deleteMtrl(caseId, current.id);
+        toggleLoading(true);
+        await deleteMtrl(caseId, current.id).then(() => {
+          toggleLoading(false);
+        });
         break;
       case 'case':
         if (doubleCheck === cNo) {
@@ -92,60 +101,68 @@ const DeletePopover = () => {
   };
 
   const words = () => {
-    switch (current.target) {
-      case 'cWay':
-        return `Color : ${current.gClr}`;
-      case 'size':
-        return `Size :  ${current.gSize}`;
-      case 'mtrl':
-        return `Material :  ${current.item}, Ref_no : ${current.ref_no}`;
-      case 'case':
-        return `This Case : ${current.cNo}`;
-      case 'quoForm':
-        return `Quotation Form : ${current.quoNo}`;
-      case 'deleteOs':
-        return `Order Summary : ${current.osNo}`;
-      case 'deleteOs':
-        return `Order Summary : ${current.osNo}`;
-      case 'deleteMPrice':
-        return ` Price in SPEC : ${current.sizeSPEC}, and Color : ${current.mColor}`;
-      case 'user':
-        return `user ${current.name}`;
-      default:
-        return 'No defined';
+    if (current) {
+      switch (current.target) {
+        case 'cWay':
+          return `Color : ${current.gClr}`;
+        case 'size':
+          return `Size :  ${current.gSize}`;
+        case 'mtrl':
+          return `Material :  ${current.item}, Ref_no : ${current.ref_no}`;
+        case 'case':
+          return `This Case : ${current.cNo}`;
+        case 'quoForm':
+          return `Quotation Form : ${current.quoNo}`;
+        case 'deleteOs':
+          return `Order Summary : ${current.osNo}`;
+        case 'deleteOs':
+          return `Order Summary : ${current.osNo}`;
+        case 'deleteMPrice':
+          return ` Price in SPEC : ${current.sizeSPEC}, and Color : ${current.mColor}`;
+        case 'user':
+          return `user ${current.name}`;
+        default:
+          return 'No defined';
+      }
+    } else {
+      return 'No defined;'
     }
   };
 
   const doubleCheckInput = () => {
-    if (
-      current.target === 'case' ||
-      current.target === 'quoForm' ||
-      current.target === 'deleteOs' ||
-      current.target === 'user'
-    ) {
-      return (
-        <div key='doubleCheckDiv' className='px-1'>
-          <div className='fs-tiny'>{`Enter the ${current.cNo || current.quoNo || current.osNo ? 'Number' : 'Name'
-            } for deleting`}</div>
-          <input
-            key='doubleCheckInput'
-            type='text'
-            value={doubleCheck || ''}
-            onChange={addDoubleCheckValue}
-            placeholder={
-              current.cNo
-                ? current.cNo
-                : current.quoNo
-                  ? current.quoNo
-                  : current.osNo
-                    ? current.osNo
-                    : current.name
-            }
-          />
-        </div>
-      );
+    if (current) {
+      if (
+        current.target === 'case' ||
+        current.target === 'quoForm' ||
+        current.target === 'deleteOs' ||
+        current.target === 'user'
+      ) {
+        return (
+          <div key='doubleCheckDiv' className='px-1'>
+            <div className='fs-tiny'>{`Enter the ${current.cNo || current.quoNo || current.osNo ? 'Number' : 'Name'
+              } for deleting`}</div>
+            <input
+              key='doubleCheckInput'
+              type='text'
+              value={doubleCheck || ''}
+              onChange={addDoubleCheckValue}
+              placeholder={
+                current.cNo
+                  ? current.cNo
+                  : current.quoNo
+                    ? current.quoNo
+                    : current.osNo
+                      ? current.osNo
+                      : current.name
+              }
+            />
+          </div>
+        );
+      } else {
+        return null;
+      }
     } else {
-      return null;
+      return null
     }
   };
 
@@ -160,18 +177,23 @@ const DeletePopover = () => {
               <Spinner />
             </div>
           </div>
-        ) : csError !== null || osError !== null || caseError !== null || srMtrlError !== null || quoError !== null ? (<div className='popup-container bd-light bd-radius-s bg-cp-2'>
-          <div className='h-10 w-100 h-scatter-content'>
-            <div className='h-10 p-1'><i className="fas fa-exclamation-triangle"> Notice : </i></div>
-            <div><DeleteBtnSmallNoWarning className='mr-05' onClick={csError !== null ? clearCsError : osError !== null ? clearOsError :
-              caseError !== null ? clearCaseError :
-                srMtrlError !== null ? clearSrMtrlError :
-                  quoError !== null ? clearQuoError : null} /></div>
-          </div>
-          <div className='center-content h-80 w-100 p-1'>
-            {csError || osError || caseError || srMtrlError || quoError}
-          </div>
-        </div>) : (
+        ) : csError !== null || osError !== null || caseError !== null || srMtrlError !== null || quoError !== null ?
+            (<div className='popup-container bd-light bd-radius-s bg-cp-2'>
+              <div className='h-10 w-100 h-scatter-content'>
+                <div className='h-10 p-1'><i className="fas fa-exclamation-triangle"> Notice : </i></div>
+                <div><DeleteBtnSmallNoWarning className='mr-05' onClick={
+                  csError ? clearCsError :
+                    osError ? clearOsError :
+                      caseError ? clearCaseError :
+                        srMtrlError ? clearSrMtrlError :
+                          quoError ? clearQuoError :
+                            null
+                } /></div>
+              </div>
+              <div className='center-content h-80 w-100 p-1'>
+                {csError || osError || caseError || srMtrlError || quoError}
+              </div>
+            </div>) : (
               <div className='popup-container bd-light bd-radius-s bg-cp-2'>
                 <div className='p-2 h-20'>Delete this {`${words()}`}</div>
                 <div className='center-content h-40'>

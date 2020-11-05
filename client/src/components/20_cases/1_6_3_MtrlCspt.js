@@ -13,16 +13,91 @@ const MtrlCspt = ({ size, mtrl }) => {
   const sizeId = size.id;
   const cspt = mtrl.cspts.find(({ size }) => size === sizeId); // This is JS array's find method, it returns 1 item, if some many are found, only still return first item
   const multipleCSPT = mtrl.multipleCSPT;
+  const theUnit = mtrl.unit
 
-  const Max = 999;
   const onChange = (e) => {
+    //   'cm',
+    //   'g',//
+    //   'in',
+    //   'm',//
+    //   'pcs',//
+    //   'set',//
+    //   'yds',//
     const num = e.target.value;
-    if (String(num).length <= String(Max).length) {
-      addValueMtrlCspt(e);
-    } else {
-      e.target.value = Max;
-      addValueMtrlCspt(e);
+    switch (theUnit) {
+      case 'm':
+      case 'yds':
+        if (String(num).slice(1, 2) == ".") {
+          if (String(num).length <= 4) {
+            e.target.value = Number(e.target.value)
+          } else {
+            const theValue = String(num).slice(0, 1)
+            e.target.value = Number(theValue) + 1
+          }
+          addValueMtrlCspt(e);
+        } else if (String(num).length <= 2) {
+          e.target.value = Number(e.target.value)
+          addValueMtrlCspt(e);
+        } else {
+          e.target.value = 99;
+          addValueMtrlCspt(e);
+        }
+        break;
+      case 'in':
+        if (String(num).slice(1, 2) == ".") {
+          if (String(num).length <= 3) {
+            e.target.value = Number(e.target.value)
+          } else {
+            const theValue = String(num).slice(0, 1)
+            e.target.value = Number(theValue) + 1
+          }
+          addValueMtrlCspt(e);
+        } else if (String(num).length <= 2) {
+          e.target.value = Number(e.target.value)
+          addValueMtrlCspt(e);
+        } else {
+          e.target.value = 99;
+          addValueMtrlCspt(e);
+        }
+        break;
+      case 'pcs':
+      case 'set':
+        if (String(num).slice(1, 2) == ".") {
+          const theValue = String(num).slice(0, 1)
+          e.target.value = Number(theValue) + 1
+          addValueMtrlCspt(e);
+        } else if (String(num).length <= 2) {
+          e.target.value = Number(e.target.value)
+          addValueMtrlCspt(e);
+        } else {
+          e.target.value = 99;
+          addValueMtrlCspt(e);
+        }
+        break;
+      case 'cm':
+      case 'g':
+        if (String(num).slice(1, 2) == ".") {
+          const theValue = String(num).slice(0, 1)
+          e.target.value = Number(theValue) + 1
+          addValueMtrlCspt(e);
+        } else if (String(num).length <= 3) {
+          e.target.value = Number(e.target.value)
+          addValueMtrlCspt(e);
+        } else {
+          e.target.value = 999;
+          addValueMtrlCspt(e);
+        }
+        break;
+      default:
+        if (String(num).length < 2) {
+          addValueMtrlCspt(e);
+        } else {
+          e.target.value = 9;
+          addValueMtrlCspt(e);
+        }
     }
+
+
   };
 
   return (
@@ -38,7 +113,7 @@ const MtrlCspt = ({ size, mtrl }) => {
         maxLength={csptLength}
         value={cspt.cspt}
         min='0'
-        max={Max}
+        max='999'
         className='MPH-input'
         step='.01'
         readOnly={caseConfirmDate || osNo ? true : false}

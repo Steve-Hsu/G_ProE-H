@@ -34,6 +34,20 @@ const Select = ({
 
   let options = [];
   switch (purpose) {
+    case 'caseUnit':
+      options = [
+        'Unit',
+        'cm',
+        // 'doz',
+        'g',
+        // 'gross',
+        'in',
+        'm',
+        'pcs',
+        'set',
+        'yds',
+      ];
+      break;
     case 'unit':
       options = [
         'Unit',

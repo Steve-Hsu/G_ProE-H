@@ -784,7 +784,7 @@ const CasesState = (props) => {
       //   console.log("yes i'm triggred ");
       //   // materials.find(({ id }) => id === mtrlId).description = e.target.value;
       //   break;
-      case 'unit' + String(mtrlId):
+      case 'caseUnit' + String(mtrlId):
         // console.log('The unit Add value is called'); // Test Codes
         let material = materials.find(({ id }) => id === mtrlId);
         material.unit = e.target.value;
