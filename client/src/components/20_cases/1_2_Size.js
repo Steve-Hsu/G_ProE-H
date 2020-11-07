@@ -4,10 +4,10 @@ import CasesContext from '../../context/cases/casesContext';
 import PopoverContext from '../../context/popover/popoverContext';
 import DeleteBtnSmall from '../elements/btns/DeleteBtnSmall';
 
-const Size = ({ size }) => {
+const Size = ({ size, gQtys, purpose }) => {
   const casesContext = useContext(CasesContext);
   const popoverContext = useContext(PopoverContext);
-  const { _id, cNo, osNo, sizes, gQtys, updateSize, caseConfirmDate } = casesContext;
+  const { _id, cNo, osNo, sizes, updateSize, caseConfirmDate } = casesContext;
   const { togglePopover } = popoverContext;
   const event = new Event('change');
   //@ Array for generate <option> tags for s<elect> tag.
@@ -89,7 +89,7 @@ const Size = ({ size }) => {
 
   //@ select the right size when new case is download
   const loadCaseSelectTagIndex = () => {
-    if (caseConfirmDate || osNo) {
+    if (caseConfirmDate || osNo || purpose === 'completeSet') {
     } else {
       document
         .getElementById(`${size.gSize}${size.id}`)
@@ -110,7 +110,7 @@ const Size = ({ size }) => {
 
   return (
     <div className='bd-cp-2-b-2px pb-05'>
-      {caseConfirmDate || osNo ? (<div className='bg-cp-1 fc-cp-3 bd-no fs-lead'>{size.gSize}</div>) : (
+      {caseConfirmDate || osNo || purpose === 'completeSet' ? (<div className='bg-cp-1 fc-cp-3 bd-no fs-lead'>{size.gSize}</div>) : (
         <select
           id={size.id}
           list='garmentSize'

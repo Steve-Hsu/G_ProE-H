@@ -6,9 +6,9 @@ import SrMtrlContext from '../../context/srMtrl/srMtrlContext';
 import PopoverContext from '../../context/popover/popoverContext';
 
 // @ Components
-import ColorWay from './1_1_ColorWay';
-import Size from './1_2_Size';
-import Qty from './1_3_Qty';
+// import ColorWay from './1_1_ColorWay';
+// import Size from './1_2_Size';
+// import Qty from './1_3_Qty';
 import DeletePopover from '../layout/DeletePopover';
 import SqBtnLarge from '../elements/btns/SqBtnLarge';
 import Board from '../elements/board/Board';
@@ -18,6 +18,7 @@ import GoBackBtn from '../elements/btns/GoBackBtn';
 import SqToggleSwitchL from '../elements/btns/SqToggleSwitchL';
 import DeleteBtnSmall from '../elements/btns/DeleteBtnSmall';
 import LockedBadge from '../elements/badge/LockedBadge';
+import SizeColorChart from '../elements/chart/sizeColorChart';
 
 const CaseForm = ({ props }) => {
   //@ Init Context
@@ -314,7 +315,7 @@ const CaseForm = ({ props }) => {
                 ) : null}
               </div>
 
-              {/* CS-Breakdown table */}
+              {/* @CS-Breakdown table */}
               {/* Color -------------------------- */}
               <div className='grid-6 mb-05'>
                 <div
@@ -351,65 +352,7 @@ const CaseForm = ({ props }) => {
                 </div> */}
                 </div>
               </div>
-
-              <div className='row-gap-md round-card bg-cp-1 bd-light'>
-                <div className='grid-1-07-6'>
-                  <div></div>
-                  <div></div>
-                  <div style={breakDownTable}>
-                    {sizes.map((size) => (
-                      <Size key={size.id} size={size} />
-                    ))}
-                  </div>
-                </div>
-                <div className='grid-1-07-6 '>
-                  <div>
-                    {cWays.map((cWay) => (
-                      <ColorWay key={cWay.id} cWay={cWay} />
-                    ))}
-                  </div>
-                  <div className='bd-cp-2-r-2px-dotted'>
-                    {cWays.map((cWay) => {
-                      let subtotal = 0;
-                      gQtys.map((gQty) => {
-                        if (gQty.cWay === cWay.id) {
-                          subtotal = subtotal + Number(gQty.gQty);
-                        }
-                        return subtotal;
-                      });
-                      return (
-                        <div
-                          key={`subtotalOf${cWay.id}`}
-                          style={{
-                            height: 'var(--btn-h-m)',
-                          }}
-                          className='mt-1 bd-cp-2-b-2px fs-tiny fc-cp-2-c'
-                        >
-                          <div
-                            style={{ textAlign: 'right' }}
-                            className='pr-1 pt-07'
-                          >
-                            {' '}
-                            {subtotal.toLocaleString()}
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                  <div style={breakDownTable}>
-                    {sizes.map((size) => (
-                      <div
-                        key={`Qty${size.id}`}
-                        className='bd-cp-2-r-2px-dotted'
-                      >
-                        {gQtys.map((gQty) => (
-                          <Qty key={gQty.id} size={size} gQty={gQty} />
-                        ))}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
+              <SizeColorChart purpose='' sizes={sizes} cWays={cWays} gQtys={gQtys} />
               <div className='mb-3 h-scatter-content'>
                 <div>
                 </div>
@@ -418,7 +361,7 @@ const CaseForm = ({ props }) => {
                 </div>
               </div>
 
-              {/* Material -------------------------- */}
+              {/* @Material -------------------------- */}
               <div className='grid-6'>
                 {/* elem-1 */}
                 <div className='fs-lead' style={{ gridColumn: '1/2' }}>
