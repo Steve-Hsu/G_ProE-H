@@ -30,7 +30,8 @@ const CompleteSet = (props) => {
    const {
       csPage,
       switchCsPage,
-      csError
+      csError,
+      uploadCsOrder,
    } = completeSetContext
 
 
@@ -48,10 +49,21 @@ const CompleteSet = (props) => {
       switchCsPage('completeSetSelector');
    };
 
+   const submit = async (e) => {
+      e.preventDefault()
+      console.log('yes submited !!')
+      toggleLoading(true)
+      await uploadCsOrder().then(() => {
+         toggleLoading(false)
+      })
+   }
+
+
 
    return (
       <Fragment >
          {popover === true || isLoading === true || csError !== null ? <DeletePopover key='cspopover' current={current} /> : null}
+         <form id='updateCompleteSet' onSubmit={submit}></form>
          {csPage === null ? (
             <div className='grid-1-4'>
                <LeftBar currentPath={currentPath} />

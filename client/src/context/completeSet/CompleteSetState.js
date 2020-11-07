@@ -25,7 +25,7 @@ const CompleteSetState = (props) => {
         newCsOrder: null,
     };
     const [state, dispatch] = useReducer(CompleteSetReducer, initialState);
-    const { osHeads, currentCS } = state;
+    const { currentOS, newCsOrder } = state;
 
     //@Actions
     const getOsHeads = async () => {
@@ -94,6 +94,31 @@ const CompleteSetState = (props) => {
     const setNewCsOrder = (arr) => {
         dispatch({ type: NEW_CS_ORDER, payload: arr })
     }
+
+    const uploadCsOrder = async () => {
+        if (newCsOrder === null) {
+        } else {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            };
+
+            const body = {
+                osNo: currentOS.osNo,
+                newCsOrder
+            }
+
+            const res = await axios.post(
+                '/api/completeset/',
+                body,
+                config
+            );
+            dispatch({ type: OS_DOWNLOAD, payload: res.data })
+        }
+
+    }
+
     return (
         <CompleteSetContext.Provider
             value={{
@@ -110,6 +135,7 @@ const CompleteSetState = (props) => {
                 clearCsError,
                 defaultCS,
                 setNewCsOrder,
+                uploadCsOrder,
 
             }}
         >

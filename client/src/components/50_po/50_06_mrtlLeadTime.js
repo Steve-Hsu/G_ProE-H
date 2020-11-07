@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 //Context
 import PurContext from '../../context/pur/purContext';
-import PopoverContext from '../../context/popover/popoverContext'
+// import PopoverContext from '../../context/popover/popoverContext'
 
 //Component
 import GoBackBtnSpinSmall from '../elements/btns/GoBackBtnSpinSmall';
@@ -11,11 +11,11 @@ import MrtlLeadTimeItem from '../50_po/50_06_01_mtrlLeadTimeItem';
 
 const MrtlLeadTime = ({ caseMtrl, idx }) => {
   const purContext = useContext(PurContext)
-  const popoverContext = useContext(PopoverContext)
-  const { openMtrlLeadTime, addLeadTime, updateLeadTime, deleteLeadTime, uploadCaseMtrl } = purContext;
+  // const popoverContext = useContext(PopoverContext)
+  const { openMtrlLeadTime, addLeadTime, updateLeadTime, deleteLeadTime } = purContext;
   const { _id, purchaseQtySumUp, purchaseLossQtySumUp, purchaseMoqQty, leadTimeComplete } = caseMtrl;
   const caseMtrlId = _id
-  const { toggleLoading } = popoverContext;
+
 
   const totalMtrlQty = purchaseQtySumUp + purchaseLossQtySumUp + purchaseMoqQty;
   const PoConfirmed = caseMtrl.price ? true : false
