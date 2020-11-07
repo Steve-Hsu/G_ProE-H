@@ -35,8 +35,8 @@ const SizeColorChart = ({ purpose, sizes, cWays, gQtys }) => {
          </div>
          <div className='grid-1-07-6 '>
             <div>
-               {cWays.map((cWay) => (
-                  <ColorWay key={cWay.id} cWay={cWay} purpose={purpose} />
+               {cWays.map((cWay, idx) => (
+                  <ColorWay key={cWay.id} cWay={cWay} purpose={purpose} idx={idx} />
                ))}
             </div>
             <div className='bd-cp-2-r-2px-dotted'>

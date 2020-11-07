@@ -51,8 +51,8 @@ const LeftBar = ({ currentPath }) => {
     currentQuoForm,
     downLoadmtrlPrice,
   } = quoContext;
-  const { openPage, togglePoConfirmDate, currentPo, selectedCases, osList, currentOrderSummary } = purContext;
-  const { currentOS, csPage } = completeSetContext;
+  const { openPage, togglePoConfirmDate, currentPo, selectedCases, osList, } = purContext;
+  const { currentOS, csPage, setNewCsOrder, newCsOrder } = completeSetContext;
   const { toggleLoading } = popoverContext;
 
 
@@ -86,6 +86,10 @@ const LeftBar = ({ currentPath }) => {
       break;
     case '/api/purchase':
       currentPage = 'purchase';
+      console.log(currentPage);
+      break;
+    case '/api/completeset':
+      currentPage = 'completeset';
       console.log(currentPage);
       break;
     default:
@@ -172,6 +176,12 @@ const LeftBar = ({ currentPath }) => {
           }
         }
 
+        break;
+      case '/api/completeset':
+        obj = {
+          label: 'Check the leadTimes',
+          form: 'updateCompleteSet',
+        };
         break;
       default:
     }
@@ -633,16 +643,11 @@ const LeftBar = ({ currentPath }) => {
     }
 
     let container = document.getElementById('osCaseListContainer')
-    let print = container.childNodes
-    console.log('the container', container)
-    console.log(print)
-
-    // print.forEach((i, idx) => {
-    //   console.log("idx ", idx)
-    //   console.log(i.id)
-    // })
-
-    // theWidth = 0
+    var arr = Array.prototype.slice.call(container.childNodes);
+    const orderList = arr.map((a) => {
+      return a.innerHTML
+    })
+    setNewCsOrder(orderList)
   };
 
   const isAbove = function (nodeA, nodeB) {
@@ -661,7 +666,7 @@ const LeftBar = ({ currentPath }) => {
     >
       <div className='leftbar-component ml-1'>
         {' '}
-        {/* Submit Btn */}
+        {/*@Submit Btn */}
         {/*Submit BTN Case Set */}
         {currentPage === 'case' && osNo === null && isEditingCase === false ? (
           <div className='round-area bg-cp-3'>
@@ -704,6 +709,8 @@ const LeftBar = ({ currentPath }) => {
           (currentPage === 'purchase' && openPage === 'leadTimePage')
           ? normalSummitBtn()
           : null}
+        {/*Submit BTN Purchase Set */}
+        {currentPage === 'completeset' && csPage === 'completeSetSelector' && newCsOrder !== null ? normalSummitBtn() : null}
         {/* Other Btns */}
         {/* @Case Sets */}
         {isEditingCase && currentPage === 'case' ? (

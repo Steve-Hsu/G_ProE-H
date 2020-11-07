@@ -29,15 +29,15 @@ router.get('/', authUser, async (req, res) => {
         return res.status(400).json({ msg: 'Out of authority' });
     }
     const comId = req.user.company;
-    const completeSet = await CS.find({ company: comId }, { company: 0, caseMtrls: 0 }).sort({ osNo: 1 });
+    const completeSets = await CS.find({ company: comId }, { company: 0, caseMtrls: 0 }).sort({ osNo: 1 });
     // console.log('the osList', osList) // test code
-    if (completeSet.length === 0) {
+    if (completeSets.length === 0) {
         console.log('No os Found')
 
         return res.json([])
     } else {
         console.log('osList is returned')
-        return res.json(completeSet);
+        return res.json(completeSets);
     }
 });
 
@@ -66,6 +66,190 @@ router.get('/getcs/:osNo', authUser, async (req, res) => {
     if (completeSet) {
         console.log('completeSet is returned')
         return res.json(completeSet);
+    } else {
+        console.log('No cs Found')
+        return res.json({})
+    }
+});
+
+// @route   Post api/completeset/
+// @desc    Calculate the leadTime of each styles in the os, by an array posted and save the result in mongoDB, then return the result
+//          Take the caseMtrls from os, for updating it to the newset and default situation.
+//          Then take caseMtrls as osMtrls, calculating and update the default with it ,then insert the osMtrls to the CS as it caseMtrls.
+// @access  Private
+router.post('/', authUser, async (req, res) => {
+    let user = await User.findById(req.user.id);
+    //Check if multiple login, if yes, do nothing
+    const token = req.header('x-auth-token');
+    if (user.sKey !== token) {
+        const msg = { err: 'Multiple user login, please login again.' }
+        console.log(msg)
+        return res.json([msg])
+    }
+
+    const newCsOrder = req.body.newCsOrder
+    //Check if the user have the right
+    //Here set the right for case, the reason relates to the management science and my management philosophy.
+    if (!user.cases) {
+        return res.status(400).json({ msg: 'Out of authority' });
+    }
+    const comId = req.user.company;
+    const completeSet = await CS.findOne({ company: comId, osNo: osNo }, { company: 0 });
+    const orderSummary = await OS.findOne({ company: comId, osNo: osNo }, { company: 0 });
+
+    // console.log('the osList', osList) // test code
+    if (completeSet) {
+        const csOrder = completeSet.csOrder
+        let osMtrls = orderSummary.caseMtrls
+        const checkOrderArr = newCsOrder.filter((newCsOrderCNo, idx) => newCsOrderCNo === csOrder[idx])
+        const check = checkOrderArr.length === newCsOrder.length ? true : false
+        if (check) {
+            // the order of array not changed, or return the original cs.
+            console.log('completeSet is returned')
+            return res.json(completeSet);
+        } else {
+            // The order of array changed, or it may be first time to calculate.
+            const countCases = new Promise(async (resolve) => {
+                newCsOrder.map(async (newCsOrderCNo) => {
+                    let newCaseList = completeSet.caseList
+                    const countMtrls = new Promise(async (resolve) => {
+
+                        let currentCase = newCaseList.find(({ cNo }) => cNo === newCsOrderCNo)
+                        let theMtrls = currentCase.mtrls
+                        theMtrls.map((mtrl, idx) => {
+                            const supplier = mtrl.supplier
+                            const ref_no = mtrl.ref_no
+                            const theCSPT = theMtrls.cspts
+                            const countCSPTs = new Promise(async (resolve) => {
+                                theCSPT.map((cspt, idx) => {
+                                    //Add 2 new attribute for cspt in CS and give it default value.
+                                    if (!cspt.leadTime) {
+                                        cspt.leadTime = 'No found this materials in osMtrls, error in server'
+                                    }
+                                    if (!cspt.distriputedQty) {
+                                        cspt.distriputedQty = 0
+                                    }
+
+                                    if (cspt.distriputedQty === cspt.requiredMQty) {
+                                        if (theCSPT.length === idx + 1) {
+                                            resolve()
+                                        }
+                                        // If the requestedMQty of this cspt is fulfilled, do nothing.
+                                    } else {
+                                        const mColor = cspt.mColor
+                                        const SPEC = cspt.mSizeSPEC
+                                        // let newOsMtrls = []
+                                        const checkOsMtrls = new Promise(async (resolve) => {
+                                            // let haveFoundTheCSPTinOsMtrls = false
+                                            for (let idx = 0; idx < osMtrls.length; idx++) {
+                                                if (cspt.distriputedQty >= cspt.requiredMQty) {
+                                                    resolve()
+                                                    break;
+                                                }
+                                                if (osMtrls[idx].supplier === supplier &&
+                                                    osMtrls[idx].ref_no === ref_no &&
+                                                    osMtrls[idx].mColor === mColor &&
+                                                    osMtrls[idx].mSizeSPEC === SPEC) {
+                                                    const checkLeadTimes = new Promise(async (resolve) => {
+                                                        if (cspt.distriputedQty >= cspt.requiredMQty) {
+                                                            // if the distriputedQty is fulfilled then do nothing
+                                                            resolve()
+                                                        } else {
+                                                            if (osMtrls[idx].leadTime) {
+                                                                //If the caseMtrl have .leadTime then calculating
+                                                                osMtrls[idx].leadTimes.map((leadTime, idx) => {
+                                                                    if (leadTime.availableQty) {
+                                                                        if (cspt.distriputedQty < cspt.requiredMQty) {
+                                                                            const neededQty = cspt.requiredMQty - cspt.distriputedQty
+                                                                            const theNumber = leadTime.availableQty - neededQty
+                                                                            if (theNumber > 0) {
+                                                                                cspt.distriputedQty += neededQty
+                                                                                leadTime.availableQty = theNumber
+                                                                            } else if (theNumber === 0) {
+                                                                                cspt.distriputedQty += neededQty
+                                                                                leadTime.availableQty = 0
+                                                                            } else {
+                                                                                cspt.distriputedQty += leadTime.availableQty
+                                                                                leadTime.availableQty = 0
+                                                                            }
+                                                                            // Update the leadTime as the date of in the leadTime, since you take the qty from it.
+                                                                            cspt.leadTime = leadTime.date
+                                                                            console.log('the mtrl', mtrl, "the cspt", cspt.id, "the leadTime.date", leadTime.date) // Test Code
+                                                                        }
+                                                                    }
+                                                                    if (osMtrl.leadTimes.length === idx + 1) {
+                                                                        resolve()
+                                                                        haveFoundTheCSPTinOsMtrls = true;
+                                                                        return leadTime
+                                                                    } else {
+                                                                        haveFoundTheCSPTinOsMtrls = true;
+                                                                        return leadTime
+                                                                    }
+                                                                })
+                                                            } else {
+                                                                resolve()
+                                                            }
+                                                        }
+                                                    })
+                                                    Promise.all([checkLeadTimes]).then(() => {
+                                                        resolve()
+                                                    })
+                                                    break;
+                                                } else {
+                                                    if (osMtrls.length === idx + 1) {
+                                                        resolve();
+                                                    }
+                                                }
+                                            }
+                                        })
+
+                                        Promise.all([checkOsMtrls]).then(() => {
+                                            if (theCSPT.length === idx + 1) {
+                                                resolve()
+                                            }
+                                        })
+
+                                    }
+
+                                })
+                            })
+
+                            Promise.all([countCSPTs]).then(() => {
+                                if (theMtrls.length === idx + 1) {
+                                    resolve()
+                                }
+                            })
+                        })
+                    })
+
+                    Promise.all([countMtrls]).then(() => {
+                        if (newCsOrder.length === idx + 1) {
+                            resolve()
+                        }
+                    })
+
+
+                })
+            })
+
+            Promise.all([countCases]).then(async () => {
+                //Final result 
+                const updateCs = await CS.findOneAndUpdate({ company: comId, osNo: osNo },
+                    {
+                        $set: {
+                            csOrder: newCsOrder,
+                            caseMtrls: osMtrls,
+                            caseList: newCaseList,
+                        }
+                    }
+                    , { company: 0 }
+                    , { new: true }
+                );
+
+                return res.json(updateCs)
+            })
+        }
+
     } else {
         console.log('No cs Found')
         return res.json({})

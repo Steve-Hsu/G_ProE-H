@@ -134,5 +134,6 @@ export const CLEAR_SELECTEDCASE = 'CLEAR_SELECTEDCASE';
 export const OS_DOWNLOAD = 'OS_DOWNLOAD';
 export const CSPAGE_SWITCH = 'CSPAGE_SWITCH';
 export const CS_CURRENT = 'CS_CURRENT';
+export const NEW_CS_ORDER = 'NEW_CS_ORDER';
 
 // export const UPDATE_CASEMTRL = 'UPDATE_CASEMTRL';

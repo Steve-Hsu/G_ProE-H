@@ -7,10 +7,16 @@ const CompleteSetPage = () => {
     const completeSetContext = useContext(CompleteSetContext)
     const { currentCompleteSet } = completeSetContext
     const { caseId, cNo, style, client, caseType, cWays, sizes, gQtys, mtrls } = currentCompleteSet
+    // completeSetSelector
+
+    const submit = (e) => {
+
+    }
+
     return (
-        <div>
+        <form id='completeSetSelector' onSubmit={submit}>
             <SizeColorChart purpose='completeSet' sizes={sizes} cWays={cWays} gQtys={gQtys} />
-        </div>
+        </form>
     )
 }
 

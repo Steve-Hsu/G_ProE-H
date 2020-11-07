@@ -574,8 +574,8 @@ const PurState = (props) => {
               return null
             })
             const roundQty = Math.round((qty + Number.EPSILON) * 100) / 100
-            // setUpQty is for garment to set up to see which style will be fulfilled it materials in advance.
-            caseMtrl.leadTimes.push({ id: generateId(), date: leadTimeDate, qty: roundQty, setUpQty: roundQty })
+            // availableQty is for garment to set up to see which style will be fulfilled it materials in advance.
+            caseMtrl.leadTimes.push({ id: generateId(), date: leadTimeDate, qty: roundQty, availableQty: roundQty })
 
 
           }
@@ -629,7 +629,7 @@ const PurState = (props) => {
               const theQty = Number(value) > qtyEnterMargin ?
                 Number(qtyEnterMargin) :
                 Number(value)
-              LTime.setUpQty = theQty;
+              LTime.availableQty = theQty;
               LTime.qty = theQty;
             } else {
               LTime.date = value

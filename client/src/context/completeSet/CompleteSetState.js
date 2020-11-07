@@ -11,6 +11,7 @@ import {
     CSPAGE_SWITCH,
     CS_CURRENT,
     DEFAULT,
+    NEW_CS_ORDER,
 } from '../types';
 
 const CompleteSetState = (props) => {
@@ -21,6 +22,7 @@ const CompleteSetState = (props) => {
         currentOS: {},
         currentCompleteSet: {},
         csError: null,
+        newCsOrder: null,
     };
     const [state, dispatch] = useReducer(CompleteSetReducer, initialState);
     const { osHeads, currentCS } = state;
@@ -88,6 +90,10 @@ const CompleteSetState = (props) => {
     const defaultCS = () => {
         dispatch({ type: DEFAULT })
     }
+
+    const setNewCsOrder = (arr) => {
+        dispatch({ type: NEW_CS_ORDER, payload: arr })
+    }
     return (
         <CompleteSetContext.Provider
             value={{
@@ -96,12 +102,14 @@ const CompleteSetState = (props) => {
                 currentOS: state.currentOS,
                 currentCompleteSet: state.currentCompleteSet,
                 csError: state.csError,
+                newCsOrder: state.newCsOrder,
                 getOsHeads,
                 getCs,
                 switchCsPage,
                 openCompleteSet,
                 clearCsError,
                 defaultCS,
+                setNewCsOrder,
 
             }}
         >

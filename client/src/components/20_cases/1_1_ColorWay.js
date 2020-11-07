@@ -4,7 +4,7 @@ import CasesContext from '../../context/cases/casesContext';
 import PopoverContext from '../../context/popover/popoverContext';
 import DeleteBtnSmall from '../elements/btns/DeleteBtnSmall';
 
-const ColorWay = ({ cWay, purpose }) => {
+const ColorWay = ({ cWay, idx, purpose }) => {
   const casesContext = useContext(CasesContext);
   const { cNo, osNo, cWays, updatecWay, caseConfirmDate } = casesContext;
   const popoverContext = useContext(PopoverContext);
@@ -63,11 +63,11 @@ const ColorWay = ({ cWay, purpose }) => {
       </div>
       {caseConfirmDate || osNo || purpose === 'completeSet' ? (<div style={{ height: 'var(--btn-h-m' }}>
         <div className='MPH-input bd-no fs-lead w-100 h-100 hover-no'>
-          {cWay.gClr.includes('COLORWAY_DUPLICATED') ? (<span className='fc-danger'>{`Empty-${Number(cWays.findIndex((e) => e.id === cWay.id)) + 1}`}</span>) : cWay.gClr}
+          {cWay.gClr.includes('COLORWAY_DUPLICATED') ? (<span className='fc-danger'>{`Empty-${idx + 1}`}</span>) : cWay.gClr}
         </div>
         <label htmlFor={cWay.id} className='MPH-input-label'>
           Color Way -{' '}
-          {`${Number(cWays.findIndex((e) => e.id === cWay.id)) + 1}`}
+          {`${idx + 1}`}
         </label>
       </div>) : (
           <div style={{ height: 'var(--btn-h-m)' }}>
@@ -85,7 +85,7 @@ const ColorWay = ({ cWay, purpose }) => {
             />
             <label htmlFor={cWay.id} className='MPH-input-label'>
               Color Way -{' '}
-              {`${Number(cWays.findIndex((e) => e.id === cWay.id)) + 1}`}
+              {`${idx + 1}`}
             </label>
           </div>
         )}

@@ -5,6 +5,7 @@ import {
   CSPAGE_SWITCH,
   CS_CURRENT,
   DEFAULT,
+  NEW_CS_ORDER,
 } from '../types';
 
 export default (state, action) => {
@@ -16,6 +17,7 @@ export default (state, action) => {
         currentOS: {},
         currentCompleteSet: {},
         csError: null,
+        newCsOrder: null,
       }
     case UPDATE_ERROR:
       return { ...state, csError: action.payload };
@@ -31,6 +33,11 @@ export default (state, action) => {
         ...state,
         csPage: 'completeSet',
         currentCompleteSet: state.currentOS.caseList.find(({ _id }) => _id === targetId)
+      }
+    case NEW_CS_ORDER:
+      return {
+        ...state,
+        newCsOrder: action.payload
       }
     default:
   }
