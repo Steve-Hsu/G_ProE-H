@@ -97,6 +97,8 @@ router.post('/', authUser, async (req, res) => {
     const completeSet = await CS.findOne({ company: comId, osNo: osNo }, { company: 0 });
     const orderSummary = await OS.findOne({ company: comId, osNo: osNo }, { company: 0 });
     let newCaseList = completeSet.caseList
+    let treatedMtrls = 0
+    let treatedCspts = 0
 
     // console.log('the osList', osList) // test code
     if (completeSet) {
@@ -118,6 +120,7 @@ router.post('/', authUser, async (req, res) => {
                         let currentCase = newCaseList.find(({ cNo }) => cNo === newCsOrderCNo)
                         let theMtrls = currentCase.mtrls
                         theMtrls.map((mtrl, idx) => {
+                            treatedMtrls++
                             const supplier = mtrl.supplier
                             const ref_no = mtrl.ref_no
                             const theCSPT = mtrl.cspts
@@ -158,16 +161,22 @@ router.post('/', authUser, async (req, res) => {
                                                     osMtrls[idx].ref_no === ref_no &&
                                                     osMtrls[idx].mColor === mColor &&
                                                     osMtrls[idx].mSizeSPEC === SPEC) {
+                                                    // if (osMtrls[idx].supplier === supplier) {
+                                                    console.log("the osMTrls", typeof osMtrls[idx].supplier)
+                                                    console.log("the supplier", typeof supplier)
 
-                                                    const checkLeadTimes = new Promise(async (resolve) => {
-                                                        console.log("the cspt is matched one of the osMtrls - Promise 'checkLeadTimes'", mtrl.supplier) // Test Code
-                                                        if (cspt.distriputedQty >= cspt.requiredMQty) {
-                                                            // if the distriputedQty is fulfilled then do nothing
-                                                            resolve()
-                                                        } else {
-                                                            if (osMtrls[idx].leadTime) {
-                                                                //If the caseMtrl have .leadTime then calculating
-                                                                osMtrls[idx].leadTimes.map((leadTime, idx) => {
+
+                                                    console.log("the cspt is matched one of the osMtrls - Promise 'checkLeadTimes'", mtrl.supplier) // Test Code
+                                                    if (cspt.distriputedQty >= cspt.requiredMQty) {
+                                                        // if the distriputedQty is fulfilled then do nothing
+                                                        console.log("The cspt is fulfilled")
+                                                        resolve()
+                                                        break;
+                                                    } else {
+                                                        if (osMtrls[idx].leadTimes) {
+                                                            //If the caseMtrl have .leadTime then calculating
+                                                            const checkLeadTimes = new Promise(async (resolve) => {
+                                                                osMtrls[idx].leadTimes.map((leadTime, LtIdx) => {
                                                                     if (leadTime.availableQty) {
                                                                         if (cspt.distriputedQty < cspt.requiredMQty) {
                                                                             const neededQty = cspt.requiredMQty - cspt.distriputedQty
@@ -187,7 +196,7 @@ router.post('/', authUser, async (req, res) => {
                                                                             console.log('the mtrl', mtrl, "the cspt", cspt.id, "the leadTime.date", leadTime.date) // Test Code
                                                                         }
                                                                     }
-                                                                    if (osMtrl.leadTimes.length === idx + 1) {
+                                                                    if (osMtrls[LtIdx].leadTimes.length === LtIdx + 1) {
                                                                         resolve()
                                                                         haveFoundTheCSPTinOsMtrls = true;
                                                                         return leadTime
@@ -196,16 +205,18 @@ router.post('/', authUser, async (req, res) => {
                                                                         return leadTime
                                                                     }
                                                                 })
-                                                            } else {
+                                                            })
+                                                            Promise.all([checkLeadTimes]).then(() => {
+                                                                treatedCspts++
+                                                                console.log("Promise all for - 'checkLeadTimes, resolve()") // Test Code
                                                                 resolve()
-                                                            }
+                                                            })
+                                                        } else {
+                                                            treatedCspts++
+                                                            resolve()
+                                                            break;
                                                         }
-                                                    })
-                                                    Promise.all([checkLeadTimes]).then(() => {
-                                                        console.log("Promise all for - 'checkLeadTimes, resolve()") // Test Code
-                                                        resolve()
-                                                    })
-                                                    break;
+                                                    }
                                                 } else {
                                                     console.log("no cspt matched the mtrl in OsMtrls")  // Test Code
                                                     if (osMtrls.length === idx + 1) {
@@ -246,6 +257,8 @@ router.post('/', authUser, async (req, res) => {
 
             Promise.all([countCases]).then(async () => {
                 //Final result 
+                console.log("the mtrls treated", treatedMtrls)
+                console.log("the cspt treated", treatedCspts)
                 const updateCs = await CS.findOneAndUpdate(
                     { company: comId, osNo: osNo },
                     {

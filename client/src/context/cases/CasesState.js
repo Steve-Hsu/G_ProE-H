@@ -150,6 +150,8 @@ const CasesState = (props) => {
     unit: '',
     cspt: 0,
     requiredMQty: 0,
+    gClr: '',
+    gSize: ''
   };
 
   const [state, dispatch] = useReducer(CasesReducer, initialState);
@@ -556,6 +558,8 @@ const CasesState = (props) => {
       } else {
         gQtyLength = gQtys.length;
         cspts = gQtys.map((gQty, idx) => {
+          const findgSize = sizes.find(({ id }) => id === gQty.size).gSize
+          const findgColor = cWays.find(({ id }) => id === gQty.cWay).gClr
           gQtyNum = idx;
           return {
             ...newCspt,
@@ -564,6 +568,8 @@ const CasesState = (props) => {
             size: gQty.size,
             gQty: gQty.id,
             mtrl: newMtrlId,
+            gClr: findgColor,
+            gSize: findgSize
           };
         });
       }

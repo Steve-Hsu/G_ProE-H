@@ -312,15 +312,17 @@ router.post('/', authUser, async (req, res) => {
                   if (!caseMtrl.cases.includes(theCase.cNo)) {
                     caseMtrl.cases.push(theCase.cNo);
                   }
-                  caseMtrl.purchaseQtySumUp += cspt.requiredMQty;
-                  caseMtrl.purchaseLossQtySumUp += purchaseLossQtySumUp;
+                  ;
+                  ;
                   // Round it number to 2 decimal
                   // Round the number in the final, so the number rounded will be closer to original number.
                   // caseMtrl.purchaseQtySumUp = Math.round((caseMtrl.purchaseQtySumUp + Number.EPSILON) * 100) / 100;
                   // caseMtrl.purchaseLossQtySumUp = Math.round((caseMtrl.purchaseLossQtySumUp + Number.EPSILON) * 100) / 100;
                   // @ 2020/11/04 - I think it is convinent and save cost of time as the purchase number of materials shouldn't have decimal number.
-                  caseMtrl.purchaseQtySumUp = Math.ceil(caseMtrl.purchaseQtySumUp)
-                  caseMtrl.purchaseLossQtySumUp = Math.ceil(caseMtrl.purchaseLossQtySumUp);
+                  caseMtrl.purchaseQtySumUp = Math.ceil(caseMtrl.purchaseQtySumUp + cspt.requiredMQty)
+                  // caseMtrl.purchaseQtySumUp = Math.ceil(caseMtrl.purchaseQtySumUp)
+                  caseMtrl.purchaseLossQtySumUp = Math.ceil(caseMtrl.purchaseLossQtySumUp + purchaseLossQtySumUp);
+                  // caseMtrl.purchaseLossQtySumUp = Math.ceil(caseMtrl.purchaseLossQtySumUp);
                 }
               });
             }
