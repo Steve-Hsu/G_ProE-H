@@ -55,9 +55,19 @@ const Qty = ({ purpose, size, gQty, }) => {
       <div
         name='gQty'
         id={gQty.id}
-        className='center-content'
+        className='center-content '
       >
-        {gQty.leadTime ? gQty.leadTime.slice(5) : 'No results yet'}
+        <div className='fs-large mr-05'>
+          {gQty.leadTime ? gQty.leadTime.slice(5) : 'No results yet'}
+        </div>
+        <div className='fs-small fc-cp-2-c'>
+          <div className='fc-gray-4'>
+            Pcs
+          </div>
+          <div>
+            {gQty.gQty}
+          </div>
+        </div>
       </div>
     )
   }

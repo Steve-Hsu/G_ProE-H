@@ -922,15 +922,15 @@ const LeftBar = ({ currentPath }) => {
                   </div>
                 )
               })} */}
-              {currentOS.caseList.map((c) => {
+              {newCsOrder.map((c) => {
                 return (
                   <div
-                    key={`OsCase${c._id}`}
-                    id={`OsCase${c._id}`}
+                    key={`OsCase${c}`}
+                    id={`OsCase${c}`}
                     className='round-area bd-light bg-cp-1-light grabbable'
                     onMouseDown={mouseDownHandler}
                   >
-                    {c.cNo}
+                    {c}
                   </div>
                 )
               })}

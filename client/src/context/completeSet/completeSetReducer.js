@@ -24,7 +24,34 @@ export default (state, action) => {
     case OS_LIST_DOWNLOAD:
       return { ...state, osHeads: action.payload };
     case OS_DOWNLOAD:
-      return { ...state, currentOS: action.payload, newCsOrder: action.payload.csOrder };
+      return {
+        ...state,
+        currentOS: {
+          ...action.payload,
+          caseList: action.payload.caseList.sort((a, b) => {
+            if (a.cNo < b.cNo) {
+              return -1
+            }
+            if (a.cNo > b.cNo) {
+              return 1
+            }
+            return 0;
+          })
+        },
+        newCsOrder: action.payload.csOrder.length === 0 ? action.payload.caseList.sort((a, b) => {
+          if (a.cNo < b.cNo) {
+            return -1
+          }
+          if (a.cNo > b.cNo) {
+            return 1
+          }
+          return 0;
+        }).map((c) => {
+          console.log("in the reducde", c)
+          return c.cNo
+        }) :
+          action.payload.csOrder
+      };
     case CSPAGE_SWITCH:
       return { ...state, csPage: action.payload };
     case CS_CURRENT:
