@@ -388,30 +388,19 @@ router.post('/', authUser, async (req, res) => {
         console.log('OsList is returned');
         res.json(result)
       }).then(async () => {
-        let csCaseList = [];
-        const inserMtrls = new Promise(async (resolve) => {
-          caseList.map(async (c, idx) => {
-            const theCase = await Case.findOne({ _id: c.caseId })
-            let newObj = {
-              caseId: c.caseId,
-              cNo: c.cNo,
-              style: c.style,
-              client: c.client,
-              caseType: c.caseType,
-              cWays: theCase.cWays,
-              sizes: theCase.sizes,
-              gQtys: theCase.gQtys,
-              mtrls: theCase.mtrls
-            }
-            csCaseList.push(newObj)
-            if (idx + 1 === caseList.length) {
-              resolve()
-            }
-            return;
+        const inserMtrls = caseList.map(async (c) => {
+          console.log("caseLsit map", c.cNo);
+          return await Case.findOne({ _id: c.caseId }).then((result) => {
+            const theCase = result
+            c.cWays = theCase.cWays
+            c.sizes = theCase.sizes
+            c.gQtys = theCase.gQtys
+            c.mtrls = theCase.mtrls
+            return c
           })
         })
-
-        Promise.all([inserMtrls]).then(async () => {
+        Promise.all(inserMtrls).then(async (results) => {
+          const csCaseList = results
           const completeSet = new CS({
             company: comId,
             osNo: newOsNO,
