@@ -64,25 +64,25 @@ const PurState = (props) => {
     }
   };
 
-  const selectCase = (caseId, selectAll = false) => {
+  const selectCase = (cNo, selectAll = false) => {
     if (selectAll) {
       if (state.selectedCases.length === caseList.length) {
         state.selectedCases = [];
       } else {
         state.selectedCases = [];
         caseList.map((i) => {
-          state.selectedCases.push(i._id);
+          state.selectedCases.push(i.cNo);
         });
       }
     } else {
-      const haveSeletedTheCase = state.selectedCases.includes(caseId);
+      const haveSeletedTheCase = state.selectedCases.includes(cNo);
       if (haveSeletedTheCase) {
-        state.selectedCases.splice(state.selectedCases.indexOf(caseId), 1);
+        state.selectedCases.splice(state.selectedCases.indexOf(cNo), 1);
       } else {
-        state.selectedCases.push(caseId);
+        state.selectedCases.push(cNo);
       }
     }
-    dispatch({ type: SELECTEDCASES_UPDATE, payload: state.selectedCases });
+    dispatch({ type: SELECTEDCASES_UPDATE, payload: state.selectedCases.sort() });
   };
 
   const createOrderSummary = async (selectedCases) => {

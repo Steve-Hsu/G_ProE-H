@@ -47,6 +47,7 @@ export default (state, action) => {
         ...state,
         openPage: action.payload,
         editingLeadTime: [],
+        selectedCases: [],
       };
     case OS_LIST_DOWNLOAD:
       return {

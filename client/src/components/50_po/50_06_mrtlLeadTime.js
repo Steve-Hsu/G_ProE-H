@@ -86,21 +86,21 @@ const MrtlLeadTime = ({ caseMtrl, idx }) => {
         </section>
 
         {caseMtrl.mColor && caseMtrl.mSizeSPEC ?
-          (<div className='mb-1'>
+          (<div className='mb-1 hover-pointer' onClick={goBack}>
             <TopLabelTiny label='Color / SPEC' />
             <div className='fs-lead'>
               {caseMtrl.mColor}{'  '}/{'  '}{caseMtrl.mSizeSPEC}
             </div>
           </div>) :
           caseMtrl.mColor ?
-            (<div className='mb-1'>
+            (<div className='mb-1 hover-pointer' onClick={goBack}>
               <TopLabelTiny label='Color' />
               <div className='fs-lead'>
                 {caseMtrl.mColor}
               </div>
             </div>) :
             caseMtrl.mSizeSPEC ?
-              (<div className='mb-1'>
+              (<div className='mb-1 hover-pointer' onClick={goBack}>
                 <TopLabelTiny label='SPEC' />
                 <div className='fs-lead'>
                   {caseMtrl.mSizeSPEC}

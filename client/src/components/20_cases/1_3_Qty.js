@@ -55,8 +55,9 @@ const Qty = ({ purpose, size, gQty, }) => {
       <div
         name='gQty'
         id={gQty.id}
+        className='center-content'
       >
-        leadTime is : ??
+        {gQty.leadTime ? gQty.leadTime.slice(5) : 'No results yet'}
       </div>
     )
   }

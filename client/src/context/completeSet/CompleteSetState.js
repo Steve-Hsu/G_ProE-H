@@ -97,6 +97,7 @@ const CompleteSetState = (props) => {
 
     const uploadCsOrder = async () => {
         if (newCsOrder === null) {
+            console.log('no new Cs Order')
         } else {
             const config = {
                 headers: {

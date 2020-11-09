@@ -50,10 +50,13 @@ const TableItem = ({
         break;
       case 'srMtrlSelector':
       case 'quoSrMtrlSelector':
-      case 'purCaseSelector':
       case 'leadTimePage':
         const theId = subject._id || subject.id;
         toggleItemAttributes[0](theId);
+        break;
+      case 'purCaseSelector':
+        const cNo = subject.cNo;
+        toggleItemAttributes[0](cNo);
         break;
       // case 'osSelector':
       //   // e.target.name = 'osSelector'
@@ -70,10 +73,12 @@ const TableItem = ({
     }
   };
 
-  const selectedBackGround = (id) => {
+
+  const selectedBackGround = () => {
+    const checkValue = subject.cNo || subject.id || subject._id
     let style = { overflow: 'auto' };
     if (purpose === 'purCaseSelector') {
-      let check = toggleItemAttributes[1].includes(id);
+      let check = toggleItemAttributes[1].includes(checkValue);
       if (check) {
         style = { background: 'var(--cp-1_2)', overflow: 'auto' };
       }
@@ -102,7 +107,7 @@ const TableItem = ({
             <div
               className='flexBox bd-light bd-no-t bg-cp-elem hover-cp-2 fs-small'
               onClick={onClick}
-              style={selectedBackGround(id)}
+              style={selectedBackGround()}
             // style={{ background: 'red' }}
             >
               <div style={cellStyle('no')} className='fs-small'>{idx + 1}</div>

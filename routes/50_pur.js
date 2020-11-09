@@ -93,9 +93,10 @@ router.post('/', authUser, async (req, res) => {
     return res.status(400).json({ msg: 'Out of authority' });
   }
   const comId = req.user.company;
-  const caseIds = req.body;
+  const selectedCNos = req.body;
   const comSymbol = user.comSymbol;
   const lossInform = user.loss;
+
 
   // @ Create OS number -------------------------------------------------
 
@@ -159,21 +160,24 @@ router.post('/', authUser, async (req, res) => {
   // let clientList = [];
   let supplierList = [];
   let caseMtrls = [];
+  //@ Define the elements for CS -------------------------------------------------
+  let csOrder = []
 
   // @ create object for caseMtrls -------------------------------------------------
   // Loop through cases
   const insertCaseMtrls = new Promise(async (resolve) => {
     console.log('Start the promise, inserCaseMtrls');
     let caseNum = 0;
-    caseIds.map(async (item) => {
+    selectedCNos.map(async (cNo) => {
       let mtrlNum = 0;
-      const caseId = item;
+
       const theCase = await Case.findOne({
-        _id: caseId,
+        cNo: cNo,
         company: comId,
         poDate: null,
         caseConfirmDate: { $ne: null }, // Only order summary the Case that has confirmed by merchandiser.
       });
+      const caseId = theCase._id;
       if (!theCase) {
         const msg =
           "One of case dosen't exist or has being purchased by other order summary";
@@ -182,14 +186,14 @@ router.post('/', authUser, async (req, res) => {
           msg: msg,
         });
       }
-
+      csOrder.push(theCase.cNo)
       const mtrls = theCase.mtrls;
       const gQtys = theCase.gQtys;
 
       if (mtrls.length === 0 || !mtrls || gQtys.length === 0 || !gQtys) {
         //If the case don't have mtrls or gQtys, which means no cspt can be calculated, then it will skip the case
         caseNum = caseNum + 1;
-        if (caseNum === caseIds.length) {
+        if (caseNum === selectedCNos.length) {
           return resolve();
         }
       } else {
@@ -335,13 +339,13 @@ router.post('/', authUser, async (req, res) => {
             if (mtrlNum === mtrls.length) {
               caseNum = caseNum + 1;
             }
-            if (caseNum === caseIds.length) {
+            if (caseNum === selectedCNos.length) {
               return resolve();
             }
 
             console.log('csptNum', csptNum, 'csptLength', cspts.length);
             console.log('mtrlNum', mtrlNum, 'mtrlsLength', mtrls.length);
-            console.log('caseNum', caseNum, 'caseLength', caseIds.length);
+            console.log('caseNum', caseNum, 'caseLength', selectedCNos.length);
           });
         });
       }
@@ -358,9 +362,7 @@ router.post('/', authUser, async (req, res) => {
         const orderSummary = new OS({
           company: comId,
           osNo: newOsNO,
-          // caseIds: caseIds,
           caseList: caseList,
-          // clients: clientList,
           suppliers: supplierList,
           caseMtrls: caseMtrls,
         });
@@ -371,9 +373,9 @@ router.post('/', authUser, async (req, res) => {
 
       }).then(async () => {
         //Update the poDate and osNo for the case.
-        caseIds.map(async (caseId) => {
+        selectedCNos.map(async (cNo) => {
           await Case.updateOne(
-            { company: comId, _id: caseId },
+            { company: comId, cNo: cNo },
             { $currentDate: { poDate: Date }, $set: { osNo: newOsNO } }
           );
         });

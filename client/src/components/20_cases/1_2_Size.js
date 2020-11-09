@@ -45,7 +45,7 @@ const Size = ({ size, gQtys, purpose }) => {
   useEffect(() => {
     loadCaseSelectTagIndex();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [_id]);
+  }, [_id, caseConfirmDate]);
 
   //For spareting the postion of btn, here use an inline style.
   //deleteBtn in Size.

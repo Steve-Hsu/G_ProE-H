@@ -24,7 +24,7 @@ export default (state, action) => {
     case OS_LIST_DOWNLOAD:
       return { ...state, osHeads: action.payload };
     case OS_DOWNLOAD:
-      return { ...state, currentOS: action.payload };
+      return { ...state, currentOS: action.payload, newCsOrder: action.payload.csOrder };
     case CSPAGE_SWITCH:
       return { ...state, csPage: action.payload };
     case CS_CURRENT:

@@ -658,7 +658,6 @@ const LeftBar = ({ currentPath }) => {
     return (rectA.top + rectA.height / 2 < rectB.top + rectB.height / 2);
   };
 
-
   return (
     <div
       className='container-with-navbar leftbar bg-white bd-light bd-no-t h-100 noPrint'
@@ -709,8 +708,8 @@ const LeftBar = ({ currentPath }) => {
           (currentPage === 'purchase' && openPage === 'leadTimePage')
           ? normalSummitBtn()
           : null}
-        {/*Submit BTN Purchase Set */}
-        {currentPage === 'completeset' && csPage === 'completeSetSelector' && newCsOrder !== null ? normalSummitBtn() : null}
+        {/*Submit BTN CompleteSet Set */}
+        {currentPage === 'completeset' && csPage === 'completeSetSelector' ? normalSummitBtn() : null}
         {/* Other Btns */}
         {/* @Case Sets */}
         {isEditingCase && currentPage === 'case' ? (
@@ -892,7 +891,7 @@ const LeftBar = ({ currentPath }) => {
                   <i className="fas fa-check"> Selected Case : </i>}
               </div>
               {selectedCases.length === 0 ? null : selectedCases.map((sc) => {
-                return (<div className='center-content fs-small' key={`selectedCaseId${sc}`}>{caseList.find(({ _id }) => _id === sc).cNo}</div>)
+                return (<div className='center-content fs-small' key={`selectedCaseId${sc}`}>{sc}</div>)
               })}
             </section>
           ) : (currentPath === '/api/purchase' && openPage === 'osSelector' && osList.length === 0) ?
@@ -911,7 +910,7 @@ const LeftBar = ({ currentPath }) => {
               Arrange the order of production
             </div>
             <div id='osCaseListContainer'>
-              {currentOS.caseList.map((OsCase) => {
+              {/* {currentOS.caseList.map((OsCase) => {
                 return (
                   <div
                     key={`OsCase${OsCase._id}`}
@@ -920,6 +919,18 @@ const LeftBar = ({ currentPath }) => {
                     onMouseDown={mouseDownHandler}
                   >
                     {OsCase.cNo}
+                  </div>
+                )
+              })} */}
+              {currentOS.caseList.map((c) => {
+                return (
+                  <div
+                    key={`OsCase${c._id}`}
+                    id={`OsCase${c._id}`}
+                    className='round-area bd-light bg-cp-1-light grabbable'
+                    onMouseDown={mouseDownHandler}
+                  >
+                    {c.cNo}
                   </div>
                 )
               })}
