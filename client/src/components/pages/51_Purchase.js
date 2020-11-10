@@ -72,7 +72,7 @@ const Purchase = (props) => {
   return (
     <Fragment>
       {popover === true || isLoading === true || osError !== null ? (
-        <DeletePopover key='purchasePagePopover' current={current} />
+        <DeletePopover key='purchasePagePopover' current={current} props={props} />
       ) : null}
       {/* Grid-1 */}
       {openPage === 'caseSelector' ? (
@@ -87,7 +87,7 @@ const Purchase = (props) => {
           <LeftBar currentPath={currentPath} />
           <div className='container container-with-navbar'>
             <GoBackBtn onClick={goBack} />
-            <OsSelector purpose='osSelector' />
+            <OsSelector purpose='osSelector' props={props} />
           </div>
         </div>
       ) : openPage === 'orderSummary' ? (
@@ -98,7 +98,7 @@ const Purchase = (props) => {
               go back
             </button> */}
             <GoBackBtn onClick={goOsSelector} />
-            <OrderSummary purpose='purchaseOrder' />
+            <OrderSummary purpose='purchaseOrder' props={props} />
           </div>
         </div>
       ) : openPage === 'purchaseOrder' ? (

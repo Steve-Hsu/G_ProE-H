@@ -194,7 +194,7 @@ const CaseForm = ({ props }) => {
       {/* // Ask the user when they want to jump to another page wihout saving datas */}
       {/* <Prompt when={formIsHalfFilledOut} message='Hey' /> */}
       {popover === true || isLoading === true || caseError !== null ? (
-        <DeletePopover key={`casepopover`} />
+        <DeletePopover key={`casepopover`} props={props} />
       ) : null}
       {isEditingCase ? (
         <div className='container container-with-navbar'>

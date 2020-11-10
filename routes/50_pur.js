@@ -52,11 +52,15 @@ router.get('/ordersummary/:osNo', authUser, async (req, res) => {
   const osNo = req.params.osNo
   //Check if multiple login, if yes, do nothing
   const token = req.header('x-auth-token');
-  if (user.sKey !== token) {
-    const msg = { err: 'Multiple user login, please login again.' }
-    console.log(msg)
-    return res.json([msg])
-  }
+
+  // @Due to I don't figure out how to block in this section when multiple user happned, I let this router can pass multiple user.
+  // @Here may be a hole but I've block from beginning and the end, 
+  // if (user.sKey !== token) {
+  //   const msg = { err: 'Multiple user login, please login again.' }
+  //   console.log(msg)
+  //   return res.json(msg)
+  // }
+
   //Check if the user have the right
   if (!user.po) {
     return res.status(400).json({ msg: 'Out of authority' });

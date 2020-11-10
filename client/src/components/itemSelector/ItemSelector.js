@@ -161,7 +161,7 @@ export const ItemSelector = ({ props, purpose, currentPath }) => {
   return (
     <Fragment>
       {caseError !== null || srMtrlError !== null || isLoading === true ? (
-        <DeletePopover key={`casepopover`} />
+        <DeletePopover key={`casepopover`} props={props} />
       ) : null}
       {/* <div style={{ paddingTop: '50px' }} className='p-1 container'> */}
       <div

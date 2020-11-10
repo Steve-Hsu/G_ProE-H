@@ -60,7 +60,7 @@ const Quotation = (props) => {
 
   return (
     <Fragment>
-      {popover === true || isLoading === true || quoError !== null ? <DeletePopover key='quotationpopover' current={current} /> : null}
+      {popover === true || isLoading === true || quoError !== null ? <DeletePopover key='quotationpopover' current={current} props={props} /> : null}
       <div className='grid-1-4'>
         {/* Grid-1 */}
         <LeftBar currentPath={currentPath} />

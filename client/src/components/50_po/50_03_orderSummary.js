@@ -8,9 +8,9 @@ import DeletePopover from '../layout/DeletePopover';
 import LockedBadge from '../elements/badge/LockedBadge';
 import SqBtnLarge from '../elements/btns/SqBtnLarge';
 
-const OrderSummary = ({ purpose }) => {
+const OrderSummary = ({ purpose, props }) => {
   const popoverContext = useContext(PopoverContext);
-  const { popover, current, togglePopover } = popoverContext;
+  const { popover, togglePopover, isLoading, osError, current } = popoverContext;
 
   const purContext = useContext(PurContext);
   const { switchPage, currentOrderSummary } = purContext;
@@ -38,6 +38,11 @@ const OrderSummary = ({ purpose }) => {
   const subjects = () => {
     if (purpose === 'purchaseOrder') {
       return [suppliers, caseMtrls]
+      // if (suppliers) {
+      //   return [suppliers, caseMtrls]
+      // } else {
+      //   return [[], []]
+      // }
     } else if (purpose === 'completeSetOfCase') {
       return [currentOS.caseList, currentOS.caseList]
     }
@@ -45,11 +50,13 @@ const OrderSummary = ({ purpose }) => {
 
   const checkConfirmOfSuppliers = () => {
     let check = false
-    suppliers.map((s) => {
-      if (s.poConfirmDate) {
-        check = true
-      }
-    })
+    if (suppliers) {
+      suppliers.map((s) => {
+        if (s.poConfirmDate) {
+          check = true
+        }
+      })
+    }
     return check
   }
 
@@ -68,7 +75,6 @@ const OrderSummary = ({ purpose }) => {
 
   return (
     <Fragment>
-      {popover ? <DeletePopover key={current._id} /> : null}
       <div className='round-area bd-light bg-cp-1 mb-05 mt-05'>
         <div className='h-scatter-content'>
           {' '}
@@ -116,11 +122,10 @@ const OrderSummary = ({ purpose }) => {
         subjects={subjects()}
         // purpose='order'
         purpose={purpose}
-        label={purpose === 'purchaseOrder' ? (<div>{suppliers.length} <span className='fs-normal fc-cp-1'>Purchase Order</span></div>) : null}
+        label={purpose === 'purchaseOrder' ? (<div>{suppliers ? suppliers.length : 0} <span className='fs-normal fc-cp-1'>Purchase Order</span></div>) : null}
         toggleItemAttributes={toggleFuncs()}
       />
-    </Fragment>
-  );
+    </Fragment>)
 };
 
 export default OrderSummary;

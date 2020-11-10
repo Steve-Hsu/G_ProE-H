@@ -17,6 +17,7 @@ import {
   CURRETQUOFORM_MQUOS_UPDATE,
   UPDATE_ERROR,
   QUOFORM_REPLACE_ONE,
+  DEFAULT,
 } from '../types';
 
 const QuoState = (props) => {
@@ -92,7 +93,7 @@ const QuoState = (props) => {
         console.log('Multiple user login~!')
         dispatch({ type: UPDATE_ERROR, payload: err });
         setTimeout(() => {
-          dispatch({ type: UPDATE_ERROR, payload: null });
+          dispatch({ type: UPDATE_ERROR, payload: 'Jump to login page' });
         }, 3500);
       } else {
         console.log('Download succeed!');
@@ -156,7 +157,7 @@ const QuoState = (props) => {
         console.log('Multiple user login~!')
         dispatch({ type: UPDATE_ERROR, payload: err });
         setTimeout(() => {
-          dispatch({ type: UPDATE_ERROR, payload: null });
+          dispatch({ type: UPDATE_ERROR, payload: 'Jump to login page' });
         }, 3500);
         return resolve(null)
       } else {
@@ -204,7 +205,7 @@ const QuoState = (props) => {
       console.log('Multiple user login~!')
       dispatch({ type: UPDATE_ERROR, payload: err });
       setTimeout(() => {
-        dispatch({ type: UPDATE_ERROR, payload: null });
+        dispatch({ type: UPDATE_ERROR, payload: 'Jump to login page' });
       }, 3500);
     } else {
       console.log('Delete the quotation form succeed!');
@@ -389,7 +390,9 @@ const QuoState = (props) => {
     dispatch({ type: UPDATE_ERROR, payload: null });
   };
 
-
+  const defaultQuo = () => {
+    dispatch({ type: DEFAULT });
+  }
   return (
     <QuoContext.Provider
       value={{
@@ -412,7 +415,8 @@ const QuoState = (props) => {
         updateQuoSize,
         updateQuocWay,
         updateCurrentQuoForm,
-        clearQuoError
+        clearQuoError,
+        defaultQuo,
       }}
     >
       {props.children}

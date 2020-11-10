@@ -41,6 +41,7 @@ export default (state, action) => {
         currentPo: null,
         currentPoPriceList: [],
         editingLeadTime: [],
+        osError: null,
       };
     case PURPAGE_SWITCH:
       return {

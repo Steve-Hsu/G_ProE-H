@@ -7,6 +7,7 @@ import UserContext from '../../context/user/userContext';
 import SearchBarContext from '../../context/searchBar/searchBarContext';
 import CasesContext from '../../context/cases/casesContext';
 import SrMtrlContext from '../../context/srMtrl/srMtrlContext';
+import QuoContext from '../../context/quo/quoContext'
 import PopoverContext from '../../context/popover/popoverContext';
 import PurContext from '../../context/pur/purContext';
 import CompleteSetContext from '../../context/completeSet/completeSetContext'
@@ -18,6 +19,7 @@ const Navbar = () => {
   const searchBarContext = useContext(SearchBarContext);
   const casesContext = useContext(CasesContext);
   const srMtrlContext = useContext(SrMtrlContext);
+  const quoContext = useContext(QuoContext)
   const popoverContext = useContext(PopoverContext);
   const purContext = useContext(PurContext);
   const completeSetContext = useContext(CompleteSetContext)
@@ -30,9 +32,11 @@ const Navbar = () => {
   const s = searchBarContext;
   const c = casesContext;
   const sm = srMtrlContext;
+  const q = quoContext;
   const p = popoverContext;
   const pur = purContext;
   const cs = completeSetContext;
+
 
   useEffect(() => {
     if (c.isUpdated && sm.isUpdated) {
@@ -56,6 +60,7 @@ const Navbar = () => {
     c.defaultCase();
     u.clearUsers();
     sm.clearSrMtrl();
+    q.defaultQuo();
     p.defaultPopover();
     pur.defaultPurState();
     cs.defaultCS();

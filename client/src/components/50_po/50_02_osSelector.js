@@ -1,12 +1,13 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, Fragment } from 'react';
 import PurContext from '../../context/pur/purContext';
 import CompleteSetContext from '../../context/completeSet/completeSetContext'
 import Table from '../elements/table/Table';
 import PopoverContext from '../../context/popover/popoverContext'
+import DeletePopover from '../layout/DeletePopover'
 //@ Child component
 // import OsItem from './50_02_01_osItem';
 
-const OsSelector = ({ purpose }) => {
+const OsSelector = ({ purpose, current, props }) => {
 
   const purContext = useContext(PurContext);
   const popoverContext = useContext(PopoverContext)
@@ -17,6 +18,7 @@ const OsSelector = ({ purpose }) => {
     // switchOsCurrent,
     getOs,
     switchPage,
+    osError,
   } = purContext;
 
   const completeSetContext = useContext(CompleteSetContext)
@@ -26,6 +28,8 @@ const OsSelector = ({ purpose }) => {
     getCs,
     switchCsPage,
   } = completeSetContext
+
+  const { toggleLoading, popover, isLoading } = popoverContext
 
   const osPageSwitch = (osNo) => {
     toggleLoading(true)
@@ -44,7 +48,7 @@ const OsSelector = ({ purpose }) => {
 
   }
 
-  const { toggleLoading } = popoverContext
+
 
   useEffect(() => {
     toggleLoading(true)
@@ -64,13 +68,18 @@ const OsSelector = ({ purpose }) => {
 
   //@ return
   return (
-
-    <Table
-      subjects={purpose === 'csOsSelector' ? osHeads : osList}
-      purpose={purpose}
-      toggleItemAttributes={purpose === 'csOsSelector' ? [csPageSwitch] : [osPageSwitch]}
-      displayTitles={[{ osNo: true }]}
-    />
+    <Fragment>
+      {popover === true || isLoading === true || osError !== null ? (
+        <DeletePopover key='purchasePagePopover' props={props} />
+      ) : (
+          <Table
+            subjects={purpose === 'csOsSelector' ? osHeads : osList}
+            purpose={purpose}
+            toggleItemAttributes={purpose === 'csOsSelector' ? [csPageSwitch] : [osPageSwitch]}
+            displayTitles={[{ osNo: true }]}
+          />
+        )}
+    </Fragment>
 
   );
 };

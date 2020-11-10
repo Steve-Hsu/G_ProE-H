@@ -4,7 +4,7 @@ import MPrice from './30_01_01_mPrice';
 import PropTypes from 'prop-types';
 import SqBtnLarge from '../elements/btns/SqBtnLarge';
 import GoBackBtnSpinSmall from '../elements/btns/GoBackBtnSpinSmall';
-import DeletePopover from '../layout/DeletePopover';
+// import DeletePopover from '../layout/DeletePopover';
 import PopoverContext from '../../context/popover/popoverContext';
 import TopLabelTiny from '../elements/Label/TopLabelTiny';
 // import ToggleSwitch from '../elements/btns/ToggleSwitch';
@@ -13,7 +13,7 @@ const SrMtrl = ({ srMtrl, currentPath, idx }) => {
   const srMtrlContext = useContext(SrMtrlContext);
   const popoverContext = useContext(PopoverContext);
   const { addMPrice, openSrMtrl } = srMtrlContext;
-  const { popover, isLoading, togglePopover } = popoverContext;
+  const { togglePopover } = popoverContext;
   // let options = [];
   const onClick = (e) => {
     e.preventDefault();
@@ -43,9 +43,9 @@ const SrMtrl = ({ srMtrl, currentPath, idx }) => {
       style={{ width: '100%' }}
     >
       {/* {popover ? <DeletePopover key={current.id} /> : null} */}
-      {popover === true || isLoading === true ? (
+      {/* {popover === true || isLoading === true ? (
         <DeletePopover key={'srMtrlPopover'} />
-      ) : null}
+      ) : null} */}
       <div>
         <TopLabelTiny label={idx + 1} />
         <GoBackBtnSpinSmall onClick={goBack} />

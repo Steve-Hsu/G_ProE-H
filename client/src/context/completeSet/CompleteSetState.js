@@ -44,7 +44,7 @@ const CompleteSetState = (props) => {
                 console.log('Multiple user login~!')
                 dispatch({ type: UPDATE_ERROR, payload: err });
                 setTimeout(() => {
-                    dispatch({ type: UPDATE_ERROR, payload: null });
+                    dispatch({ type: UPDATE_ERROR, payload: 'Jump to login page' });
                 }, 3500);
             } else {
                 console.log('download succeed!');
@@ -67,7 +67,7 @@ const CompleteSetState = (props) => {
             console.log('Multiple user login~!')
             dispatch({ type: UPDATE_ERROR, payload: err });
             setTimeout(() => {
-                dispatch({ type: UPDATE_ERROR, payload: null });
+                dispatch({ type: UPDATE_ERROR, payload: 'Jump to login page' });
             }, 3500);
         } else {
             console.log('download succeed!');

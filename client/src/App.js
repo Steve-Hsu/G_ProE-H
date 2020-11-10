@@ -4,6 +4,7 @@ import Navbar from './components/layout/Navbar';
 import ComRegister from './components/authPage/00_ComRegister';
 
 //Pages
+import MultipleLogin from './components/pages/MultipleLogin'
 import NotFound from './components/pages/NotFound';
 import ComManager from './components/pages/01_ComManager';
 import UserManager from './components/pages/11_UserManager';
@@ -118,6 +119,11 @@ const App = () => {
                                     <PrivateUserRoute
                                       path='/api/completeset'
                                       component={CompleteSet}
+                                    />
+                                    <Route
+                                      exact
+                                      path='/multipleloging'
+                                      component={MultipleLogin}
                                     />
                                     {/* This NotFound return a page when the previous page is not found. */}
                                     <Route component={NotFound} />

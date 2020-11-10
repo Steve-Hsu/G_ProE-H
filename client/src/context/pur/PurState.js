@@ -101,7 +101,7 @@ const PurState = (props) => {
           console.log('Multiple user login~!')
           dispatch({ type: UPDATE_ERROR, payload: err });
           setTimeout(() => {
-            dispatch({ type: UPDATE_ERROR, payload: null });
+            dispatch({ type: UPDATE_ERROR, payload: 'Jump to login page' });
           }, 3500);
         } else {
           dispatch({ type: CLEAR_SELECTEDCASE });
@@ -174,7 +174,7 @@ const PurState = (props) => {
       console.log('Multiple user login~!')
       dispatch({ type: UPDATE_ERROR, payload: err });
       setTimeout(() => {
-        dispatch({ type: UPDATE_ERROR, payload: null });
+        dispatch({ type: UPDATE_ERROR, payload: 'Jump to login page' });
       }, 3500);
     } else {
       console.log('download succeed!');
@@ -184,6 +184,7 @@ const PurState = (props) => {
 
   // getOs is an inner func
   const getOs = async (osNo) => {
+    // new Promise(async (resolve) => {
     if (currentOrderSummary === null) {
       console.log('I triggered here !!!')
       const res = await axios.get(`/api/purchase/ordersummary/${osNo}`);
@@ -193,21 +194,26 @@ const PurState = (props) => {
         dispatch({ type: UPDATE_ERROR, payload: 'No complete set found' })
         setTimeout(() => {
           dispatch({ type: UPDATE_ERROR, payload: null })
+          // resolve()
         }, 3500);
-      } else if (res.data.err) {
-        const err = res.data.err
-        console.log('Multiple user login~!')
-        dispatch({ type: UPDATE_ERROR, payload: err });
-        setTimeout(() => {
-          dispatch({ type: UPDATE_ERROR, payload: null });
-        }, 3500);
+        // } else if (res.data.err) {
+        //   const err = res.data.err
+        //   console.log('Multiple user login~!')
+        //   dispatch({ type: UPDATE_ERROR, payload: err });
+        //   setTimeout(() => {
+        //     dispatch({ type: UPDATE_ERROR, payload: 'Jump to login page' });
+        //     // resolve()
+        //   }, 3500);
       } else {
         console.log('download succeed!');
         dispatch({ type: OS_CURRENT, payload: res.data });
+        // resolve()
       }
     } else {
       dispatch({ type: OS_CURRENT, payload: null });
+      // resolve()
     }
+    // })
   };
 
   // const switchOsCurrent = (osNo) => {
@@ -248,7 +254,7 @@ const PurState = (props) => {
       console.log('Multiple user login~!')
       dispatch({ type: UPDATE_ERROR, payload: err });
       setTimeout(() => {
-        dispatch({ type: UPDATE_ERROR, payload: null });
+        dispatch({ type: UPDATE_ERROR, payload: 'Jump to login page' });
       }, 3500);
     } else {
       console.log('Download succeed!');
@@ -330,7 +336,7 @@ const PurState = (props) => {
         console.log('Multiple user login~!')
         dispatch({ type: UPDATE_ERROR, payload: err });
         setTimeout(() => {
-          dispatch({ type: UPDATE_ERROR, payload: null });
+          dispatch({ type: UPDATE_ERROR, payload: 'Jump to login page' });
         }, 3500);
       } else {
         console.log('Upload condition succeed');
@@ -470,7 +476,7 @@ const PurState = (props) => {
         console.log('Multiple user login~!')
         dispatch({ type: UPDATE_ERROR, payload: err });
         setTimeout(() => {
-          dispatch({ type: UPDATE_ERROR, payload: null });
+          dispatch({ type: UPDATE_ERROR, payload: 'Jump to login page' });
         }, 3500);
       } else {
         console.log('Upload hs-code succeed');

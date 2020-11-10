@@ -62,7 +62,7 @@ const CompleteSet = (props) => {
 
    return (
       <Fragment >
-         {popover === true || isLoading === true || csError !== null ? <DeletePopover key='cspopover' current={current} /> : null}
+         {popover === true || isLoading === true || csError !== null ? <DeletePopover key='cspopover' current={current} props={props} /> : null}
          <form id='updateCompleteSet' onSubmit={submit}></form>
          {csPage === null ? (
             <div className='grid-1-4'>

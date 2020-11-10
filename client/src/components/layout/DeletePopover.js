@@ -1,6 +1,7 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import CasesContext from '../../context/cases/casesContext';
 import AuthUserContext from '../../context/authUser/authUserContext';
+import SearchBarContext from '../../context/searchBar/searchBarContext';
 import SrMtrlContext from '../../context/srMtrl/srMtrlContext';
 import PopoverContext from '../../context/popover/popoverContext';
 import QuoContext from '../../context/quo/quoContext';
@@ -10,7 +11,8 @@ import Spinner from '../../components/layout/Spinner';
 import UserContext from '../../context/user/userContext';
 import DeleteBtnSmallNoWarning from '../elements/btns/DeleteBtnSmallNoWarning'
 
-const DeletePopover = () => {
+const DeletePopover = ({ props }) => {
+  const searchBarContext = useContext(SearchBarContext);
   const casesContext = useContext(CasesContext);
   const authUserContext = useContext(AuthUserContext);
   const srMtrlContext = useContext(SrMtrlContext);
@@ -19,22 +21,63 @@ const DeletePopover = () => {
   const quoContext = useContext(QuoContext);
   const completeSetContext = useContext(CompleteSetContext)
   const userContext = useContext(UserContext);
-  const { _id, cNo, deleteMtrl, deletecWayOrgSize, deleteCase, caseError, clearCaseError } = casesContext;
-  const { deleteSRMtrlByMtrl, deleteSrMtrlPrice, srMtrlError, clearSrMtrlError } = srMtrlContext;
-  const { comName, comSymbol } = authUserContext;
+  const { _id, cNo, deleteMtrl, deletecWayOrgSize, deleteCase, caseError, clearCaseError, defaultCase } = casesContext;
+  const { deleteSRMtrlByMtrl, deleteSrMtrlPrice, srMtrlError, clearSrMtrlError, clearSrMtrl } = srMtrlContext;
+  const { comName, comSymbol, logoutUser } = authUserContext;
   const {
+    popover,
     togglePopover,
     toggleLoading,
     current,
     isLoading,
     doubleCheck,
     addDoubleCheckValue,
+    defaultPopover,
   } = popoverContext;
-  const { deleteQuoForm, switchQuoForm, quoError, clearQuoError } = quoContext;
-  const { deleteOs, osError, clearOsError } = purContext;
-  const { deleteUser, clearCurrent } = userContext;
-  const { csError, clearCsError } = completeSetContext;
+  const { deleteQuoForm, switchQuoForm, quoError, clearQuoError, defaultQuo } = quoContext;
+  const { deleteOs, osError, clearOsError, defaultPurState } = purContext;
+  const { deleteUser, clearCurrent, clearUsers } = userContext;
+  const { csError, clearCsError, defaultCS } = completeSetContext;
+  const { toggleIndexList } = searchBarContext;
   // }
+
+  useEffect(() => {
+    console.log("props in popover", props)
+    if (csError == 'Jump to login page' ||
+      osError == 'Jump to login page' ||
+      caseError == 'Jump to login page' ||
+      srMtrlError == 'Jump to login page' ||
+      quoError == 'Jump to login page') {
+      if (!props) {
+      } else {
+        console.log("the multiple happend props", props)
+        onLogout()
+        props.history.push('/multipleloging');
+      }
+    }
+    // props.history.push('/api/auth/user');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [caseError, srMtrlError, quoError, osError, csError]);
+
+  const onLogout = () => {
+    // acom.logoutCom();
+    logoutUser();
+    toggleIndexList();
+    clearUsers();
+    defaultCase();
+    clearSrMtrl();
+    defaultQuo();
+    defaultPurState();
+    defaultCS();
+    defaultPopover();
+  };
+
+  const juspToUserLoginPage = () => {
+    if (caseError == 'Jump to login page') {
+      props.history.push('/api/auth/user');
+    }
+  }
+
   const onChangeDelete = async (e) => {
     e.preventDefault();
     const caseId = _id;

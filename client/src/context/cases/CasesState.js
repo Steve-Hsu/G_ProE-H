@@ -918,7 +918,7 @@ const CasesState = (props) => {
       console.log('Multiple user login~!')
       dispatch({ type: UPDATE_ERROR, payload: err });
       setTimeout(() => {
-        dispatch({ type: UPDATE_ERROR, payload: null });
+        dispatch({ type: UPDATE_ERROR, payload: 'Jump to login page' });
       }, 3500);
     } else {
       console.log('Upload succeed!');
@@ -980,7 +980,7 @@ const CasesState = (props) => {
         console.log('Multiple user login~!')
         dispatch({ type: UPDATE_ERROR, payload: err });
         setTimeout(() => {
-          dispatch({ type: UPDATE_ERROR, payload: null });
+          dispatch({ type: UPDATE_ERROR, payload: 'Jump to login page' });
         }, 3500);
       } else {
         console.log('Download succeed!');
@@ -1268,7 +1268,7 @@ const CasesState = (props) => {
       console.log('Multiple user login~!')
       dispatch({ type: UPDATE_ERROR, payload: res.data[0].err });
       setTimeout(() => {
-        dispatch({ type: UPDATE_ERROR, payload: null });
+        dispatch({ type: UPDATE_ERROR, payload: 'Jump to login page' });
       }, 3500);
     } else {
       dispatch({ type: CASE_LIST_DOWNLOAD, payload: res.data });

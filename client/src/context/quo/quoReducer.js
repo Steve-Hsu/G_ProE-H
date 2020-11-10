@@ -11,10 +11,23 @@ import {
   CURRETQUOFORM_MQUOS_UPDATE,
   UPDATE_ERROR,
   QUOFORM_REPLACE_ONE,
+  DEFAULT,
 } from '../types';
 
 export default (state, action) => {
   switch (action.type) {
+    case DEFAULT:
+      return {
+        quotateFor: null,
+        isQuotating: null,
+        openQuoForm: null,
+        quotation: {
+          quoForms: [],
+          theCase: null,
+        },
+        currentQuoForm: null,
+        quoError: null,
+      }
     // case CASE_LIST_DOWNLOAD:
     //   return { ...state, caseList: action.payload };
     case QUOFORM_SELECTOR_SWITCH:
