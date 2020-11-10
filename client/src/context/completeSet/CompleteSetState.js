@@ -115,7 +115,18 @@ const CompleteSetState = (props) => {
                 body,
                 config
             );
-            dispatch({ type: OS_DOWNLOAD, payload: res.data })
+            if (res.data.err) {
+                const err = res.data.err
+                console.log('Multiple user login~!')
+                dispatch({ type: UPDATE_ERROR, payload: err });
+                setTimeout(() => {
+                    dispatch({ type: UPDATE_ERROR, payload: 'Jump to login page' });
+                }, 3500);
+            } else {
+                console.log('upload succeed!');
+                dispatch({ type: OS_DOWNLOAD, payload: res.data })
+            }
+
         }
 
     }

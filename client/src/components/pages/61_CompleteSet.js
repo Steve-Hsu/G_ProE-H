@@ -58,13 +58,11 @@ const CompleteSet = (props) => {
       })
    }
 
-
-
    return (
       <Fragment >
          {popover === true || isLoading === true || csError !== null ? <DeletePopover key='cspopover' current={current} props={props} /> : null}
          <form id='updateCompleteSet' onSubmit={submit}></form>
-         {csPage === null ? (
+         {csError === null && csPage === null ? (
             <div className='grid-1-4'>
                <LeftBar currentPath={currentPath} />
                <div className='container container-with-navbar'>
@@ -72,7 +70,7 @@ const CompleteSet = (props) => {
                   <OsSelector purpose='csOsSelector' />
                </div>
             </div>
-         ) : csPage === 'completeSetSelector' ? (
+         ) : csError === null && csPage === 'completeSetSelector' ? (
             <div className='grid-1-4'>
                <LeftBar currentPath={currentPath} />
                <div className='container container-with-navbar'>
@@ -80,7 +78,7 @@ const CompleteSet = (props) => {
                   <OrderSummary purpose='completeSetOfCase' />
                </div>
             </div>
-         ) : csPage === 'completeSet' ? (
+         ) : csError == null && csPage === 'completeSet' ? (
             <div className='grid-1-4'>
                <LeftBar currentPath={currentPath} />
                <div className='container container-with-navbar'>

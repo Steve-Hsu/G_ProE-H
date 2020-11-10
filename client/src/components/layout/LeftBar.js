@@ -52,7 +52,7 @@ const LeftBar = ({ currentPath }) => {
     downLoadmtrlPrice,
   } = quoContext;
   const { openPage, togglePoConfirmDate, currentPo, selectedCases, osList, } = purContext;
-  const { currentOS, csPage, setNewCsOrder, newCsOrder } = completeSetContext;
+  const { csPage, setNewCsOrder, newCsOrder, csError } = completeSetContext;
   const { toggleLoading } = popoverContext;
 
 
@@ -910,18 +910,6 @@ const LeftBar = ({ currentPath }) => {
               Arrange the order of production
             </div>
             <div id='osCaseListContainer'>
-              {/* {currentOS.caseList.map((OsCase) => {
-                return (
-                  <div
-                    key={`OsCase${OsCase._id}`}
-                    id={`OsCase${OsCase._id}`}
-                    className='round-area bd-light bg-cp-1-light grabbable'
-                    onMouseDown={mouseDownHandler}
-                  >
-                    {OsCase.cNo}
-                  </div>
-                )
-              })} */}
               {newCsOrder.map((c) => {
                 return (
                   <div
@@ -935,6 +923,9 @@ const LeftBar = ({ currentPath }) => {
                 )
               })}
             </div>
+
+
+
             {/* {currentOrderSummary.caseList.map((OsCase) => {
               return (
                 <div key={`OsCase${OsCase._id}`}

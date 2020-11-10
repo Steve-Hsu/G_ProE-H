@@ -84,7 +84,7 @@ router.post('/', authUser, async (req, res) => {
    if (user.sKey !== token) {
       const msg = { err: 'Multiple user login, please login again.' }
       console.log(msg)
-      return res.json([msg])
+      return res.json(msg)
    }
 
    const { osNo, newCsOrder } = req.body
