@@ -93,7 +93,7 @@ router.post(
         payload,
         config.get('jwtSecret'),
         {
-          // The JWT expires in 1 hour
+          // The JWT expires in 10 hour
           expiresIn: 36000,
         },
         (err, token) => {
