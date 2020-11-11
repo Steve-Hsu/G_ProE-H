@@ -9,7 +9,7 @@ import PurContext from '../../context/pur/purContext';
 import CompleteSetContext from '../../context/completeSet/completeSetContext'
 import Spinner from '../../components/layout/Spinner';
 import UserContext from '../../context/user/userContext';
-import DeleteBtnSmallNoWarning from '../elements/btns/DeleteBtnSmallNoWarning'
+// import DeleteBtnSmallNoWarning from '../elements/btns/DeleteBtnSmallNoWarning'
 
 const DeletePopover = ({ props }) => {
   const searchBarContext = useContext(SearchBarContext);
@@ -52,7 +52,7 @@ const DeletePopover = ({ props }) => {
   // }
 
   useEffect(() => {
-    console.log("props in popover", props)
+    // console.log("props in popover", props)
     if (csError == 'Jump to login page' ||
       osError == 'Jump to login page' ||
       caseError == 'Jump to login page' ||
@@ -60,7 +60,7 @@ const DeletePopover = ({ props }) => {
       quoError == 'Jump to login page') {
       if (!props) {
       } else {
-        console.log("the multiple happend props", props)
+        // console.log("the multiple happend props", props)
         onLogout()
         props.history.push('/multipleloging');
       }
@@ -68,7 +68,6 @@ const DeletePopover = ({ props }) => {
     // props.history.push('/api/auth/user');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [caseError, srMtrlError, quoError, osError, csError]);
-
   const onLogout = () => {
     // acom.logoutCom();
     logoutUser();
@@ -81,12 +80,6 @@ const DeletePopover = ({ props }) => {
     defaultCS();
     defaultPopover();
   };
-
-  const juspToUserLoginPage = () => {
-    if (caseError == 'Jump to login page') {
-      props.history.push('/api/auth/user');
-    }
-  }
 
   const onChangeDelete = async (e) => {
     e.preventDefault();

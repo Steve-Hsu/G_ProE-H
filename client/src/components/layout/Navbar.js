@@ -12,7 +12,7 @@ import PopoverContext from '../../context/popover/popoverContext';
 import PurContext from '../../context/pur/purContext';
 import CompleteSetContext from '../../context/completeSet/completeSetContext'
 
-const Navbar = () => {
+const Navbar = (props) => {
   const authComContext = useContext(AuthComContext);
   const authUserContext = useContext(AuthUserContext);
   const userContext = useContext(UserContext);
@@ -52,6 +52,16 @@ const Navbar = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sm.isUpdated]);
+
+  useEffect(() => {
+    console.log("here useEffect")
+    setTimeout(() => {
+      onLogout()
+      console.log("hte timeout", props)
+      // props.history.push('/multipleloging');
+    }, 3000)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const onLogout = () => {
     acom.logoutCom();
