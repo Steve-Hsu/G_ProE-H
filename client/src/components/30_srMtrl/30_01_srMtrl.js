@@ -7,12 +7,13 @@ import GoBackBtnSpinSmall from '../elements/btns/GoBackBtnSpinSmall';
 // import DeletePopover from '../layout/DeletePopover';
 import PopoverContext from '../../context/popover/popoverContext';
 import TopLabelTiny from '../elements/Label/TopLabelTiny';
+import Select from '../elements/select/Select'
 // import ToggleSwitch from '../elements/btns/ToggleSwitch';
 
 const SrMtrl = ({ srMtrl, currentPath, idx }) => {
   const srMtrlContext = useContext(SrMtrlContext);
   const popoverContext = useContext(PopoverContext);
-  const { addMPrice, openSrMtrl } = srMtrlContext;
+  const { addMPrice, openSrMtrl, updateItemAndUnitConvertRation } = srMtrlContext;
   const { togglePopover } = popoverContext;
   // let options = [];
   const onClick = (e) => {
@@ -37,6 +38,11 @@ const SrMtrl = ({ srMtrl, currentPath, idx }) => {
     }
   };
 
+  const onChange = (e) => {
+    e.preventDefault();
+    updateItemAndUnitConvertRation(e)
+  }
+
   return (
     <div
       className=' p-1 round-card bg-cp-elem bd-light flexBox'
@@ -51,18 +57,30 @@ const SrMtrl = ({ srMtrl, currentPath, idx }) => {
         <GoBackBtnSpinSmall onClick={goBack} />
       </div>
       <div className='ml-1 w-90' style={{ flex: '1 1 auto' }}>
-        <section className='grid-2 hover-pointer' onClick={goBack} >
-          <div>
+        <section className='grid-3 hover-pointer' >
+          <div onClick={goBack} >
             <TopLabelTiny label='Supplier' />
             <div className='fs-large' id={`supplier${srMtrl._id}`}>
               {srMtrl.supplier}
             </div>
           </div>
-          <div>
+          <div onClick={goBack} >
             <TopLabelTiny label='Ref No.' />
             <div className='fs-large' id={`ref_no${srMtrl._id}`}>
               {srMtrl.ref_no}
             </div>
+          </div>
+          <div>
+            <Select
+              purpose='item'
+              id={srMtrl._id}
+              name='item'
+              onChange={onChange}
+              subject={srMtrl}
+              label='Item'
+              selectedOption={srMtrl.item}
+              className='fs-larget select-primary-sub  bd-light'
+            />
           </div>
         </section>
         <div className='flexBox mb-05'>

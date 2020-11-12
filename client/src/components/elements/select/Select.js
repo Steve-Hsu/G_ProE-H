@@ -120,9 +120,9 @@ const Select = ({
     let id = subject.id || subject._id;
     if (selectedOption) {
       selected = document.getElementById(`${purpose}${selectedOption}${id}`);
-      // console.log('the id', id); // test Code
-      // console.log('the selectedOption', selectedOption); // test Code
-      // console.log('the selected', selected); // test Code
+      console.log('the id', id); // test Code
+      console.log('the selectedOption', selectedOption); // test Code
+      console.log('the selected', selected); // test Code
     } else {
       selected = document.getElementById(`${purpose}empty${id}`);
     }
@@ -164,6 +164,7 @@ const Select = ({
         required={required}
       >
         {options.map((o) => {
+          console.log(`${purpose}${o}${subject.id ? subject.id : subject._id}`) // Test code
           return (
             <option
               key={`${o}${subject.id ? subject.id : subject._id}`}

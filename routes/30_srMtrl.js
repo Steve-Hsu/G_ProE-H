@@ -325,7 +325,7 @@ router.put('/:caseId', authUser, async (req, res) => {
             mtrlObj = {
               supplier: mtrl.supplier,
               ref_no: mtrl.ref_no,
-              item: mtrl.item ? mtrl.item.toLowerCase() : '',
+              item: mtrl.item ? mtrl.item : '',
               CSRIC: newCSRIC,
               mtrlColors: [],
               sizeSPECs: [],
@@ -876,7 +876,7 @@ router.put('/:caseId', authUser, async (req, res) => {
 });
 
 // @route   PUT api/srmtrl/update/mpricevalues
-// @desc    Update the value in mPrice
+// @desc    Update the value in srMtrl and mPrice
 // @access  Private
 router.put('/update/mpricevalues', authUser, async (req, res) => {
   const srMtrlList = req.body;
@@ -914,6 +914,8 @@ router.put('/update/mpricevalues', authUser, async (req, res) => {
         },
         {
           $set: {
+            item: srMtrl.item,
+            unitConvertRatio: srMtrl.unitConvertRatio,
             mainPrice: mainPrice,
           },
         }
@@ -946,6 +948,8 @@ router.put('/update/mpricevalues', authUser, async (req, res) => {
             },
             {
               $set: {
+                item: srMtrl.item,
+                unitConvertRatio: srMtrl.unitConvertRatio,
                 mainPrice: mainPrice,
                 'mPrices.$.mColor': mPrice.mColor.trim(),
                 'mPrices.$.sizeSPEC': mPrice.sizeSPEC.trim(),
@@ -965,6 +969,8 @@ router.put('/update/mpricevalues', authUser, async (req, res) => {
               company: comId,
             },
             {
+              item: srMtrl.item,
+              unitConvertRatio: srMtrl.unitConvertRatio,
               $push: { mPrices: mPrice },
             }
           );

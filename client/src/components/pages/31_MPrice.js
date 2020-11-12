@@ -25,6 +25,8 @@ export const MPrice = (props) => {
         id: srMtrl._id,
         mainPrice: srMtrl.mainPrice,
         mPrices: srMtrl.mPrices,
+        item: srMtrl.item,
+        unitConvertRatio: srMtrl.unitConvertRatio,
       });
     });
     if (currentPath === '/api/case/mprice') {

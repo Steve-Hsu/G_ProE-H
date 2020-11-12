@@ -224,6 +224,18 @@ const SrMtrlState = (props) => {
     });
   };
 
+  // Basically update the value of item and unitConvertRatio for srMtrl
+  const updateItemAndUnitConvertRation = (e) => {
+    let srMaterials = srMtrls;
+    const srMtrlId = e.target.id
+    let srMaterial = srMaterials.find(({ _id }) => _id === srMtrlId);
+    srMaterial[e.target.name] = e.target.value
+    dispatch({
+      type: SRMTRL_UPDATE,
+      payload: srMaterials,
+    });
+  }
+
   //@1 Add Value to mPrice
   const addSrMtrlValue = (e, srMtrlId, mPriceList) => {
     // For label tag need to target the Id, so here we save the id in the e.target.name
@@ -370,6 +382,7 @@ const SrMtrlState = (props) => {
         turnSrMtrlIsUpdatedFalse,
         addMPrice,
         deleteSrMtrlPrice,
+        updateItemAndUnitConvertRation,
         addSrMtrlValue,
         updateMPrices,
         updateMPricesQuotation,
