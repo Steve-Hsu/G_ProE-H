@@ -35,6 +35,10 @@ const SRMtrlSchema = mongoose.Schema({
     // Unit from case, for purchase unit in mPrice to reference
     type: String,
   },
+  unitConvertRatio: {
+    type: Number,
+    default: 0,
+  },
   mPrices: {
     type: Array,
   },

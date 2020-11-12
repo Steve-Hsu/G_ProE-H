@@ -915,7 +915,7 @@ router.put('/delete/:caseId/:subjectId', authUser, async (req, res) => {
         const ref_no = mtrl.ref_no;
 
         //The mongoDB code below, will only delete item in the array "mtrlColors" or item in the array "sizeSPECs".
-        await SRMtrl.updateOne(
+        let updateSrMtrl = await SRMtrl.findOneAndUpdate(
           {
             company: comId,
             supplier: supplier,
@@ -926,12 +926,27 @@ router.put('/delete/:caseId/:subjectId', authUser, async (req, res) => {
               mtrlColors: { refs: { $size: 0 } },
               sizeSPECs: { refs: { $size: 0 } },
             },
-          }
+          },
+          { new: true }
         );
 
-        num = num + 1;
-        if (num === mtrls.length) {
-          return resolve();
+        let checkMtrlColors = updateSrMtrl.mtrlColors.length === 0 ? true : false;
+        let checkSizeSPECs = updateSrMtrl.sizeSPECs.length === 0 ? true : false;
+        if (checkMtrlColors || checkSizeSPECs) {
+          await SRMtrl.findByIdAndRemove(
+            {
+              _id: updateSrMtrl._id
+            },
+          );
+          num = num + 1;
+          if (num === mtrls.length) {
+            return resolve();
+          }
+        } else {
+          num = num + 1;
+          if (num === mtrls.length) {
+            return resolve();
+          }
         }
       });
     });

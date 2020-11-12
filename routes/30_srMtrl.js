@@ -134,6 +134,8 @@ router.put('/:caseId', authUser, async (req, res) => {
         const checkDuplicatedSrMtrl = new Promise(async (resolve) => {
           // let checkNum = 0;
           // Delete the refs of mtrlColors in the duplicated SrMtrl
+          let mColorRefMtrlId = ''
+          let mSPECReffMtrlId = ''
           let SrMtrlId = '';
 
           const checkRefInExistingMtrlColor = new Promise(async (resolve) => {
@@ -158,11 +160,12 @@ router.put('/:caseId', authUser, async (req, res) => {
                   },
                 }
               ).then(() => {
-                SrMtrlId = existingMtrlColorRef[0]._id;
+                // mColorRefMtrlId = existingMtrlColorRef[0]._id;
                 // checkNum = checkNum + 1;
                 console.log("delete the refs in mtrlColor of the mtrl - ", idx)
                 // resolve for promise : "checkRefInExistingMtrlColor"
-                resolve()
+                console.log("the existingMtrlColorRef[0]._id", existingMtrlColorRef[0]._id)
+                resolve(existingMtrlColorRef[0]._id)
               });
             } else {
               // checkNum = checkNum + 1;
@@ -194,11 +197,12 @@ router.put('/:caseId', authUser, async (req, res) => {
                   },
                 }
               ).then(() => {
-                SrMtrlId = existingSizeSPECRef[0]._id;
+                // mSPECReffMtrlId = existingSizeSPECRef[0]._id;
                 // checkNum = checkNum + 1;
                 console.log("Delete the refs in spec of the srMtrl - ", idx)
                 // resolve for promise : "checkRefInExistingMtrlSPEC"
-                resolve()
+                console.log("existingSizeSPECRef[0]._id ", existingSizeSPECRef[0]._id)
+                resolve(existingSizeSPECRef[0]._id)
               });
             } else {
               // checkNum = checkNum + 1;
@@ -208,7 +212,10 @@ router.put('/:caseId', authUser, async (req, res) => {
             }
           })
 
-          Promise.all([checkRefInExistingMtrlColor, checkRefInExistingMtrlSPEC]).then(() => {
+          Promise.all([checkRefInExistingMtrlColor, checkRefInExistingMtrlSPEC]).then((result) => {
+            console.log("the result[0]", result[0])
+            console.log("the result[1]", result[1])
+            SrMtrlId = result[0] || result[1] || null
             // if (checkNum >= 2) {
             console.log("the Promise checkRefInExistingMtrlColor and checkRefInExistingMtrlSPEC solved - ", idx);
             // console.log(
@@ -230,7 +237,8 @@ router.put('/:caseId', authUser, async (req, res) => {
             //   result
             // ); // test Code
             const targetId = result[0];
-            if (targetId !== '') {
+            console.log("the targetId", targetId)
+            if (targetId) {
               // Delete the object in mtrlColors and sizeSPECs, which with refs.length === 0, in other words, no any case and mtrl ref to this object.
               const targetSrMtrl = await SRMtrl.findOne({ _id: targetId });
               const deleteTopObj = new Promise((resolve) => {
@@ -280,8 +288,8 @@ router.put('/:caseId', authUser, async (req, res) => {
                 const finalTargetSrMtrl = await SRMtrl.findOne({ _id: targetId });
                 const mtrlColorLength = finalTargetSrMtrl.mtrlColors.length;
                 const sizeSPECLength = finalTargetSrMtrl.sizeSPECs.length;
-                const checkNum = mtrlColorLength + sizeSPECLength;
-                if (checkNum === 0) {
+                // const checkNum = mtrlColorLength + sizeSPECLength;
+                if (mtrlColorLength === 0 || sizeSPECLength === 0) {
                   await SRMtrl.findByIdAndRemove({ _id: targetId });
                   // resolve for promise : "checkIfDeleteSrMtrl"
                   resolve()
@@ -513,6 +521,7 @@ router.put('/:caseId', authUser, async (req, res) => {
               // If dont have the srMtrl then generate a new srMtrl
               const newSRMtrl = new SRMtrl(mList);
               await newSRMtrl.save();
+              resolve();
             } else {
               // If the srMtrl exists
               //@_step_1 Insert mtrlColor
