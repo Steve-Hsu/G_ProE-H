@@ -1417,6 +1417,9 @@ input[type='submit']:focus {
 .pt {
   padding-top: var(--gap);
 }
+.pt-03 {
+  padding-top: 0.3rem;
+}
 .pt-04 {
   padding-top: 0.4rem;
 }
@@ -1466,6 +1469,9 @@ input[type='submit']:focus {
 }
 .pl-05 {
   padding-left: 0.5rem;
+}
+.pl-06 {
+  padding-left: 0.6rem;
 }
 .pl-07 {
   padding-left: 0.7rem;

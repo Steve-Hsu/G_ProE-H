@@ -70,21 +70,28 @@ const SrMtrl = ({ srMtrl, currentPath, idx }) => {
               {srMtrl.ref_no}
             </div>
           </div>
-          <div>
-            <Select
-              purpose='item'
-              id={srMtrl._id}
-              name='item'
-              onChange={onChange}
-              subject={srMtrl}
-              label='Item'
-              selectedOption={srMtrl.item}
-              className='fs-larget select-primary-sub  bd-light'
-            />
-          </div>
+          {currentPath === '/api/quogarment' ? (
+            <div className='center-content fs-large'>
+              {srMtrl.item}
+            </div>
+          ) : (
+              <div>
+                <Select
+                  purpose='item'
+                  id={srMtrl._id}
+                  name='item'
+                  onChange={onChange}
+                  subject={srMtrl}
+                  label='Item'
+                  selectedOption={srMtrl.item}
+                  className='fs-large select-primary-sub  bd-light'
+                />
+              </div>
+            )}
+
         </section>
-        <div className='flexBox mb-05'>
-          <div>
+        <section className='grid-3 mb-05'>
+          <div className='mr-1'>
             {currentPath === '/api/case/mprice' && mPricelengthLimit() ? (
               <SqBtnLarge
                 name='mPriceBtn'
@@ -97,7 +104,35 @@ const SrMtrl = ({ srMtrl, currentPath, idx }) => {
               </div>
             ) : null}
           </div>
-        </div>
+          <div>
+
+          </div>
+          {srMtrl.item === 'Thread' ?
+            currentPath === '/api/quogarment' ? (
+              <div>
+                {srMtrl.unitConvertRatio} <span className='ml-05'>m = 1 pcs</span>
+              </div>
+            ) : (
+                <div key={`unitConvertRatio${srMtrl.id}`} className='flexBox'>
+                  <div className='center-content mr-05'>
+                    <input
+                      type='number'
+                      id={srMtrl._id}
+                      name='unitConvertRatio'
+                      placeholder='.'
+                      onChange={onChange}
+                      className='MPH-input'
+                      value={srMtrl.unitConvertRatio || ''}
+                      style={{ height: 'var(--btn-h-m)' }}
+                    // maxLength={maxWdsLength}
+                    />
+                  </div>
+                  <div className='center-content'>
+                    m = 1 pcs
+              </div>
+                </div>
+              ) : null}
+        </section>
 
         {/* mPrice container */}
         <div>

@@ -936,6 +936,8 @@ router.put('/update/mpricevalues', authUser, async (req, res) => {
 
         if (checkID.length > 0) {
           // If the mPrice is existing One, update it.
+          // For Thread force the unit in mPrice to be 'pcs'
+          const mPriceUnit = srMtrl.item === 'Thread' ? 'pcs' : mPrice.unit.trim();
           await SRMtrl.updateOne(
             {
               _id: srMtrl.id,
@@ -953,7 +955,7 @@ router.put('/update/mpricevalues', authUser, async (req, res) => {
                 mainPrice: mainPrice,
                 'mPrices.$.mColor': mPrice.mColor.trim(),
                 'mPrices.$.sizeSPEC': mPrice.sizeSPEC.trim(),
-                'mPrices.$.unit': mPrice.unit.trim(),
+                'mPrices.$.unit': mPriceUnit,
                 'mPrices.$.currency': mPrice.currency.trim(),
                 'mPrices.$.mPrice': Number(mPrice.mPrice),
                 'mPrices.$.moq': Number(mPrice.moq),

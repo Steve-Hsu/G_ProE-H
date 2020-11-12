@@ -177,7 +177,7 @@ const SrMtrlState = (props) => {
         });
       }
 
-      console.log(cArr[0]);
+      // console.log(cArr[0]);
       srMaterial.mPrices.push({
         id: uuidv4() + generateId(),
         mColor: cArr[0],
@@ -216,7 +216,7 @@ const SrMtrlState = (props) => {
       `/api/srmtrl/deleteprice/${srMtrlId}/${mPriceId}`,
       config
     );
-    console.log('the result of delete Price', res.data);
+    // console.log('the result of delete Price', res.data);
 
     dispatch({
       type: SRMTRL_UPDATE,
@@ -230,6 +230,13 @@ const SrMtrlState = (props) => {
     const srMtrlId = e.target.id
     let srMaterial = srMaterials.find(({ _id }) => _id === srMtrlId);
     srMaterial[e.target.name] = e.target.value
+    if (e.target.name === 'item' && e.target.value === 'Thread') {
+      if (srMaterial.mPrices.length > 0) {
+        srMaterial.mPrices.map((mP) => {
+          mP.unit = 'pcs'
+        })
+      }
+    }
     dispatch({
       type: SRMTRL_UPDATE,
       payload: srMaterials,
@@ -242,13 +249,23 @@ const SrMtrlState = (props) => {
     const mPriceId = e.target.name;
     let srMaterials = srMtrls;
     let srMaterial = srMaterials.find(({ _id }) => _id === srMtrlId);
+    const theItem = srMaterial.item
 
     mPriceList.map((m) => {
       let matchPattern = `${m}${mPriceId}`;
       if (e.target.id === matchPattern) {
+        console.log('the item', srMaterial.item)
         srMaterial.mPrices.map((mPrice) => {
           if (mPrice.id === mPriceId) {
-            mPrice[m] = e.target.value;
+            if (m === 'unit') {
+              const unitValue = theItem === 'Thread' ? 'pcs' : e.target.value
+              console.log("the item", theItem)
+              console.log("unit update triggerd", "the value", unitValue)
+              mPrice.unit = unitValue
+            } else {
+              mPrice[m] = e.target.value;
+            }
+
           }
         });
       }

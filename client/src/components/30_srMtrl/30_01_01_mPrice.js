@@ -106,7 +106,7 @@ const MPrice = ({
         break;
       default:
     }
-    console.log('the selectList in mPrice', arr);
+    // console.log('the selectList in mPrice', arr);
     return arr;
   };
 
@@ -171,8 +171,8 @@ const MPrice = ({
             {mainPrice === mPrice.id ? (
               <i className='fas fa-magnet'></i>
             ) : (
-              <div>{idx + 1}</div>
-            )}
+                <div>{idx + 1}</div>
+              )}
           </div>
         </div>
         {mPriceList().map((m) => {
@@ -199,7 +199,7 @@ const MPrice = ({
                     <TopLabelTiny label={labels(m)} />
                     <div
                       className='v-center-content pr-05 pt-04'
-                      // style={{ height: '2.2rem' }}
+                    // style={{ height: '2.2rem' }}
                     >
                       {mPrice[`${m}`]}
                     </div>
@@ -224,7 +224,7 @@ const MPrice = ({
                     />
                   </div>
                 );
-              case 'unit':
+
               case 'currency':
                 return (
                   <div key={`div${m}${mPrice.id}`} className='ml-05'>
@@ -240,6 +240,31 @@ const MPrice = ({
                     />
                   </div>
                 );
+              case 'unit':
+                if (srMtrl.item === 'Thread') {
+                  return (
+                    <div key={`div${m}${mPrice.id}`} className='ml-05' >
+                      <TopLabelTiny label={labels(m)} />
+                      <div className='content-center pl-06 pt-03' style={{ height: '2.2rem' }}>{mPrice[m]}</div>
+                    </div>
+                  )
+                } else {
+                  return (
+                    <div key={`div${m}${mPrice.id}`
+                    } className='ml-05' >
+                      <TopLabelTiny label={labels(m)} />
+                      <Select
+                        key={`${m}${mPrice.id}`}
+                        id={`${m}${mPrice.id}`}
+                        purpose={m}
+                        subject={mPrice}
+                        onChange={onChange}
+                        required={true}
+                        selectedOption={mPrice[m]}
+                      />
+                    </div>)
+                }
+
               default:
                 return (
                   <div
