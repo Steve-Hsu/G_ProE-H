@@ -346,6 +346,11 @@ router.post(
             }
           });
 
+          // Force the unit of Thread must be "m"
+          if (mtrl.item === 'Thread') {
+            mtrl.unit = 'm'
+          }
+
           const mtrlColorPromise = new Promise((resolve) => {
             console.log('Promise start- mtrlColorPromise'); // Test Code
             if (mtrl.mtrlColors.length > 0) {

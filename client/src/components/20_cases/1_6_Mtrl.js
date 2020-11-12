@@ -404,7 +404,7 @@ const Mtrl = ({ mtrl }) => {
             </button>
           </div>
           {/* Row_4 - Unit Selector */}
-          {caseConfirmDate || osNo ? (
+          {caseConfirmDate || osNo || mtrl.item === 'Thread' ? (
             <div>
               <div className='fs-tiny  transition fc-gray-4'>Unit</div>
               <div className='h-3rem w-100 round-area bd-light fs-lead center-content'>

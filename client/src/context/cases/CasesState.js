@@ -768,6 +768,10 @@ const CasesState = (props) => {
     switch (e.target.id) {
       case 'Item' + String(mtrlId):
         materials.find(({ id }) => id === mtrlId).item = e.target.value;
+        let checkItem = new RegExp(e.target.value, 'i')
+        if (checkItem.test('thread')) {
+          materials.find(({ id }) => id === mtrlId).unit = 'm';
+        }
         break;
       // case 'SPEC' + String(mtrlId):
       //   materials.find(({ id }) => id === mtrlId).spec = e.target.value;
