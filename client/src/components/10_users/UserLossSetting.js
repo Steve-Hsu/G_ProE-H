@@ -68,43 +68,42 @@ const UserLossSetting = ({ style }) => {
           {users
             ? users.length > 0
               ? ['set1', 'set2', 'set3', 'set4', 'set5'].map((i, idx) => {
-                  return (
+                return (
+                  <div
+                    key={`lossSetOf${i}`}
+                    className='flexBox bd-light-b py-03 bg-cp-1-light'
+                    style={i === 'set5' ? { borderBottom: 0 } : null}
+                  >
                     <div
-                      key={`lossSetOf${i}`}
-                      className='flexBox bd-light-b py-03 bg-cp-1-light'
-                      style={i === 'set5' ? { borderBottom: 0 } : null}
+                      className='v-center-content'
+                      style={{ flex: '0 0 3rem' }}
                     >
-                      <div
-                        className='v-center-content'
-                        style={{ flex: '0 0 3rem' }}
-                      >
-                        {`Set-${idx + 1}`} :{' '}
-                      </div>
-                      <div
-                        className='center-content mr-05'
-                        style={{ flex: '1 1' }}
-                      >
-                        {idx === 0
-                          ? `0 ~ `
-                          : `${
-                              users[0].loss.sets[`${idx - 1}`][`set${idx}`] + 1
-                            } ~ `}
-                      </div>
-                      <div className='mr-05' style={{ flex: '0 0 7rem' }}>
-                        <input
-                          id={`inputoflosssetof${idx}${i}`}
-                          type='number'
-                          name={i}
-                          value={users[0].loss.sets[idx][i] || ''}
-                          onChange={onChangeLossSet}
-                        />
-                      </div>
-                      <div className='v-center-content' style={{ flex: '0 0' }}>
-                        PCS
-                      </div>
+                      {`Set-${idx + 1}`} :{' '}
                     </div>
-                  );
-                })
+                    <div
+                      className='center-content mr-05'
+                      style={{ flex: '1 1' }}
+                    >
+                      {idx === 0
+                        ? `0 ~ `
+                        : `${users[0].loss.sets[`${idx - 1}`][`set${idx}`] + 1
+                        } ~ `}
+                    </div>
+                    <div className='mr-05' style={{ flex: '0 0 7rem' }}>
+                      <input
+                        id={`inputoflosssetof${idx}${i}`}
+                        type='number'
+                        name={i}
+                        value={users[0].loss.sets[idx][i] || ''}
+                        onChange={onChangeLossSet}
+                      />
+                    </div>
+                    <div className='v-center-content' style={{ flex: '0 0' }}>
+                      PCS
+                      </div>
+                  </div>
+                );
+              })
               : 'Add new user first'
             : null}
         </div>
@@ -123,7 +122,7 @@ const UserLossSetting = ({ style }) => {
         'Other',
       ].map((i) => {
         return (
-          <div>
+          <div key={`user${i}`}>
             <div className='flexBox'>
               <GoBackBtnSpinSmall id={i} onClick={onClickLossCategory} />
               <div className='ml-05'>{i}</div>
@@ -133,59 +132,58 @@ const UserLossSetting = ({ style }) => {
                 {users
                   ? users.length > 0
                     ? [
-                        'loss1',
-                        'loss2',
-                        'loss3',
-                        'loss4',
-                        'loss5',
-                        'loss6',
-                      ].map((i2, idx2) => {
-                        return (
+                      'loss1',
+                      'loss2',
+                      'loss3',
+                      'loss4',
+                      'loss5',
+                      'loss6',
+                    ].map((i2, idx2) => {
+                      return (
+                        <div
+                          key={`lossGetagoryOf${i2}`}
+                          className='flexBox bd-light-b py-03 bg-cp-1-light'
+                          style={i2 === 'loss6' ? { borderBottom: 0 } : null}
+                        >
                           <div
-                            key={`lossGetagoryOf${i2}`}
-                            className='flexBox bd-light-b py-03 bg-cp-1-light'
-                            style={i2 === 'loss6' ? { borderBottom: 0 } : null}
+                            style={{ flex: '1 1 ' }}
+                            className='mr-05 v-center-content'
                           >
-                            <div
-                              style={{ flex: '1 1 ' }}
-                              className='mr-05 v-center-content'
-                            >
-                              {i2 == 'loss1'
-                                ? `0`
-                                : i2 == 'loss6'
+                            {i2 == 'loss1'
+                              ? `0`
+                              : i2 == 'loss6'
                                 ? `Above`
                                 : Object.values(
-                                    users[0].loss.sets[idx2 - 1]
-                                  )[0]}
-                              {' ~'}
-                            </div>
-                            <div
-                              style={{ flex: '1 1' }}
-                              className='h-scatter-content mr-05'
-                            >
-                              {i2 != 'loss6'
-                                ? `${Object.values(users[0].loss.sets[idx2])[0]}
-                                  PCS`
-                                : `${
-                                    Object.values(users[0].loss.sets[4])[0] + 1
-                                  } PCS`}
-                            </div>
-                            <div className='mr-05' style={{ flex: '0 0 7rem' }}>
-                              <input
-                                type='number'
-                                id={`input${i.toLowerCase()}`}
-                                maxLength='4'
-                                min='0'
-                                max='99'
-                                name={i2}
-                                value={users[0].loss[i.toLowerCase()][i2] || ''}
-                                onChange={onChange}
-                              />
-                            </div>
-                            <div className='center-content'>%</div>
+                                  users[0].loss.sets[idx2 - 1]
+                                )[0]}
+                            {' ~'}
                           </div>
-                        );
-                      })
+                          <div
+                            style={{ flex: '1 1' }}
+                            className='h-scatter-content mr-05'
+                          >
+                            {i2 != 'loss6'
+                              ? `${Object.values(users[0].loss.sets[idx2])[0]}
+                                  PCS`
+                              : `${Object.values(users[0].loss.sets[4])[0] + 1
+                              } PCS`}
+                          </div>
+                          <div className='mr-05' style={{ flex: '0 0 7rem' }}>
+                            <input
+                              type='number'
+                              id={`input${i.toLowerCase()}`}
+                              maxLength='4'
+                              min='0'
+                              max='99'
+                              name={i2}
+                              value={users[0].loss[i.toLowerCase()][i2] || ''}
+                              onChange={onChange}
+                            />
+                          </div>
+                          <div className='center-content'>%</div>
+                        </div>
+                      );
+                    })
                     : 'Add new user first'
                   : null}
               </div>

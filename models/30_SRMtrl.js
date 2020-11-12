@@ -19,6 +19,9 @@ const SRMtrlSchema = mongoose.Schema({
   ref_no: {
     type: String,
   },
+  item: {
+    type: String,
+  },
   mtrlColors: {
     type: Array,
   },
