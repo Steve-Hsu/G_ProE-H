@@ -27,20 +27,38 @@ const MtrlCspt = ({ size, mtrl }) => {
     switch (theUnit) {
       case 'm':
       case 'yds':
-        if (String(num).slice(1, 2) == ".") {
-          if (String(num).length <= 4) {
+        if (mtrl.item === 'Thread') {
+          if (String(num).slice(-2, -1) == ".") {
+            if (String(num).length < 7) {
+              e.target.value = Number(e.target.value)
+            } else {
+              const theValue = String(num).slice(0, 3)
+              e.target.value = Number(theValue) + 1
+            }
+            addValueMtrlCspt(e);
+          } else if (String(num).length <= 4) {
             e.target.value = Number(e.target.value)
+            addValueMtrlCspt(e);
           } else {
-            const theValue = String(num).slice(0, 1)
-            e.target.value = Number(theValue) + 1
+            e.target.value = 999;
+            addValueMtrlCspt(e);
           }
-          addValueMtrlCspt(e);
-        } else if (String(num).length <= 2) {
-          e.target.value = Number(e.target.value)
-          addValueMtrlCspt(e);
         } else {
-          e.target.value = 99;
-          addValueMtrlCspt(e);
+          if (String(num).slice(1, 2) == ".") {
+            if (String(num).length <= 4) {
+              e.target.value = Number(e.target.value)
+            } else {
+              const theValue = String(num).slice(0, 1)
+              e.target.value = Number(theValue) + 1
+            }
+            addValueMtrlCspt(e);
+          } else if (String(num).length <= 2) {
+            e.target.value = Number(e.target.value)
+            addValueMtrlCspt(e);
+          } else {
+            e.target.value = 99;
+            addValueMtrlCspt(e);
+          }
         }
         break;
       case 'in':

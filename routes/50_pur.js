@@ -195,7 +195,7 @@ router.post('/', authUser, async (req, res) => {
 
       if (mtrls.length === 0 || !mtrls || gQtys.length === 0 || !gQtys) {
         //If the case don't have mtrls or gQtys, which means no cspt can be calculated, then it will skip the case
-        resolve();
+        // resolve();
       } else {
         caseList.push({
           caseId: caseId,
@@ -357,21 +357,54 @@ router.post('/', authUser, async (req, res) => {
           })
         })
         Promise.all(loopMtrls).then(() => {
-          // Resolve for promise "insertCaseMtrls"
+          //     // Resolve for promise "insertCaseMtrls"
           console.log("the promise, insertCaseMtrls resolved")
           resolve();
-        });
+        })
       }
     }).catch((err) => {
       return reject(err);
     });
   });
 
+  const convertUnit = new Promise((resolve) => {
+    Promise.all(insertCaseMtrls).then(() => {
+      const convertUnitForThreads = caseMtrls.map((csMtrl) => {
+        return new Promise(async (resolve) => {
+          if (csMtrl.item === 'thread') {
+            console.log("the caseMtrl in thread is detected.")
+            const theSrMtrl = await SRMtrl.findOne({ supplier: csMtrl.supplier, ref_no: csMtrl.ref_no })
+            const theRatio = theSrMtrl.unitConvertRatio
 
-  // Promise.all(insertCaseMtrls).then(() => {
+            csMtrl.purchaseQtySumUp = csMtrl.purchaseQtySumUp !== 0 || theRatio !== 0 ?
+              Math.ceil(csMtrl.purchaseQtySumUp / theRatio) : csMtrl.purchaseQtySumUp
+            csMtrl.purchaseLossQtySumUp = csMtrl.purchaseLossQtySumUp !== 0 || theRatio !== 0 ?
+              Math.ceil(csMtrl.purchaseLossQtySumUp / theRatio) : csMtrl.purchaseLossQtySumUp
+
+            // console.log("theSrMtrl", theSrMtrl)
+            // console.log("the ratio", theRatio)
+            // console.log("the caseMtrl.qty", csMtrl.purchaseQtySumUp)
+
+            // Resolve for promise convertUnitForThreads
+            resolve()
+          } else {
+            // console.log("the caseMtrl in .")
+            // Resolve for promise convertUnitForThreads
+            resolve()
+          }
+        })
+      })
+
+      Promise.all(convertUnitForThreads).then(() => {
+        // Resolve for promise "convertUnit"
+        console.log("the promise, convertUnit resolved")
+        resolve();
+      })
+    });
+  })
 
   //@ Create an Order Summary to OS collection -------------------------------------------------
-  Promise.all([makingOsNumber, ...insertCaseMtrls])
+  Promise.all([makingOsNumber, convertUnit])
     .then(() => {
       const finalPromise = new Promise(async (resolve) => {
         console.log('The finalPromise start');
