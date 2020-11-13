@@ -27,7 +27,7 @@ const Purchase = (props) => {
   const currentPath = props.location.pathname;
 
   const popoverContext = useContext(PopoverContext);
-  const { popover, current, toggleLoading, isLoading } = popoverContext;
+  const { popover, current, toggleLoading, isLoading, } = popoverContext;
 
   const goBack = () => {
     props.history.push('/api/case/director');
@@ -71,9 +71,6 @@ const Purchase = (props) => {
 
   return (
     <Fragment>
-      {popover === true || isLoading === true || osError !== null ? (
-        <DeletePopover key='purchasePagePopover' current={current} props={props} />
-      ) : null}
       {/* Grid-1 */}
       {openPage === 'caseSelector' ? (
         <div className='grid-1-4'>
@@ -84,6 +81,9 @@ const Purchase = (props) => {
         </div>
       ) : openPage === 'osSelector' ? (
         <div className='grid-1-4'>
+          {popover === true || isLoading === true || osError !== null ? (
+            <DeletePopover key='purchasePagePopover' current={current} props={props} />
+          ) : null}
           <LeftBar currentPath={currentPath} />
           <div className='container container-with-navbar'>
             <GoBackBtn onClick={goBack} />
@@ -92,17 +92,20 @@ const Purchase = (props) => {
         </div>
       ) : openPage === 'orderSummary' ? (
         <div className='grid-1-4'>
+          {popover === true || isLoading === true || osError !== null ? (
+            <DeletePopover key='purchasePagePopover' current={current} props={props} />
+          ) : null}
           <LeftBar currentPath={currentPath} />
           <div className='container container-with-navbar'>
-            {/* <button value='osSelector' onClick={onClick}>
-              go back
-            </button> */}
             <GoBackBtn onClick={goOsSelector} />
             <OrderSummary purpose='purchaseOrder' props={props} />
           </div>
         </div>
       ) : openPage === 'purchaseOrder' ? (
         <div className='grid-1-4'>
+          {popover === true || isLoading === true || osError !== null ? (
+            <DeletePopover key='purchasePagePopover' current={current} props={props} />
+          ) : null}
           <LeftBar currentPath={currentPath} />
           <div className='container container-with-navbar whenPrint'>
             <GoBackBtn onClick={goOrderSummanry} className='noPrint' />
@@ -111,6 +114,9 @@ const Purchase = (props) => {
         </div>
       ) : openPage === 'oSMtrlList' ? (
         <div className='grid-1-4'>
+          {popover === true || isLoading === true || osError !== null ? (
+            <DeletePopover key='purchasePagePopover' current={current} props={props} />
+          ) : null}
           <LeftBar currentPath={currentPath} />
           <div className='container container-with-navbar whenPrint long-row-print'>
             <GoBackBtn onClick={goOrderSummanry} className='noPrint' />

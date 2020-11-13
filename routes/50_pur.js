@@ -169,11 +169,10 @@ router.post('/', authUser, async (req, res) => {
 
   // @ create object for caseMtrls -------------------------------------------------
   // Loop through cases
-  const insertCaseMtrls = new Promise(async (resolve) => {
-    console.log('Start the promise, inserCaseMtrls');
-    let caseNum = 0;
-    selectedCNos.map(async (cNo) => {
-      let mtrlNum = 0;
+
+  console.log('Start the promise, inserCaseMtrls');
+  const insertCaseMtrls = selectedCNos.map(async (cNo) => {
+    return new Promise(async (resolve) => {
 
       const theCase = await Case.findOne({
         cNo: cNo,
@@ -196,10 +195,7 @@ router.post('/', authUser, async (req, res) => {
 
       if (mtrls.length === 0 || !mtrls || gQtys.length === 0 || !gQtys) {
         //If the case don't have mtrls or gQtys, which means no cspt can be calculated, then it will skip the case
-        caseNum = caseNum + 1;
-        if (caseNum === selectedCNos.length) {
-          return resolve();
-        }
+        resolve();
       } else {
         caseList.push({
           caseId: caseId,
@@ -209,160 +205,176 @@ router.post('/', authUser, async (req, res) => {
           caseType: theCase.caseType
         });
         // clientList.push(theCase.clients);
-        mtrls.map((mtrl) => {
-          let csptNum = 0;
-          // const mtrlId = mtrl.id;
-          const cspts = mtrl.cspts;
-          const supplier = mtrl.supplier;
-          const ref_no = mtrl.ref_no;
-          // console.log('mtrl start ', caseId, mtrlId); // Test Code
-          const itemNameOfTheMtrl = mtrl.item
-            ? mtrl.item.toLowerCase()
-            : 'other';
-          const lossItemOfTheMtrl =
-            lossInform[itemNameOfTheMtrl] || lossInform['other'];
+        const loopMtrls = mtrls.map((mtrl) => {
+          return new Promise((resolve) => {
 
-          cspts.map((cspt) => {
-            //Check the Existing caseMtrls object
-            //The condition
-            // console.log('cspt start ', caseId, mtrlId, cspt.id); // Test Code
+            // const mtrlId = mtrl.id;
+            const cspts = mtrl.cspts;
+            const supplier = mtrl.supplier;
+            const ref_no = mtrl.ref_no;
+            // console.log('mtrl start ', caseId, mtrlId); // Test Code
+            const itemNameOfTheMtrl = mtrl.item
+              ? mtrl.item.toLowerCase()
+              : 'other';
+            const lossItemOfTheMtrl =
+              lossInform[itemNameOfTheMtrl] || lossInform['other'];
 
-            // Check the loss of cspt
-            lossInform;
-            let theLossPercentage = 0;
-            const thegQty = gQtys.filter(
-              (i) => i.cWay === cspt.cWay && i.size === cspt.size
-            )[0];
-            if (thegQty.gQty > lossInform.sets[2]['set3']) {
-              if (thegQty.gQty > lossInform.sets[3]['set4']) {
-                if (thegQty.gQty > lossInform.sets[4]['set5']) {
-                  theLossPercentage = lossItemOfTheMtrl.loss6;
-                } else {
-                  theLossPercentage = lossItemOfTheMtrl.loss5;
-                }
-              } else {
-                theLossPercentage = lossItemOfTheMtrl.loss4;
-              }
-            } else {
-              if (thegQty.gQty < lossInform.sets[1]['set2']) {
-                if (thegQty.gQty < lossInform.sets[0]['set1']) {
-                  theLossPercentage = lossItemOfTheMtrl.loss1;
-                } else {
-                  theLossPercentage = lossItemOfTheMtrl.loss2;
-                }
-              } else {
-                theLossPercentage = lossItemOfTheMtrl.loss3;
-              }
-            }
+            const csptLoops = cspts.map((cspt) => {
+              return new Promise((resolve) => {
 
-            //The quantity of the mtrl
-            const purchaseLossQtySumUp =
-              cspt.requiredMQty * Number(theLossPercentage / 100);
+                //Check the Existing caseMtrls object
+                //The condition
+                // console.log('cspt start ', caseId, mtrlId, cspt.id); // Test Code
 
-            const currentCsptMtrl = {
-              supplier: supplier,
-              ref_no: ref_no,
-              mColor: cspt.mColor,
-              mSizeSPEC: cspt.mSizeSPEC,
-            };
-
-            const existCaseMtrl = caseMtrls.filter((i) => {
-              for (var key in currentCsptMtrl) {
-                if (i[key] === undefined || i[key] != currentCsptMtrl[key]) {
-                  return false;
-                }
-              }
-              return true;
-            });
-
-            console.log('The existCaseMtrl', existCaseMtrl); // Test Code
-
-            if (existCaseMtrl.length === 0) {
-              const checkSupplier = supplierList.filter(
-                (s) => s.supplier === supplier
-              ).length;
-              if (!checkSupplier) {
-                supplierList.push({
-                  supplier: supplier,
-                  conditions: [],
-                  poConfirmDate: null,
-                });
-              }
-
-              // Round it number to 2 decimal
-              // const roundRequiredMQty = Math.round((cspt.requiredMQty + Number.EPSILON) * 100) / 100;
-              // @ 2020/11/04 - I think it is convinent and save cost of time as the purchase number of materials shouldn't have decimal number.
-              // The loss don't allow the decimal ditigal, the smallest number is 1, round up all the decimal number.
-              const celiedRequiredMQty = Math.ceil(cspt.requiredMQty)
-              const ceiledLossQtySumUp = Math.ceil(purchaseLossQtySumUp);
-
-              // New caseMtrls
-              caseMtrls.push({
-                checkCaseMtrlCode: uuidv4() + myModule.generateId(), // Notice: This code, or say id, must have, for checking the duplicated Materials right before mongoDB give it an _id
-                cases: [theCase.cNo],
-                supplier: supplier,
-                ref_no: ref_no,
-                mColor: cspt.mColor,
-                mSizeSPEC: cspt.mSizeSPEC,
-                purchaseQtySumUp: celiedRequiredMQty,
-                // purchaseQtySumUp: cspt.requiredMQty,
-                purchaseLossQtySumUp: ceiledLossQtySumUp,
-                // purchaseLossQtySumUp: purchaseLossQtySumUp,
-                purchaseMoqQty: 0,
-                hsCode: null,
-                item: itemNameOfTheMtrl,
-              });
-            } else {
-              // existCaseMtrl.purchaseQtySumUp += cspt.requiredMQty;
-              const currentCaseMtrlCode = existCaseMtrl[0].checkCaseMtrlCode;
-              caseMtrls.map((caseMtrl) => {
-                if (caseMtrl.checkCaseMtrlCode === currentCaseMtrlCode) {
-                  if (!caseMtrl.cases.includes(theCase.cNo)) {
-                    caseMtrl.cases.push(theCase.cNo);
+                // Check the loss of cspt
+                lossInform;
+                let theLossPercentage = 0;
+                const thegQty = gQtys.filter(
+                  (i) => i.cWay === cspt.cWay && i.size === cspt.size
+                )[0];
+                if (thegQty.gQty > lossInform.sets[2]['set3']) {
+                  if (thegQty.gQty > lossInform.sets[3]['set4']) {
+                    if (thegQty.gQty > lossInform.sets[4]['set5']) {
+                      theLossPercentage = lossItemOfTheMtrl.loss6;
+                    } else {
+                      theLossPercentage = lossItemOfTheMtrl.loss5;
+                    }
+                  } else {
+                    theLossPercentage = lossItemOfTheMtrl.loss4;
                   }
-                  ;
-                  ;
+                } else {
+                  if (thegQty.gQty < lossInform.sets[1]['set2']) {
+                    if (thegQty.gQty < lossInform.sets[0]['set1']) {
+                      theLossPercentage = lossItemOfTheMtrl.loss1;
+                    } else {
+                      theLossPercentage = lossItemOfTheMtrl.loss2;
+                    }
+                  } else {
+                    theLossPercentage = lossItemOfTheMtrl.loss3;
+                  }
+                }
+
+                //The quantity of the mtrl
+                const purchaseLossQtySumUp =
+                  cspt.requiredMQty * Number(theLossPercentage / 100);
+
+                const currentCsptMtrl = {
+                  supplier: supplier,
+                  ref_no: ref_no,
+                  mColor: cspt.mColor,
+                  mSizeSPEC: cspt.mSizeSPEC,
+                };
+
+                // The default, existCaseMtrl must be an empty Array,
+                // If there are nothing in the array, then push a new caseMtrl,
+                // If there are nothing matched to current mtrl, then push a new caseMtrl,
+                //    Else, use the existing caseMtrl in the existCaseMtrl and add the requested Qty to it.
+                const existCaseMtrl = caseMtrls.filter((i) => {
+                  for (var key in currentCsptMtrl) {
+                    if (i[key] === undefined || i[key] != currentCsptMtrl[key]) {
+                      return false;
+                    }
+                  }
+                  return true;
+                });
+
+                console.log('The existCaseMtrl', existCaseMtrl); // Test Code
+
+                if (existCaseMtrl.length === 0) {
+                  const checkSupplier = supplierList.filter(
+                    (s) => s.supplier === supplier
+                  ).length;
+                  if (!checkSupplier) {
+                    supplierList.push({
+                      supplier: supplier,
+                      conditions: [],
+                      poConfirmDate: null,
+                    });
+                  }
+
                   // Round it number to 2 decimal
-                  // Round the number in the final, so the number rounded will be closer to original number.
-                  // caseMtrl.purchaseQtySumUp = Math.round((caseMtrl.purchaseQtySumUp + Number.EPSILON) * 100) / 100;
-                  // caseMtrl.purchaseLossQtySumUp = Math.round((caseMtrl.purchaseLossQtySumUp + Number.EPSILON) * 100) / 100;
+                  // const roundRequiredMQty = Math.round((cspt.requiredMQty + Number.EPSILON) * 100) / 100;
                   // @ 2020/11/04 - I think it is convinent and save cost of time as the purchase number of materials shouldn't have decimal number.
-                  caseMtrl.purchaseQtySumUp = Math.ceil(caseMtrl.purchaseQtySumUp + cspt.requiredMQty)
-                  // caseMtrl.purchaseQtySumUp = Math.ceil(caseMtrl.purchaseQtySumUp)
-                  caseMtrl.purchaseLossQtySumUp = Math.ceil(caseMtrl.purchaseLossQtySumUp + purchaseLossQtySumUp);
-                  // caseMtrl.purchaseLossQtySumUp = Math.ceil(caseMtrl.purchaseLossQtySumUp);
+                  // The loss don't allow the decimal ditigal, the smallest number is 1, round up all the decimal number.
+                  const celiedRequiredMQty = Math.ceil(cspt.requiredMQty)
+                  const ceiledLossQtySumUp = Math.ceil(purchaseLossQtySumUp);
+
+                  // New caseMtrls
+                  caseMtrls.push({
+                    checkCaseMtrlCode: uuidv4() + myModule.generateId(), // Notice: This code, or say id, must have, for checking the duplicated Materials right before mongoDB give it an _id
+                    cases: [theCase.cNo],
+                    supplier: supplier,
+                    ref_no: ref_no,
+                    mColor: cspt.mColor,
+                    mSizeSPEC: cspt.mSizeSPEC,
+                    purchaseQtySumUp: celiedRequiredMQty,
+                    // purchaseQtySumUp: cspt.requiredMQty,
+                    purchaseLossQtySumUp: ceiledLossQtySumUp,
+                    // purchaseLossQtySumUp: purchaseLossQtySumUp,
+                    purchaseMoqQty: 0,
+                    hsCode: null,
+                    item: itemNameOfTheMtrl,
+                  });
+                  // Resolve for promise "csptLoops"
+                  console.log("the promise, csptLoops resolved, in new caseMtrl")
+                  resolve();
+                } else {
+                  // existCaseMtrl.purchaseQtySumUp += cspt.requiredMQty;
+                  const currentCaseMtrlCode = existCaseMtrl[0].checkCaseMtrlCode;
+                  caseMtrls.map((caseMtrl) => {
+                    if (caseMtrl.checkCaseMtrlCode === currentCaseMtrlCode) {
+                      if (!caseMtrl.cases.includes(theCase.cNo)) {
+                        caseMtrl.cases.push(theCase.cNo);
+                      }
+                      ;
+                      ;
+                      // Round it number to 2 decimal
+                      // Round the number in the final, so the number rounded will be closer to original number.
+                      // caseMtrl.purchaseQtySumUp = Math.round((caseMtrl.purchaseQtySumUp + Number.EPSILON) * 100) / 100;
+                      // caseMtrl.purchaseLossQtySumUp = Math.round((caseMtrl.purchaseLossQtySumUp + Number.EPSILON) * 100) / 100;
+                      // @ 2020/11/04 - I think it is convinent and save cost of time as the purchase number of materials shouldn't have decimal number.
+                      caseMtrl.purchaseQtySumUp = Math.ceil(caseMtrl.purchaseQtySumUp + cspt.requiredMQty)
+                      // caseMtrl.purchaseQtySumUp = Math.ceil(caseMtrl.purchaseQtySumUp)
+                      caseMtrl.purchaseLossQtySumUp = Math.ceil(caseMtrl.purchaseLossQtySumUp + purchaseLossQtySumUp);
+                      // caseMtrl.purchaseLossQtySumUp = Math.ceil(caseMtrl.purchaseLossQtySumUp);
+                    }
+                  });
+                  // console.log('csptNum', csptNum, 'csptLength', cspts.length);
+                  // console.log('mtrlNum', mtrlNum, 'mtrlsLength', mtrls.length);
+                  // console.log('caseNum', caseNum, 'caseLength', selectedCNos.length);
+
+                  // Resolve for promise "csptLoops"
+                  console.log("the promise, csptLoops resolved, in existing caseMtrl")
+                  resolve()
                 }
               });
-            }
-
-            csptNum = csptNum + 1;
-
-            if (csptNum === cspts.length) {
-              mtrlNum = mtrlNum + 1;
-            }
-            if (mtrlNum === mtrls.length) {
-              caseNum = caseNum + 1;
-            }
-            if (caseNum === selectedCNos.length) {
-              return resolve();
-            }
-
-            console.log('csptNum', csptNum, 'csptLength', cspts.length);
-            console.log('mtrlNum', mtrlNum, 'mtrlsLength', mtrls.length);
-            console.log('caseNum', caseNum, 'caseLength', selectedCNos.length);
-          });
+            })
+            Promise.all(csptLoops).then(() => {
+              // Resolve for promise "loopMtrls"
+              console.log("the promise, loopMtrls resolved")
+              resolve();
+            })
+          })
+        })
+        Promise.all(loopMtrls).then(() => {
+          // Resolve for promise "insertCaseMtrls"
+          console.log("the promise, insertCaseMtrls resolved")
+          resolve();
         });
       }
+    }).catch((err) => {
+      return reject(err);
     });
-  }).catch((err) => {
-    return reject(err);
   });
 
+
+  // Promise.all(insertCaseMtrls).then(() => {
+
   //@ Create an Order Summary to OS collection -------------------------------------------------
-  Promise.all([insertCaseMtrls, makingOsNumber])
+  Promise.all([makingOsNumber, ...insertCaseMtrls])
     .then(() => {
       const finalPromise = new Promise(async (resolve) => {
-        console.log('The promise all start');
+        console.log('The finalPromise start');
         const orderSummary = new OS({
           company: comId,
           osNo: newOsNO,
@@ -423,7 +435,7 @@ router.post('/', authUser, async (req, res) => {
     .catch((err) => {
       console.log(err);
     });
-
+  // })
   //@ Loop through the cases and lock up all these cases, preventing merchandisor updating anything.
   //The price refs to srMtrl, and since other case, which not be put into order summary may still use same srMtrl, so we can't and no necessary to lock up the srMtrl.
 });

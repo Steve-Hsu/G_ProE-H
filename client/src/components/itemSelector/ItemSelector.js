@@ -30,7 +30,7 @@ export const ItemSelector = ({ props, purpose, currentPath }) => {
   const { srMtrls, getSrMtrls, openSrMtrl, editingList, srMtrlError } = srMtrlContext;
   const { switchQuoFormSelector, quotation, switchQuoForm } = quoContext;
   const { selectCase, selectedCases, switchPage, currentOrderSummary, openMtrlLeadTime, editingLeadTime, } = purContext;
-  const { isLoading, toggleLoading } = popoverContext;
+  const { isLoading, toggleLoading, popover } = popoverContext;
   useEffect(() => {
     switch (purpose) {
       case 'srMtrlSelector':
@@ -160,8 +160,8 @@ export const ItemSelector = ({ props, purpose, currentPath }) => {
 
   return (
     <Fragment>
-      {caseError !== null || srMtrlError !== null || isLoading === true ? (
-        <DeletePopover key={`casepopover`} props={props} />
+      {caseError !== null || srMtrlError !== null || isLoading === true || popover === true ? (
+        <DeletePopover key={`itemSelectPopover`} props={props} />
       ) : null}
       {/* <div style={{ paddingTop: '50px' }} className='p-1 container'> */}
       <div

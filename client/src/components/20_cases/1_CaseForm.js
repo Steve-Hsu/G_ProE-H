@@ -191,13 +191,11 @@ const CaseForm = ({ props }) => {
 
   return (
     <Fragment>
-      {/* // Ask the user when they want to jump to another page wihout saving datas */}
-      {/* <Prompt when={formIsHalfFilledOut} message='Hey' /> */}
-      {popover === true || isLoading === true || caseError !== null ? (
-        <DeletePopover key={`casepopover`} props={props} />
-      ) : null}
       {isEditingCase ? (
         <div className='container container-with-navbar'>
+          { popover === true || isLoading === true || caseError !== null ? (
+            <DeletePopover key={`casepopover`} props={props} />
+          ) : null}
           <div className='h-scatter-content'>
             <GoBackBtn onClick={goBack} />
             {/* <GoBackBtn onClick={goBack} /> */}

@@ -73,8 +73,8 @@ const PurchaseOrder = () => {
   const loopItems = () => {
     let arr = []
     arr = caseMtrls.sort((a, b) => {
-      var refA = a.ref_no.toUpperCase(); // ignore upper and lowerCase;
-      var refB = b.ref_no.toUpperCase(); // ignore upper and lowerCase;
+      var refA = a.ref_no ? a.ref_no.toUpperCase() : 'a'; // ignore upper and lowerCase;
+      var refB = b.ref_no ? b.ref_no.toUpperCase() : 'b';// ignore upper and lowerCase;
       if (refA < refB) {
         return -1;
       }

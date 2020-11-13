@@ -134,6 +134,7 @@ const SrMtrlState = (props) => {
 
   //@1 add new mPrice
   const addMPrice = (srMtrlId) => {
+    console.log("AddMPrice triggered")
     let srMaterials = srMtrls;
     let srMaterial = srMaterials.find(({ _id }) => _id === srMtrlId);
 
@@ -147,6 +148,7 @@ const SrMtrlState = (props) => {
     // console.log('this is mPriceMaxNum', mPriceMaxNum);
     // Prevent duplicated mPrice (repeated in set of color and spec)
     if (mPriceNum < mPriceMaxNum) {
+      console.log("AddMPrice triggered")
       let cArr = [];
       let sArr = [];
 
@@ -176,13 +178,14 @@ const SrMtrlState = (props) => {
           }
         });
       }
-
+      console.log("srMtrl caseUnit", srMaterial.caseUnit,)
+      const theUnit = srMaterial.item === 'Thread' ? 'pcs' : srMaterial.caseUnit;
       // console.log(cArr[0]);
       srMaterial.mPrices.push({
         id: uuidv4() + generateId(),
         mColor: cArr[0],
         sizeSPEC: sArr[0],
-        unit: srMaterial.caseUnit,
+        unit: theUnit,
         currency: 'USD',
         mPrice: '',
         moq: '',
@@ -200,6 +203,8 @@ const SrMtrlState = (props) => {
   const deleteSrMtrlPrice = async (ids) => {
     const srMtrlId = ids.srMtrlId;
     const mPriceId = ids.mPriceId;
+    console.log("the srId", srMtrlId)
+    console.log("the mPriceId", mPriceId)
     let srMaterials = srMtrls;
     srMaterials.map((srMtrl) => {
       return (srMtrl.mPrices = srMtrl.mPrices.filter(

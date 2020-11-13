@@ -29,7 +29,7 @@ const OsSelector = ({ purpose, current, props }) => {
     switchCsPage,
   } = completeSetContext
 
-  const { toggleLoading, popover, isLoading } = popoverContext
+  const { toggleLoading } = popoverContext
 
   const osPageSwitch = (osNo) => {
     toggleLoading(true)
@@ -69,16 +69,16 @@ const OsSelector = ({ purpose, current, props }) => {
   //@ return
   return (
     <Fragment>
-      {popover === true || isLoading === true || osError !== null ? (
+      {/* {popover === true || isLoading === true || osError !== null ? (
         <DeletePopover key='purchasePagePopover' props={props} />
-      ) : (
-          <Table
-            subjects={purpose === 'csOsSelector' ? osHeads : osList}
-            purpose={purpose}
-            toggleItemAttributes={purpose === 'csOsSelector' ? [csPageSwitch] : [osPageSwitch]}
-            displayTitles={[{ osNo: true }]}
-          />
-        )}
+      ) : ( */}
+      <Table
+        subjects={purpose === 'csOsSelector' ? osHeads : osList}
+        purpose={purpose}
+        toggleItemAttributes={purpose === 'csOsSelector' ? [csPageSwitch] : [osPageSwitch]}
+        displayTitles={[{ osNo: true }]}
+      />
+      {/* )} */}
     </Fragment>
 
   );

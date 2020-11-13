@@ -4,7 +4,7 @@ import MPrice from './30_01_01_mPrice';
 import PropTypes from 'prop-types';
 import SqBtnLarge from '../elements/btns/SqBtnLarge';
 import GoBackBtnSpinSmall from '../elements/btns/GoBackBtnSpinSmall';
-// import DeletePopover from '../layout/DeletePopover';
+import DeletePopover from '../layout/DeletePopover';
 import PopoverContext from '../../context/popover/popoverContext';
 import TopLabelTiny from '../elements/Label/TopLabelTiny';
 import Select from '../elements/select/Select'
@@ -18,7 +18,6 @@ const SrMtrl = ({ srMtrl, currentPath, idx }) => {
   // let options = [];
   const onClick = (e) => {
     e.preventDefault();
-
     addMPrice(srMtrl._id);
   };
 
@@ -48,8 +47,7 @@ const SrMtrl = ({ srMtrl, currentPath, idx }) => {
       className=' p-1 round-card bg-cp-elem bd-light flexBox'
       style={{ width: '100%' }}
     >
-      {/* {popover ? <DeletePopover key={current.id} /> : null} */}
-      {/* {popover === true || isLoading === true ? (
+      {/* {popover === true ? (
         <DeletePopover key={'srMtrlPopover'} />
       ) : null} */}
       <div>
