@@ -89,7 +89,7 @@ const BoardItem = ({
           ) : purpose === 'purchaseOrder' ? (
             //BoardItem for purchaseOrder, the orderSummary
             <div
-              className='boardChild round-card bg-cp-elem bd-light hover-cp-2 p-05'
+              className='boardChild round-card bg-cp-elem bd-light hover-moveUp-darker hover-pointer p-05'
               style={{ position: 'relative' }}
               onClick={onClick}
             >
@@ -141,7 +141,7 @@ const BoardItem = ({
           ) : (
                 //Standard boardItems
                 <div
-                  className='boardChild round-card bg-cp-elem bd-light hover-cp-2 p-05'
+                  className='boardChild round-card bg-cp-elem bd-light hover-moveUp-darker hover-pointer p-05'
                   style={selectedBackGround(id)}
                   onClick={onClick}
                 >

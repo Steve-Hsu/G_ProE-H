@@ -58,7 +58,7 @@ const Qty = ({ purpose, size, gQty, }) => {
         className='center-content '
       >
         <div className='fs-large mr-05'>
-          {gQty.leadTime ? gQty.leadTime.slice(5) : 'No results yet'}
+          {gQty.leadTime ? gQty.leadTime.slice(5) : (<span className='fs-small fc-danger'>No results yet</span>)}
         </div>
         <div className='fs-small fc-cp-2-c'>
           <div className='fc-gray-4'>

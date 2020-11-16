@@ -90,7 +90,7 @@ export const Director = (props) => {
     },
   ];
 
-  const quoLabel = ['Quotation for Materil', 'Quotation for Garment'];
+  const quoLabel = ['For Materil', 'For Garment'];
 
   const goPurchase = [
     {
@@ -107,7 +107,7 @@ export const Director = (props) => {
     },
   ];
 
-  const purLabel = ['Select case, Make order summary', 'Check order summary'];
+  const purLabel = ['Create', 'Check'];
   // const goPurchase = () => {
   //   //Jump to other page while keeping authenticated
   //   props.history.push('/api/purchase');
@@ -128,11 +128,11 @@ export const Director = (props) => {
       {/* content */}
       <div className='h-center-content h-100vh '>
         <div className='container container-with-navbar w-100 overflow-auto'>
-          <Banner purpose='case' onClick={goCase} label='Start a case' className='bg-gray-1' />
-          <Banner purpose='mPrice' onClick={gomPrice} label='Material Price' className='bg-gray-1' />
-          <Banner purpose='quotation' onClick={goQuotation} label={quoLabel} className='bg-gray-1' />
-          <Banner purpose='purchase' onClick={goPurchase} label={purLabel} className='bg-gray-1' />
-          <Banner purpose='completeset' onClick={goCompleteSet} label='Complete set for production' className='bg-gray-1' />
+          <Banner purpose='case' onClick={goCase} label='Start' className='' title='CASE' />
+          <Banner purpose='mPrice' onClick={gomPrice} label='Start' className='' title='PRICE' />
+          <Banner purpose='quotation' onClick={goQuotation} label={quoLabel} className='' title='QUOTATION' />
+          <Banner purpose='purchase' onClick={goPurchase} label={purLabel} className='' title='ORDER' smTitle='SUMMARY' />
+          <Banner purpose='completeset' onClick={goCompleteSet} label='Start' className='' title='COMPLETE' smTitle='SET' />
           {/* <Banner purpose='progress' onClick={goProgress} label='Progress' /> */}
         </div>
       </div>

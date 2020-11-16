@@ -105,7 +105,7 @@ const TableItem = ({
             <MtrlLeadTime caseMtrl={subject} idx={idx} />
           ) : purpose === 'purCaseSelector' && subject.poDate !== null ? null : (
             <div
-              className='flexBox bd-light bd-no-t bg-cp-elem hover-cp-2 fs-small'
+              className='flexBox bd-light bd-no-t bg-cp-elem hover-moveUp hover-pointer fs-small'
               onClick={onClick}
               style={selectedBackGround()}
             // style={{ background: 'red' }}

@@ -842,6 +842,8 @@ input[type='submit']:focus {
   font-size: 1rem;
   display: block;
   opacity: 1;
+  -webkit-transform: translateY(-1.8rem) translateX(0.5rem);
+  -ms-transform: translateY(-1.8rem) translateX(0.5rem);
   transform: translateY(-1.8rem) translateX(0.5rem);
   transform-origin: 0 0;
   transition: all 0.3s;
@@ -883,6 +885,8 @@ input[type='submit']:focus {
 
 .MPH-input:focus + .MPH-input-label,
 .MPH-input:not(:placeholder-shown) + .MPH-input-label {
+  -webkit-transform: translateY(-3.3rem) scale(0.7);
+  -ms-transform: translateY(-3.3rem) scale(0.7);
   transform: translateY(-3.3rem) scale(0.7);
   animation: labelUp 0.7s ease;
   color: var(--gray-4);
@@ -977,6 +981,8 @@ input[type='submit']:focus {
   z-index: 1;
 }
 .MPH-input-group:focus-within {
+  -webkit-transform: scale(1.1, 1.1);
+  -ms-transform: scale(1.1, 1.1);
   transform: scale(1.1, 1.1);
 }
 
@@ -1181,6 +1187,14 @@ input[type='submit']:focus {
 }
 
 /* Font-size */
+.fs-max {
+  font-size: 7rem;
+  line-height: 1.2;
+  /* margin-bottom: 1rem; */
+}
+.fs-halfMax {
+  font-size: 3.5rem;
+}
 .fs-large {
   font-size: 2rem;
   line-height: 1.2;
@@ -1265,6 +1279,10 @@ input[type='submit']:focus {
 /* font warp */
 .f-warp {
   word-wrap: normal;
+}
+
+.f-lineHeight-70 {
+  line-height: 70%;
 }
 
 /* Text positoin */
@@ -1724,6 +1742,9 @@ input[type='submit']:focus {
 .h-5 {
   height: 5%;
 }
+.h-7rem {
+  height: 7rem;
+}
 .h-10 {
   height: 10%;
 }
@@ -2035,12 +2056,30 @@ input[type='submit']:focus {
 
 .hover-spin-90:hover {
   cursor: pointer;
+  -webkit-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
   transform: rotate(90deg);
   transition: all 0.3s;
 }
 
 .hover-pointer:hover {
   cursor: pointer;
+}
+
+.hover-moveUp:hover {
+  -webkit-transform: translateY(-3px);
+  -ms-transform: translateY(-3px);
+  transform: translateY(-3px);
+  box-shadow: 0px 2px 4px 1px var(--gray-4);
+  transition: all 0.2s;
+}
+
+.hover-moveUp-darker:hover {
+  -webkit-transform: translateY(-3px);
+  -ms-transform: translateY(-3px);
+  transform: translateY(-3px);
+  box-shadow: 0px 2px 4px 1px var(--cp-1_4);
+  transition: all 0.2s;
 }
 
 .hover-no:hover,

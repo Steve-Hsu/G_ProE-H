@@ -661,19 +661,19 @@ const LeftBar = ({ currentPath }) => {
     let titleOftheArea;
     switch (currentPage) {
       case 'case':
-        titleOftheArea = 'Case'
+        titleOftheArea = 'CASE'
         break;
       case 'mprice':
-        titleOftheArea = 'Price'
+        titleOftheArea = 'PRICE'
         break;
       case 'quotation':
-        titleOftheArea = 'Quotation'
+        titleOftheArea = 'QUOTATION'
         break;
       case 'purchase':
-        titleOftheArea = 'Order Summary'
+        titleOftheArea = 'ORDER SUMMARY'
         break;
       case 'completeset':
-        titleOftheArea = 'Complete Set'
+        titleOftheArea = 'COMPLETE SET'
         break;
       default:
     }
