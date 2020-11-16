@@ -4,7 +4,7 @@ import CompleteSetContext from '../../context/completeSet/completeSetContext'
 import Board from '../elements/board/Board';
 import DeleteBtnSmall from '../elements/btns/DeleteBtnSmall';
 import PopoverContext from '../../context/popover/popoverContext';
-import DeletePopover from '../layout/DeletePopover';
+// import DeletePopover from '../layout/DeletePopover';
 import LockedBadge from '../elements/badge/LockedBadge';
 import SqBtnLarge from '../elements/btns/SqBtnLarge';
 
@@ -89,15 +89,18 @@ const OrderSummary = ({ purpose, props }) => {
           ) : null}
         </div>
 
+        {/* Case purchased List */}
         <div>
           The case purchased :{' '}
-          {/* {caseList.map((CS) => {
-            return (
-              <span key={CS._id} className='ml-05'>
-                {CS.cNo}
-              </span>
-            );
-          })} */}
+          <div className='flexBox bg-gray-2 round-area mb-05'>
+            {caseList.map((CS) => {
+              return (
+                <div key={CS._id} className='ml-05 fs-small' style={{ flex: '0 0 2.5rem' }}>
+                  {CS.cNo},
+                </div>
+              );
+            })}
+          </div>
         </div>
         <div className='h-scatter-content'>
           <div></div>

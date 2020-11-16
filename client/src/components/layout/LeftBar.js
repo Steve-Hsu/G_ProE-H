@@ -640,14 +640,13 @@ const LeftBar = ({ currentPath }) => {
       // Remove the handlers of `mousemove` and `mouseup`
       document.removeEventListener('mousemove', mouseMoveHandler);
       document.removeEventListener('mouseup', mouseUpHandler);
+      let container = document.getElementById('osCaseListContainer')
+      var arr = Array.prototype.slice.call(container.childNodes);
+      const orderList = arr.map((a) => {
+        return a.innerHTML
+      })
+      setNewCsOrder(orderList)
     }
-
-    let container = document.getElementById('osCaseListContainer')
-    var arr = Array.prototype.slice.call(container.childNodes);
-    const orderList = arr.map((a) => {
-      return a.innerHTML
-    })
-    setNewCsOrder(orderList)
   };
 
   const isAbove = function (nodeA, nodeB) {
@@ -939,7 +938,7 @@ const LeftBar = ({ currentPath }) => {
             <div className='fw-bold'>
               Arrange the order of production
             </div>
-            <div id='osCaseListContainer'>
+            <div id='osCaseListContainer' className='overflow-auto' style={{ maxHeight: '60vh' }}>
               {newCsOrder.map((c) => {
                 return (
                   <div
