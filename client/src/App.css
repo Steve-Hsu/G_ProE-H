@@ -1639,6 +1639,9 @@ input[type='submit']:focus {
 .mb-05 {
   margin-bottom: 0.5rem;
 }
+.mb-06 {
+  margin-bottom: 0.6rem;
+}
 .mb-1 {
   margin-bottom: 1rem;
 }

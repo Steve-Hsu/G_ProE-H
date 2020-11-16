@@ -658,6 +658,34 @@ const LeftBar = ({ currentPath }) => {
     return (rectA.top + rectA.height / 2 < rectB.top + rectB.height / 2);
   };
 
+  const titleArea = () => {
+    let titleOftheArea;
+    switch (currentPage) {
+      case 'case':
+        titleOftheArea = 'Case'
+        break;
+      case 'mprice':
+        titleOftheArea = 'Price'
+        break;
+      case 'quotation':
+        titleOftheArea = 'Quotation'
+        break;
+      case 'purchase':
+        titleOftheArea = 'Order Summary'
+        break;
+      case 'completeset':
+        titleOftheArea = 'Complete Set'
+        break;
+      default:
+    }
+
+    return (
+      <div className='fs-large fc-gray-3 fw-bold p-0 mb-06'>
+        {titleOftheArea}
+      </div>
+    )
+  }
+
   return (
     <div
       className='container-with-navbar leftbar bg-white bd-light bd-no-t h-100 noPrint'
@@ -665,6 +693,8 @@ const LeftBar = ({ currentPath }) => {
     >
       <div className='leftbar-component ml-1'>
         {' '}
+        {/*@Title area */}
+        {titleArea()}
         {/*@Submit Btn */}
         {/*Submit BTN Case Set */}
         {currentPage === 'case' && osNo === null && isEditingCase === false ? (
