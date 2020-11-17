@@ -36,6 +36,31 @@ export default (state, action) => {
       return {
         ...state,
         error: null,
+        mtrls: action.payload.mtrls.sort((a, b) => {
+          if (a.supplier < b.supplier) {
+            return -1;
+          }
+          if (a.supplier < b.supplier) {
+            return 1;
+          }
+          return 0
+        }).sort((a, b) => {
+          if (a.ref_no < b.ref_no) {
+            return -1;
+          }
+          if (a.ref_no < b.ref_no) {
+            return 1;
+          }
+          return 0
+        }).sort((a, b) => {
+          if (a.item < b.item) {
+            return -1;
+          }
+          if (a.item < b.item) {
+            return 1;
+          }
+          return 0
+        }),
         ...action.payload, // update all the state if the name of that is match what in payload.
       };
     case CASETYPE_UPDATE:

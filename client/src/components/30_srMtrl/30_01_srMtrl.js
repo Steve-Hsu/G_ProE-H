@@ -4,7 +4,7 @@ import MPrice from './30_01_01_mPrice';
 import PropTypes from 'prop-types';
 import SqBtnLarge from '../elements/btns/SqBtnLarge';
 import GoBackBtnSpinSmall from '../elements/btns/GoBackBtnSpinSmall';
-import DeletePopover from '../layout/DeletePopover';
+// import DeletePopover from '../layout/DeletePopover';
 import PopoverContext from '../../context/popover/popoverContext';
 import TopLabelTiny from '../elements/Label/TopLabelTiny';
 import Select from '../elements/select/Select'
