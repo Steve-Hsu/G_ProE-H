@@ -90,7 +90,7 @@ export const Director = (props) => {
     },
   ];
 
-  const quoLabel = ['For Materil', 'For Garment'];
+  const quoLabel = ['For Material', 'For Garment'];
 
   const goPurchase = [
     {
@@ -129,11 +129,11 @@ export const Director = (props) => {
       {/* content */}
       <div className='h-center-content h-100vh '>
         <div className='container container-with-navbar w-100 overflow-auto'>
-          <Banner purpose='case' onClick={goCase} label='Start' className='' title='CASE' />
-          <Banner purpose='mPrice' onClick={gomPrice} label='Start' className='' title='PRICE' />
-          <Banner purpose='quotation' onClick={goQuotation} label={quoLabel} className='' title='QUOTATION' />
-          <Banner purpose='purchase' onClick={goPurchase} label={purLabel} className='' title='ORDER' smTitle='SUMMARY' />
-          <Banner purpose='completeset' onClick={goCompleteSet} label='Start' className='' title='COMPLETE' smTitle='SET' />
+          <Banner purpose='case' onClick={goCase} label='Start' className='mb-2' title='CASE' />
+          <Banner purpose='mPrice' onClick={gomPrice} label='Start' className='mb-2' title='PRICE' />
+          <Banner purpose='quotation' onClick={goQuotation} label={quoLabel} className='mb-2' title='QUOTATION' />
+          <Banner purpose='purchase' onClick={goPurchase} label={purLabel} className='mb-2' title='ORDER' smTitle='SUMMARY' />
+          <Banner purpose='completeset' onClick={goCompleteSet} label='Start' className='mb-2' title='COMPLETE' smTitle='SET' />
           {/* <Banner purpose='progress' onClick={goProgress} label='Progress' /> */}
         </div>
       </div>

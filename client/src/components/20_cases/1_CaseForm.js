@@ -104,7 +104,7 @@ const CaseForm = ({ props }) => {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cNo]);
+  }, [cNo, caseConfirmDate]);
 
   //@ Style for toggleTitle btn --------
   const titleBtn = (subject) => {
@@ -224,7 +224,7 @@ const CaseForm = ({ props }) => {
                     )}
                   </div>
                   <div className='v-center-content'>Merchandiser : </div>
-                  <div>{cNo === null ? '' : merchandiser}</div>
+                  <div>{cNo === null ? '' : merchandiser.slice(0, 1).toUpperCase() + merchandiser.slice(1)}</div>
                   <div className='v-center-content'>Style</div>
                   {caseConfirmDate === null ? (<input
                     id='caseStyle'
@@ -295,7 +295,7 @@ const CaseForm = ({ props }) => {
                 {cNo ? (
                   <div className='grid-1-5 my-1'>
                     <div className='v-center-content'>Last Update : </div>
-                    <div>{`${lastUpdateBy},  Date : ${ud.toLocaleDateString()} ${ud.toLocaleTimeString()}`}</div>
+                    <div>{`${lastUpdateBy.slice(0, 1).toUpperCase() + lastUpdateBy.slice(1)},  Date : ${ud.toLocaleDateString()} ${ud.toLocaleTimeString()}`}</div>
                   </div>
                 ) : null}
                 {caseConfirmDate ? (
