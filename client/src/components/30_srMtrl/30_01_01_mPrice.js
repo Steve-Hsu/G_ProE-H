@@ -70,7 +70,9 @@ const MPrice = ({
 
   const addNumber = (e) => {
     e.preventDefault();
-    const num = e.target.value;
+
+    e.target.value = Number(e.target.value)
+    const num = Number(e.target.value);
     const list = mPriceList();
     const Max = 9999;
     if (String(num).length > String(Max).length) {
@@ -189,6 +191,8 @@ const MPrice = ({
                         name={mPrice.id}
                         onChange={addNumber}
                         value={mPrice[`${m}`] || ''}
+                        min='0'
+                        step='.01'
                       />
                     </div>
                   </div>
@@ -280,6 +284,8 @@ const MPrice = ({
                         name={mPrice.id}
                         onChange={addNumber}
                         value={mPrice[`${m}`] || ''}
+                        min='0'
+                        step='.01'
                       />
                     </div>
                   </div>

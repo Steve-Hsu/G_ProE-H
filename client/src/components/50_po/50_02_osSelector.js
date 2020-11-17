@@ -26,6 +26,7 @@ const OsSelector = ({ purpose, current, props }) => {
     osHeads,
     getOsHeads,
     getCs,
+    csPage,
     switchCsPage,
   } = completeSetContext
 
@@ -64,7 +65,7 @@ const OsSelector = ({ purpose, current, props }) => {
 
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [openPage]);
+  }, [openPage, csPage,]);
 
   //@ return
   return (

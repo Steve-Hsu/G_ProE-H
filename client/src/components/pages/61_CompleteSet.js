@@ -41,7 +41,7 @@ const CompleteSet = (props) => {
 
    const goOsSelector = (e) => {
       e.preventDefault();
-      switchCsPage(null);
+      switchCsPage('osSelector');
    };
 
    const goCsSelector = (e) => {
@@ -62,7 +62,7 @@ const CompleteSet = (props) => {
       <Fragment >
          {popover === true || isLoading === true || csError !== null ? <DeletePopover key='cspopover' current={current} props={props} /> : null}
          <form id='updateCompleteSet' onSubmit={submit}></form>
-         {csError === null && csPage === null ? (
+         {csPage === 'osSelector' ? (
             <div className='grid-1-4'>
                <LeftBar currentPath={currentPath} />
                <div className='container container-with-navbar'>

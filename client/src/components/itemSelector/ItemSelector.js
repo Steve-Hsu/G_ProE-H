@@ -113,7 +113,7 @@ export const ItemSelector = ({ props, purpose, currentPath }) => {
     case 'quoSrMtrlSelector':
       subjects = srMtrls;
       attributes = [openSrMtrl, editingList];
-      displayTitles = [{ supplier: true }, { ref_no: true }];
+      displayTitles = [{ supplier: true }, { ref_no: true }, { prices: true }, { complete: true }];
       goBack = () => {
         props.history.push('/api/case/director');
       };

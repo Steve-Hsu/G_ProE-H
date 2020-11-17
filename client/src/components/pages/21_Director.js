@@ -115,6 +115,7 @@ export const Director = (props) => {
 
   const goCompleteSet = () => {
     //Jump to other page while keeping authenticated
+    completeSetContext.switchCsPage('osSelector');
     props.history.push('/api/completeset');
   }
 

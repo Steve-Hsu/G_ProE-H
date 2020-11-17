@@ -166,7 +166,7 @@ const BoardItem = ({
                         className = 'fw-bold fs-lead'
                         break;
                       case 'ref_no':
-                        className = 'fs-normal'
+                        className = 'fs-normal fc-cp-2-c'
                         break;
                       case 'position':
                         className = 'mb-05 fs-tiny'
@@ -194,6 +194,36 @@ const BoardItem = ({
                           }
                         }
                         returnedDiv = resultDiv
+                        break;
+                      case 'prices':
+                        className = 'fs-normal'
+                        const mPricesNumber = subject.mPrices ? subject.mPrices.length : 0;
+                        returnedDiv = (
+                          <div>
+                            {mPricesNumber ? `PRICEs : ${mPricesNumber}` : null}
+                          </div>
+                        )
+                        break;
+                      case 'complete':
+                        className = 'fs-normal'
+                        const mPId = subject.mainPrice
+                        const theMainPrice = () => {
+                          if (subject.mainPrice) {
+                            const theMainPriceNotEquolToZero = subject.mPrices.find(({ id }) => id === mPId).mPrice > 0 ? true : false;
+                            const noMPriceEquolToZero = subject.mPrices.filter((mP) => mP.mPrice <= 0).length === 0 ? true : false;
+                            if (theMainPriceNotEquolToZero && noMPriceEquolToZero) {
+                              return true
+                            } else {
+                              return false
+                            }
+                          } else {
+                            return false
+                          }
+                        }
+                        const complete = subject.mPrices.filter((mP) => mP.mPrice > 0).length === subject.mtrlColors.length * subject.sizeSPECs.length ||
+                          theMainPrice() ? true : false;
+                        returnedDiv = complete ? (<i className="fas fa-check-circle fc-success"></i>) : null
+
                         break;
 
                       default:

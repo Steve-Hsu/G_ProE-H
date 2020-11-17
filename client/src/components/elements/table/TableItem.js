@@ -1,6 +1,6 @@
 import React, { useContext, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import PopoverContext from '../../../context/popover/popoverContext';
+// import PopoverContext from '../../../context/popover/popoverContext';
 import SrMtrl from '../../30_srMtrl/30_01_srMtrl';
 import MtrlLeadTime from '../../50_po/50_06_mrtlLeadTime';
 
@@ -16,12 +16,12 @@ const TableItem = ({
   purpose,
   currentPath,
 }) => {
-  const popoverContext = useContext(PopoverContext);
+  // const popoverContext = useContext(PopoverContext);
 
   //   const { mtrls, addMtrlValue, displayTitles } = casesContext;
   const isEditingMtrl = subject.isEditingMtrl;
 
-  const { togglePopover } = popoverContext;
+  // const { togglePopover } = popoverContext;
 
   const trueInDisplayTitles = displayTitles.filter((obj) => {
     return Object.values(obj)[0] == true;
@@ -170,6 +170,41 @@ const TableItem = ({
                           trueInDisplayTitles
                         )} key={`${Object.keys(title)[0]}${subject.id}`}>
                           {resultDiv}
+                        </div>
+                      )
+                    case 'prices':
+                      const mPricesNumber = subject.mPrices ? subject.mPrices.length : 0;
+                      return (
+                        <div className='center-content' style={cellStyle(
+                          Object.keys(title)[0],
+                          trueInDisplayTitles
+                        )} key={`${Object.keys(title)[0]}${subject.id}`}>
+                          {mPricesNumber ? mPricesNumber : null}
+                        </div>
+                      )
+                    case 'complete':
+                      const mPId = subject.mainPrice
+                      const theMainPrice = () => {
+                        if (subject.mainPrice) {
+                          const theMainPriceNotEquolToZero = subject.mPrices.find(({ id }) => id === mPId).mPrice > 0 ? true : false;
+                          const noMPriceEquolToZero = subject.mPrices.filter((mP) => mP.mPrice <= 0).length === 0 ? true : false;
+                          if (theMainPriceNotEquolToZero && noMPriceEquolToZero) {
+                            return true
+                          } else {
+                            return false
+                          }
+                        } else {
+                          return false
+                        }
+                      }
+                      const complete = subject.mPrices.filter((mP) => mP.mPrice > 0).length === subject.mtrlColors.length * subject.sizeSPECs.length ||
+                        theMainPrice() ? true : false;
+                      return (
+                        <div className='center-content' style={cellStyle(
+                          Object.keys(title)[0],
+                          trueInDisplayTitles
+                        )} key={`${Object.keys(title)[0]}${subject.id}`}>
+                          {complete ? (<i className="fas fa-check-circle fc-success"></i>) : null}
                         </div>
                       )
 
