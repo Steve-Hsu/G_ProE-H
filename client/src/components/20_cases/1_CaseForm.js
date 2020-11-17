@@ -189,6 +189,10 @@ const CaseForm = ({ props }) => {
     addCaseValue(e);
   };
 
+  const ud = new Date(updateDate)
+  const osd = new Date(poDate)
+
+
   return (
     <Fragment>
       {isEditingCase ? (
@@ -291,7 +295,7 @@ const CaseForm = ({ props }) => {
                 {cNo ? (
                   <div className='grid-1-5 my-1'>
                     <div className='v-center-content'>Last Update : </div>
-                    <div>{`${lastUpdateBy},  Date : ${updateDate}`}</div>
+                    <div>{`${lastUpdateBy},  Date : ${ud.toLocaleDateString()} ${ud.toLocaleTimeString()}`}</div>
                   </div>
                 ) : null}
                 {caseConfirmDate ? (
@@ -306,7 +310,7 @@ const CaseForm = ({ props }) => {
                   <LockedBadge
                     labels={[
                       `Order Summary : ${osNo}`,
-                      `Date ${poDate}`,
+                      `Date ${osd.toLocaleDateString()} ${osd.toLocaleTimeString()}`,
                       <i className="fas fa-exclamation-triangle"> The case's purchase order is made, therefore you can't update the case</i>,
                     ]}
                   />

@@ -389,20 +389,7 @@ const Mtrl = ({ mtrl }) => {
               SPEC
             </button>
           </div>
-          <div className='mr-1'>
-            <div className='fs-tiny  transition fc-gray-4'>
-              {mtrl.multipleCSPT === true ? 'Multiple' : 'Single'}
-            </div>
-            <button
-              value={mtrl.id}
-              name='cspt'
-              onClick={expandExtraPanels}
-              className='btn btn-dropdown fs-lead '
-              style={dropDownStyle('cspt')}
-            >
-              Consumption
-            </button>
-          </div>
+
           {/* Row_4 - Unit Selector */}
           {caseConfirmDate || osNo || mtrl.item === 'Thread' ? (
             <div>
@@ -422,7 +409,23 @@ const Mtrl = ({ mtrl }) => {
                 selectedOption={mtrl.unit}
               />
             )}
+          {/* Consumption button */}
+          <div className='ml-1'>
+            <div className='fs-tiny  transition fc-gray-4'>
+              {mtrl.multipleCSPT === true ? 'Multiple' : 'Single'}
+            </div>
+            <button
+              value={mtrl.id}
+              name='cspt'
+              onClick={expandExtraPanels}
+              className='btn btn-dropdown fs-lead '
+              style={dropDownStyle('cspt')}
+            >
+              Consumption
+            </button>
+          </div>
         </div>
+
         {/* {Row_5} */}
         {/* Color expand panel  */}
         {mtrl.expandColor && cWays.length > 0 ? (
