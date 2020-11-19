@@ -887,8 +887,9 @@ const LeftBar = ({ currentPath }) => {
                 Inquiry form
             </button>
             </div>
-          ) :
-          printOutElement()}
+          ) : currentPage ===
+            'mprice' && currentSrPage === 'inquiryPage' ?
+            printOutElement() : null}
         {/* @Quotation Set */}
         {
           (currentPage =
