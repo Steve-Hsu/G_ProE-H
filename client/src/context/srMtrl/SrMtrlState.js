@@ -11,6 +11,8 @@ import {
   UPDATE_EDITING_LIST,
   TOGGLE_MAINPRICE,
   UPDATE_ERROR,
+  SRPAGE_SWITCH,
+  SRINQUIRY_SUPPLIER_UPDATE,
 } from '../types';
 
 const SrMtrlState = (props) => {
@@ -20,6 +22,8 @@ const SrMtrlState = (props) => {
     isUpdated: false,
     editingList: [],
     srMtrlError: null,
+    currentSrPage: null,
+    inquirySupplier: null,
   };
 
   const [state, dispatch] = useReducer(SrMtrlReducer, initialState);
@@ -388,6 +392,16 @@ const SrMtrlState = (props) => {
   //   console.log('the result of delete Price', res.data);
   // };
 
+  const switchSrPage = (valueEntered) => {
+    const value = state.currentSrPage ? null : valueEntered
+    dispatch({ type: SRPAGE_SWITCH, payload: value })
+  }
+
+  const updateInquirySupplier = (valueEntered) => {
+    const value = typeof valueEntered === 'string' ? valueEntered.slice(0, 50) : null
+    dispatch({ type: SRINQUIRY_SUPPLIER_UPDATE, payload: value })
+  }
+
   //@ Returns------------------------------------------------------
 
   return (
@@ -398,6 +412,8 @@ const SrMtrlState = (props) => {
         editingList: state.editingList,
         mainPrice: state.mainPrice,
         srMtrlError: state.srMtrlError,
+        currentSrPage: state.currentSrPage,
+        inquirySupplier: state.inquirySupplier,
         getSrMtrls,
         updateSrMtrlByMtrl,
         deleteSRMtrlByMtrl,
@@ -413,6 +429,8 @@ const SrMtrlState = (props) => {
         openSrMtrl,
         toggleMainPrice,
         clearSrMtrlError,
+        switchSrPage,
+        updateInquirySupplier,
         // mtrlColorOption,
         // sizeSPECOption,
         // deletePrice,

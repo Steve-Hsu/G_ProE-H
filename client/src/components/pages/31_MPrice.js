@@ -2,6 +2,8 @@ import React, { useContext } from 'react';
 
 // Components
 import LeftBar from '../layout/LeftBar';
+import InquiryForm from '../30_srMtrl/30_02_inquiryForm'
+import GoBackBtn from '../../components/elements/btns/GoBackBtn'
 // ItemSelector
 import ItemSelector from '../itemSelector/ItemSelector';
 import SrMtrlContext from '../../context/srMtrl/srMtrlContext';
@@ -12,7 +14,7 @@ export const MPrice = (props) => {
   const srMtrlContext = useContext(SrMtrlContext);
   const popoverContext = useContext(PopoverContext);
   const currentPath = props.location.pathname;
-  const { srMtrls, updateMPrices } = srMtrlContext;
+  const { srMtrls, updateMPrices, currentSrPage, switchSrPage } = srMtrlContext;
   const { toggleLoading } = popoverContext;
 
   const onSubmitSrMtrl = async (e) => {
@@ -36,20 +38,31 @@ export const MPrice = (props) => {
     }
   };
 
+  const goBack = () => {
+    switchSrPage()
+  }
+
   return (
     <div className='grid-1-4'>
       {/* Grid-1 */}
       <LeftBar currentPath={currentPath} />
 
       {/* Grid-2 */}
-      <form id='srMtrlForm' onSubmit={onSubmitSrMtrl}>
-        {' '}
-        <ItemSelector
-          purpose='srMtrlSelector'
-          props={props}
-          currentPath={currentPath}
-        />
-      </form>
+      {currentSrPage === null ? (
+        <form id='srMtrlForm' onSubmit={onSubmitSrMtrl}>
+          {' '}
+          <ItemSelector
+            purpose='srMtrlSelector'
+            props={props}
+            currentPath={currentPath}
+          />
+        </form>
+      ) : (
+          <div className='container container-with-navbar whenPrint'>
+            <GoBackBtn onClick={goBack} />
+            <InquiryForm />
+          </div>
+        )}
     </div>
   );
 };

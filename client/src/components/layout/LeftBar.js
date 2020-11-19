@@ -1,6 +1,7 @@
 import React, { Fragment, useContext, useEffect } from 'react';
 import AuthUserContext from '../../context/authUser/authUserContext';
 import CasesContext from '../../context/cases/casesContext';
+import SrMtrlContext from '../../context/srMtrl/srMtrlContext'
 import QuoContext from '../../context/quo/quoContext';
 import PurContext from '../../context/pur/purContext';
 import CompleteSetContext from '../../context/completeSet/completeSetContext'
@@ -17,6 +18,7 @@ import CWaySelector from '../40_quo/40_03_02_cWaySelector';
 const LeftBar = ({ currentPath }) => {
   const authUserContext = useContext(AuthUserContext);
   const casesContext = useContext(CasesContext);
+  const srMtrlContext = useContext(SrMtrlContext);
   const quoContext = useContext(QuoContext);
   const purContext = useContext(PurContext);
   const completeSetContext = useContext(CompleteSetContext)
@@ -41,8 +43,9 @@ const LeftBar = ({ currentPath }) => {
     caseConfirmDate,
     toggleCaseConfirmDate,
     merchandiser,
-    caseList,
+    // caseList,
   } = casesContext;
+  const { switchSrPage, currentSrPage, updateInquirySupplier, inquirySupplier } = srMtrlContext;
   const {
     isQuotating,
     quotateFor,
@@ -105,6 +108,11 @@ const LeftBar = ({ currentPath }) => {
     toggleMtrlCard();
   };
 
+  const onClickSr = (e) => {
+    e.preventDefault();
+    switchSrPage('inquiryPage')
+  }
+
   const onClickQuo = async () => {
     toggleLoading(true)
     const body = {
@@ -117,6 +125,11 @@ const LeftBar = ({ currentPath }) => {
       toggleLoading(false)
     });
   };
+
+  const onChangeSr = (e) => {
+    e.preventDefault()
+    updateInquirySupplier(e.target.value)
+  }
 
   const updateBtnlabel = () => {
     let obj = {};
@@ -685,6 +698,7 @@ const LeftBar = ({ currentPath }) => {
     )
   }
 
+
   return (
     <div
       className='container-with-navbar leftbar bg-white bd-light bd-no-t h-100 noPrint'
@@ -721,7 +735,7 @@ const LeftBar = ({ currentPath }) => {
                 normalSummitBtn()
               ) : null}
         {/*Submit BTN srMtr Set */}
-        {currentPage === 'mprice' ? normalSummitBtn() : null}
+        {currentPage === 'mprice' && currentSrPage === null ? normalSummitBtn() : null}
         {/*Submit BTN quotation Set */}
         {currentPage === 'quotation' &&
           quotateFor === 'garment' &&
@@ -852,6 +866,29 @@ const LeftBar = ({ currentPath }) => {
               )}
           </>
         ) : null}
+        {/* @SrMtrl Set */}
+        {currentPage ===
+          'mprice' && currentSrPage === null ?
+          (
+
+            <div className='round-area bd-light mt-1'>
+              <i className='fas fa-folder-plus mb-05'> Inquiry </i>
+              <input
+                type='string'
+                className='mb-05'
+                onChange={onChangeSr}
+                value={inquirySupplier || ''}
+              />
+              <button
+                className='btn bg-cp-2 btn-block bd-radius-s bd-light'
+                name='isEditingCase'
+                onClick={onClickSr}
+              >
+                Inquiry form
+            </button>
+            </div>
+          ) :
+          printOutElement()}
         {/* @Quotation Set */}
         {
           (currentPage =

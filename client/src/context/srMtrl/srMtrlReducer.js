@@ -7,6 +7,8 @@ import {
   UPDATE_EDITING_LIST,
   TOGGLE_MAINPRICE,
   UPDATE_ERROR,
+  SRPAGE_SWITCH,
+  SRINQUIRY_SUPPLIER_UPDATE,
 } from '../types';
 
 export default (state, action) => {
@@ -38,6 +40,8 @@ export default (state, action) => {
         isUpdated: false,
         editingList: [],
         srMtrlError: null,
+        currentSrPage: null,
+        inquirySupplier: null,
       };
     case UPDATE_EDITING_LIST:
       return {
@@ -69,6 +73,16 @@ export default (state, action) => {
       return {
         ...state,
         srMtrlError: action.payload,
+      }
+    case SRPAGE_SWITCH:
+      return {
+        ...state,
+        currentSrPage: action.payload
+      }
+    case SRINQUIRY_SUPPLIER_UPDATE:
+      return {
+        ...state,
+        inquirySupplier: action.payload
       }
     default:
   }

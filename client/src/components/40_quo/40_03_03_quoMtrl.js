@@ -28,7 +28,10 @@ const QuoMtrl = ({ mtrl, className }) => {
   //   csptAddvised,
   //   materialFinalQuotation = null;
   // if (mQuo) {
-  const { mQuoAddvised, csptAddvised, materialFinalQuotation } = mQuo;
+  const mQuoAddvised = mQuo ? mQuo.mQuoAddvised : 0;
+  const csptAddvised = mQuo ? mQuo.csptAddvised : 0;
+  const materialFinalQuotation = mQuo ? mQuo.materialFinalQuotation : 0;
+  // const { mQuoAddvised, csptAddvised, materialFinalQuotation } = mQuo;
 
   const addNumber = (e) => {
     e.preventDefault();

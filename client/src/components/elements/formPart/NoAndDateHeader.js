@@ -25,10 +25,10 @@ const NoAndDateHeader = ({ No, className }) => {
     <div className={`h-scatter-content ${className}`}>
       <div></div>
       <div className='fs-tiny'>
-        <div>No : {No} </div>
+        {No ? (<div>No : {No}</div>) : null}
         <div>Date : {theTime}</div>
       </div>
-    </div>
+    </div >
   );
 };
 
