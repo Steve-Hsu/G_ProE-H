@@ -58,7 +58,7 @@ export const MPrice = (props) => {
           />
         </form>
       ) : (
-          <div className='container container-with-navbar whenPrint'>
+          <div className='container container-with-navbar whenPrint pb-1'>
             <GoBackBtn onClick={goBack} />
             <InquiryForm />
           </div>

@@ -129,13 +129,14 @@ const QuoState = (props) => {
   // };
 
   const switchQuoForm = (quoFormId) => {
-    if (quoFormId === null) {
-      dispatch({ type: QUOFORM_SWITCH, payload: null });
-      return null;
-    } else {
-      dispatch({ type: QUOFORM_SWITCH, payload: quoFormId });
-      return quoFormId;
-    }
+    dispatch({ type: QUOFORM_SWITCH, payload: quoFormId });
+    // if (quoFormId === null) {
+    //   dispatch({ type: QUOFORM_SWITCH, payload: null });
+    //   return null;
+    // } else {
+    //   dispatch({ type: QUOFORM_SWITCH, payload: quoFormId });
+    //   return quoFormId;
+    // }
   };
 
   const uploadQuoForm = async (cNo, isNewQuoForm, form) => {

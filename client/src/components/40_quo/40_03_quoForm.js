@@ -88,24 +88,9 @@ const QuoForm = () => {
     updateCurrentQuoForm(e);
   };
 
-  const onClick = async (e) => {
+  const onClick = (e) => {
     e.preventDefault();
     switch (e.target.name) {
-      case 'goBackBtn':
-        switchQuoForm(null);
-        break;
-      // case 'quotationBtn':
-      //   toggleLoading(true);
-      //   const body = {
-      //     quoNo: quoNo,
-      //     quoFormId: _id,
-      //     quoSizes: quoSizes,
-      //     quocWays: quocWays,
-      //   };
-      //   await downLoadmtrlPrice(body).then(() => {
-      //     toggleLoading(false);
-      //   });
-      //   break;
       case 'addOtherExpense':
       case 'addCondition':
       case 'deleteCondition':
@@ -116,6 +101,13 @@ const QuoForm = () => {
       default:
     }
   };
+
+  const goBackBtn = (e) => {
+    e.preventDefault();
+    console.log("hit go back")
+    switchQuoForm();
+
+  }
 
   const addNumber = (e) => {
     e.preventDefault();
@@ -140,7 +132,7 @@ const QuoForm = () => {
         id='quotationForm'
       >
         <div className='h-scatter-content '>
-          <GoBackBtn name='goBackBtn' onClick={onClick} className='noPrint' />
+          <GoBackBtn name='goBackBtn' onClick={goBackBtn} className='noPrint' />
 
           <DeleteBtnSmall
             name='quoForm'

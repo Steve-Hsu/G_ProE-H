@@ -33,13 +33,22 @@ export default (state, action) => {
     case QUOFORM_SELECTOR_SWITCH:
       return { ...state, isQuotating: action.payload };
     case QUOFORM_SWITCH:
-      return {
-        ...state,
-        openQuoForm: action.payload,
-        currentQuoForm: state.quotation.quoForms.find(({ _id }) => {
-          return _id === action.payload;
-        }),
-      };
+      if (action.payload) {
+        return {
+          ...state,
+          openQuoForm: action.payload,
+          currentQuoForm: state.quotation.quoForms.find(({ _id }) => {
+            return _id === action.payload;
+          }),
+        };
+      } else {
+        return {
+          ...state,
+          openQuoForm: null,
+          currentQuoForm: null
+        };
+      }
+
     case QUOFORM_DOWNLOAD:
       return {
         ...state,
