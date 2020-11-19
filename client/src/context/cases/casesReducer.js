@@ -37,18 +37,18 @@ export default (state, action) => {
         ...state,
         error: null,
         mtrls: action.payload.mtrls.sort((a, b) => {
-          if (a.supplier < b.supplier) {
+          if (a.ref_no < b.ref_no) {
             return -1;
           }
-          if (a.supplier < b.supplier) {
+          if (a.ref_no < b.ref_no) {
             return 1;
           }
           return 0
         }).sort((a, b) => {
-          if (a.ref_no < b.ref_no) {
+          if (a.supplier < b.supplier) {
             return -1;
           }
-          if (a.ref_no < b.ref_no) {
+          if (a.supplier < b.supplier) {
             return 1;
           }
           return 0
