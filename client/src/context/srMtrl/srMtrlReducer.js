@@ -9,6 +9,7 @@ import {
   UPDATE_ERROR,
   SRPAGE_SWITCH,
   SRINQUIRY_SUPPLIER_UPDATE,
+  TOGGLE_PRICELIST,
 } from '../types';
 
 export default (state, action) => {
@@ -42,6 +43,7 @@ export default (state, action) => {
         srMtrlError: null,
         currentSrPage: null,
         inquirySupplier: null,
+        listWholePrice: true,
       };
     case UPDATE_EDITING_LIST:
       return {
@@ -83,6 +85,11 @@ export default (state, action) => {
       return {
         ...state,
         inquirySupplier: action.payload
+      }
+    case TOGGLE_PRICELIST:
+      return {
+        ...state,
+        listWholePrice: !state.listWholePrice
       }
     default:
   }

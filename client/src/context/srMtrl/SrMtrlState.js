@@ -13,6 +13,7 @@ import {
   UPDATE_ERROR,
   SRPAGE_SWITCH,
   SRINQUIRY_SUPPLIER_UPDATE,
+  TOGGLE_PRICELIST,
 } from '../types';
 
 const SrMtrlState = (props) => {
@@ -24,6 +25,7 @@ const SrMtrlState = (props) => {
     srMtrlError: null,
     currentSrPage: null,
     inquirySupplier: null,
+    listWholePrice: true,
   };
 
   const [state, dispatch] = useReducer(SrMtrlReducer, initialState);
@@ -402,6 +404,10 @@ const SrMtrlState = (props) => {
     dispatch({ type: SRINQUIRY_SUPPLIER_UPDATE, payload: value })
   }
 
+  const togglePricingList = () => {
+    dispatch({ type: TOGGLE_PRICELIST })
+  }
+
   //@ Returns------------------------------------------------------
 
   return (
@@ -414,6 +420,7 @@ const SrMtrlState = (props) => {
         srMtrlError: state.srMtrlError,
         currentSrPage: state.currentSrPage,
         inquirySupplier: state.inquirySupplier,
+        listWholePrice: state.listWholePrice,
         getSrMtrls,
         updateSrMtrlByMtrl,
         deleteSRMtrlByMtrl,
@@ -431,6 +438,7 @@ const SrMtrlState = (props) => {
         clearSrMtrlError,
         switchSrPage,
         updateInquirySupplier,
+        togglePricingList,
         // mtrlColorOption,
         // sizeSPECOption,
         // deletePrice,

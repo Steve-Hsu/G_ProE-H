@@ -6,16 +6,48 @@ import InquiryItem from '../30_srMtrl/30_02_01_inquiryItem';
 
 const InquiryForm = () => {
     const srMtrlContext = useContext(SrMtrlContext);
-    const { srMtrls, inquirySupplier } = srMtrlContext
+    const { srMtrls, inquirySupplier, listWholePrice } = srMtrlContext
 
     let mtrlIdex = 0
 
-    const loopingMtrls = inquirySupplier === null ? srMtrls : srMtrls.filter((m) => {
+    const loopingMtrls = !inquirySupplier ? srMtrls : srMtrls.filter((m) => {
         var re = new RegExp(m.supplier, 'i')
         return (
             re.test(inquirySupplier)
         )
     })
+    const theListItems = () => {
+        if (listWholePrice) {
+            return loopingMtrls.map((i) => {
+                return i.mPrices.map((mP) => {
+                    mtrlIdex++
+                    return (
+                        <InquiryItem key={`inquiryMtrl${mP.id}`}
+                            srMtrl={i} mPrice={mP}
+                            idx={mtrlIdex}
+                            className={'noBreak whenPrintFSSmall'}
+                            inquirySupplier={inquirySupplier} />
+                    )
+                })
+            })
+        } else {
+            return loopingMtrls.map((i) => {
+                return i.mPrices.map((mP) => {
+                    if (!mP.mPrice) {
+                        mtrlIdex++
+                        return (
+                            <InquiryItem key={`inquiryMtrl${mP.id}`}
+                                srMtrl={i} mPrice={mP}
+                                idx={mtrlIdex}
+                                className={'noBreak whenPrintFSSmall'}
+                                inquirySupplier={inquirySupplier} />
+                        )
+                    }
+                })
+            })
+        }
+
+    }
 
     return (
         <div >
@@ -41,7 +73,8 @@ const InquiryForm = () => {
                     </div>
                 ))}
             </div>
-            {loopingMtrls.map((i) => {
+            {theListItems()}
+            {/* {loopingMtrls.map((i) => {
                 return i.mPrices.map((mP) => {
                     mtrlIdex++
                     return (
@@ -51,7 +84,7 @@ const InquiryForm = () => {
                             className={'noBreak whenPrintFSSmall'} />
                     )
                 })
-            })}
+            })} */}
         </div>
     )
 }

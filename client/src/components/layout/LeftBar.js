@@ -14,6 +14,8 @@ import LockedBadge from '../elements/badge/LockedBadge';
 // Components
 import SizeSelector from '../40_quo/40_03_01_sizeSelector';
 import CWaySelector from '../40_quo/40_03_02_cWaySelector';
+import ToggleSwitch from '../elements/btns/ToggleSwitch';
+import TopLabelTiny from '../elements/Label/TopLabelTiny'
 
 const LeftBar = ({ currentPath }) => {
   const authUserContext = useContext(AuthUserContext);
@@ -45,7 +47,7 @@ const LeftBar = ({ currentPath }) => {
     merchandiser,
     // caseList,
   } = casesContext;
-  const { switchSrPage, currentSrPage, updateInquirySupplier, inquirySupplier } = srMtrlContext;
+  const { switchSrPage, currentSrPage, updateInquirySupplier, inquirySupplier, listWholePrice, togglePricingList } = srMtrlContext;
   const {
     isQuotating,
     quotateFor,
@@ -888,8 +890,17 @@ const LeftBar = ({ currentPath }) => {
             </button>
             </div>
           ) : currentPage ===
-            'mprice' && currentSrPage === 'inquiryPage' ?
-            printOutElement() : null}
+            'mprice' && currentSrPage === 'inquiryPage' ? (
+              <Fragment>
+                {printOutElement()}
+                <div className='w-100 round-area bd-light'>
+                  <TopLabelTiny label='Show All Prices' />
+                  <ToggleSwitch checked={listWholePrice} onChange={togglePricingList} onLabel='On' offLabel='Off' />
+                </div>
+
+              </Fragment>
+            )
+            : null}
         {/* @Quotation Set */}
         {
           (currentPage =
