@@ -21,6 +21,14 @@ const SizeColorChart = ({ purpose, sizes, cWays, gQtys }) => {
       gridGap: '0',
    };
 
+   const cWayOrder = () => {
+      let arr = []
+      cWays.map((cWay) => {
+         arr.push(cWay.id)
+      })
+      return arr
+   }
+
 
    return (
       <section className='row-gap-md round-card bg-cp-1 bd-light'>
@@ -67,7 +75,7 @@ const SizeColorChart = ({ purpose, sizes, cWays, gQtys }) => {
                   );
                })}
             </div>
-            <div style={breakDownTable}>
+            {/* <div style={breakDownTable}>
                {sizes.map((size) => (
                   <div
                      key={`Qty${size.id}`}
@@ -76,6 +84,30 @@ const SizeColorChart = ({ purpose, sizes, cWays, gQtys }) => {
                      {gQtys.map((gQty) => (
                         <Qty key={gQty.id} size={size} gQty={gQty} purpose={purpose} />
                      ))}
+                  </div>
+               ))}
+            </div> */}
+            <div style={breakDownTable}>
+               {sizes.map((size) => (
+                  <div
+                     key={`Qty${size.id}`}
+                     className='bd-cp-2-r-2px-dotted'
+                  >
+                     {cWays.map((cWay) => {
+
+                        return gQtys.map((gQty) => {
+
+                           if (gQty.size === size.id && gQty.cWay === cWay.id) {
+                              return (
+                                 <Qty key={gQty.id} size={size} gQty={gQty} purpose={purpose} />
+                              )
+                           }
+
+                        })
+
+                     }
+
+                     )}
                   </div>
                ))}
             </div>
