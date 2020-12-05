@@ -6,7 +6,8 @@ import ComRegister from './components/authPage/00_ComRegister';
 //Pages
 import MultipleLogin from './components/pages/MultipleLogin'
 import NotFound from './components/pages/NotFound';
-import ComManager from './components/pages/01_ComManager';
+import Entrance from './components/pages/00_entrance';
+// import ComManager from './components/pages/01_ComManager';
 import UserManager from './components/pages/11_UserManager';
 import Director from './components/pages/21_Director';
 import CaseMerchandiser from './components/pages/22_CaseMerchandiser';
@@ -65,6 +66,11 @@ const App = () => {
                                 <Navbar />
                                 <div>
                                   <Switch>
+                                    <Route
+                                      exact
+                                      path='/'
+                                      component={Entrance}
+                                    />
                                     <Route
                                       exact
                                       path='/registercom'

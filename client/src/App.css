@@ -115,6 +115,14 @@ img {
   width: 100%;
 }
 
+.backgroundImg {
+  background-image: url('../src/imgs/ilya-lix-_HQdgqULdAQ-unsplash.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  /* opacity: 1; */
+}
+
 /* @Utilities --------------------- */
 /* @container */
 .container {
@@ -1777,6 +1785,9 @@ input[type='submit']:focus {
 .h-80 {
   height: 80%;
 }
+.h-80vh {
+  height: 80vh;
+}
 .h-90 {
   height: 90%;
 }
@@ -1844,6 +1855,10 @@ input[type='submit']:focus {
 }
 .w-100 {
   width: 100%;
+}
+
+.w-100vw {
+  width: 100vw;
 }
 
 /* @background */
