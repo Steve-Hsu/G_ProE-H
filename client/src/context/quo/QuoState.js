@@ -18,6 +18,7 @@ import {
   UPDATE_ERROR,
   QUOFORM_REPLACE_ONE,
   DEFAULT,
+  MARGIN_MTRL,
 } from '../types';
 
 const QuoState = (props) => {
@@ -394,6 +395,7 @@ const QuoState = (props) => {
   const defaultQuo = () => {
     dispatch({ type: DEFAULT });
   }
+
   return (
     <QuoContext.Provider
       value={{
@@ -404,6 +406,7 @@ const QuoState = (props) => {
         quotation: state.quotation,
         currentQuoForm: state.currentQuoForm,
         quoError: state.quoError,
+        // marginOfMtrl: state.marginOfMtrl,
         // getCaseList,
         switchPage,
         switchQuoFormSelector,

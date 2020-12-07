@@ -10,6 +10,7 @@ import {
   SRPAGE_SWITCH,
   SRINQUIRY_SUPPLIER_UPDATE,
   TOGGLE_PRICELIST,
+  MARGIN_MTRL,
 } from '../types';
 
 export default (state, action) => {
@@ -90,6 +91,11 @@ export default (state, action) => {
       return {
         ...state,
         listWholePrice: !state.listWholePrice
+      }
+    case MARGIN_MTRL:
+      return {
+        ...state,
+        quoMarginOfMtrl: action.payload
       }
     default:
   }

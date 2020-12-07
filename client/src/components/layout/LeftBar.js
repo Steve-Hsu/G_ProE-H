@@ -47,7 +47,12 @@ const LeftBar = ({ currentPath }) => {
     merchandiser,
     // caseList,
   } = casesContext;
-  const { switchSrPage, currentSrPage, updateInquirySupplier, inquirySupplier, listWholePrice, togglePricingList } = srMtrlContext;
+  const { switchSrPage, currentSrPage,
+    updateInquirySupplier,
+    inquirySupplier,
+    listWholePrice,
+    togglePricingList,
+    quoMarginOfMtrl, changeMarginOfMtrl, applyMarginOfMtrl } = srMtrlContext;
   const {
     isQuotating,
     quotateFor,
@@ -700,6 +705,16 @@ const LeftBar = ({ currentPath }) => {
     )
   }
 
+  const onChangeQuoMtrlMargin = (e) => {
+    e.preventDefault()
+    changeMarginOfMtrl(e)
+  }
+
+  const onClickApplyingQuoMargin = (e) => {
+    e.preventDefault()
+    applyMarginOfMtrl()
+  }
+
 
   return (
     <div
@@ -902,8 +917,26 @@ const LeftBar = ({ currentPath }) => {
             )
             : null}
         {/* @Quotation Set */}
+        {quotateFor === 'material' ? (
+          <div className='round-area bd-light mt-1'>
+            <i className='fas fa-folder-plus mb-05'> % of Margin </i>
+            <input
+              type='number'
+              className='mb-05'
+              onChange={onChangeQuoMtrlMargin}
+              value={quoMarginOfMtrl || ''}
+            />
+            <button
+              className='btn bg-cp-2 btn-block bd-radius-s bd-light'
+              name='isEditingCase'
+              onClick={onClickApplyingQuoMargin}
+            >
+              Applying
+            </button>
+          </div>
+        ) : null}
         {
-          (currentPage =
+          (currentPage ===
             'quotation' && quotateFor === 'garment' ? (
               isQuotating === null || openQuoForm === null ? null : (
                 <div>

@@ -118,6 +118,7 @@ export default (state, action) => {
         ...state,
         quoError: action.payload
       }
+
     default:
   }
 };

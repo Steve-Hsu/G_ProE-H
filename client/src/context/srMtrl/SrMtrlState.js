@@ -14,6 +14,7 @@ import {
   SRPAGE_SWITCH,
   SRINQUIRY_SUPPLIER_UPDATE,
   TOGGLE_PRICELIST,
+  MARGIN_MTRL,
 } from '../types';
 
 const SrMtrlState = (props) => {
@@ -26,6 +27,7 @@ const SrMtrlState = (props) => {
     currentSrPage: null,
     inquirySupplier: null,
     listWholePrice: true,
+    quoMarginOfMtrl: 0,
   };
 
   const [state, dispatch] = useReducer(SrMtrlReducer, initialState);
@@ -408,6 +410,45 @@ const SrMtrlState = (props) => {
     dispatch({ type: TOGGLE_PRICELIST })
   }
 
+  const changeMarginOfMtrl = (e) => {
+    let num = Number(e.target.value) || 0
+    if (num < 0) num = 0
+    if (num > 1000) num = 999
+    dispatch({ type: MARGIN_MTRL, payload: num });
+  }
+
+  const applyMarginOfMtrl = () => {
+    const quoMarginOfMtrl = state.quoMarginOfMtrl
+    const newSrMtrls = srMtrls.map((srMtrl) => {
+      return new Promise((resolve) => {
+        if (srMtrl.mPrices.length > 0) {
+          srMtrl.mPrices.map((mP) => {
+            if (quoMarginOfMtrl && mP.mPrice) {
+              const newQuoMtrl = mP.mPrice + mP.mPrice / 100 * quoMarginOfMtrl
+              const roundQuo = Math.round((newQuoMtrl + Number.EPSILON) * 100) / 100
+              mP.quotation = roundQuo
+              console.log('the roundQuo', roundQuo)
+              console.log("srMtrl. quotatio", mP.quotation)
+              resolve()
+            } else {
+              resolve()
+            }
+          })
+        } else {
+          resolve()
+        }
+      })
+    })
+
+    Promise.all(newSrMtrls).then(() => {
+      console.log("the Promise all triggered")
+      dispatch({
+        type: SRMTRL_UPDATE,
+        payload: srMtrls,
+      });
+    })
+  }
+
   //@ Returns------------------------------------------------------
 
   return (
@@ -421,6 +462,7 @@ const SrMtrlState = (props) => {
         currentSrPage: state.currentSrPage,
         inquirySupplier: state.inquirySupplier,
         listWholePrice: state.listWholePrice,
+        quoMarginOfMtrl: state.quoMarginOfMtrl,
         getSrMtrls,
         updateSrMtrlByMtrl,
         deleteSRMtrlByMtrl,
@@ -439,6 +481,8 @@ const SrMtrlState = (props) => {
         switchSrPage,
         updateInquirySupplier,
         togglePricingList,
+        changeMarginOfMtrl,
+        applyMarginOfMtrl,
         // mtrlColorOption,
         // sizeSPECOption,
         // deletePrice,
