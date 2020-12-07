@@ -539,6 +539,10 @@ const PurState = (props) => {
 
   const addLeadTime = (caseMtrlId) => {
     let caseMtrl = currentOrderSummary.caseMtrls.find(({ _id }) => _id === caseMtrlId);
+    const currentSupplier = caseMtrl.supplier
+    const theSupplier = currentOrderSummary.suppliers.find(({ supplier }) => supplier === currentSupplier)
+    const theTranSitTime = Number(theSupplier.transitTime)
+    console.log(theTranSitTime)
     if (caseMtrl) {
       const totalMtrlQty = caseMtrl.purchaseQtySumUp + caseMtrl.purchaseLossQtySumUp + caseMtrl.purchaseMoqQty;
       let item = 'undefined';
@@ -546,25 +550,27 @@ const PurState = (props) => {
 
       const PoConfirmed = caseMtrl.price ? true : false;
       if (PoConfirmed) {
+        //Add new leadTime of the material
         const checkIfLTComplete = new Promise((resolve) => {
 
           let dateCounting = null;
           let date = null;
           if (caseMtrl.leadTimes.length === 0) {
-            let predictLeadTime = now.getTime() + 15 * 24 * 60 * 60 * 1000;
+            let predictLeadTime = now.getTime() + (17 + theTranSitTime) * 24 * 60 * 60 * 1000;
             if (caseMtrl.item) {
               item = caseMtrl.item.toLowerCase();
               switch (item) {
                 case 'fabric':
-                  predictLeadTime = now.getTime() + 32 * 24 * 60 * 60 * 1000;
+                  predictLeadTime = now.getTime() + (32 + theTranSitTime) * 24 * 60 * 60 * 1000;
                   break;
                 default:
-                  predictLeadTime = now.getTime() + 17 * 24 * 60 * 60 * 1000;
+                  predictLeadTime = now.getTime() + (17 + theTranSitTime) * 24 * 60 * 60 * 1000;
               }
             }
             dateCounting = new Date(predictLeadTime);
           } else {
             //Convert string back to Date in Number format.
+            //Add another leadTime for the same material
             const lastLeadTime = new Date(caseMtrl.leadTimes[caseMtrl.leadTimes.length - 1].date)
             const newDate = lastLeadTime.getTime() + 4 * 24 * 60 * 60 * 1000;
             dateCounting = new Date(newDate);
