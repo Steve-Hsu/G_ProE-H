@@ -5,6 +5,7 @@ import Spinner from '../layout/Spinner';
 
 //Alert
 import Alerts from '../layout/Alerts';
+import Navbar from '../layout/Navbar';
 
 const ComLogin = (props) => {
   const alertContext = useContext(AlertContext);
@@ -58,6 +59,7 @@ const ComLogin = (props) => {
   };
   return (
     <Fragment>
+      <Navbar />
       <div className='form-container'>
         {/* Applying spinner */}
         {token !== null && !loading ? (

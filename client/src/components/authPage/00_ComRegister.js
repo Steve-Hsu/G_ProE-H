@@ -1,6 +1,7 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, Fragment } from 'react';
 import AlertContext from '../../context/alert/alertContext';
 import AuthComContext from '../../context/authCom/authComContext';
+import Navbar from '../layout/Navbar'
 
 const ComRegister = (props) => {
   // Initialize Alert
@@ -68,79 +69,83 @@ const ComRegister = (props) => {
   };
 
   return (
-    <div className='form-container'>
-      <h1>
-        Account <span className='text-primary'>Register</span>
-      </h1>
-      <form onSubmit={onSubmit}>
-        {/* {Name} */}
-        <div className='form-group'>
-          <label htmlFor='name'>Name</label>
+    <Fragment>
+      <Navbar />
+      <div className='form-container'>
+        <h1>
+          Account <span className='text-primary'>Register</span>
+        </h1>
+        <form onSubmit={onSubmit}>
+          {/* {Name} */}
+          <div className='form-group'>
+            <label htmlFor='name'>Name</label>
+            <input
+              type='text'
+              name='comName'
+              value={comName}
+              onChange={onChange}
+            />
+          </div>
+          {/* {Company name tail, like Co.,Ltd, Ltd, etc.} */}
+          <div className='form-group'>
+            <label htmlFor='comNameTail'>Limited Company</label>
+            <input
+              type='text'
+              name='comNameTail'
+              value={comNameTail}
+              onChange={onChange}
+            />
+          </div>
+          {/* {Company Symbol, the symbol will be used in document numbering} */}
+          <div className='form-group'>
+            <label htmlFor='comSymbol'>ComSymbol</label>
+            <input
+              type='text'
+              name='comSymbol'
+              value={comSymbol}
+              onChange={onChange}
+            />
+          </div>
+          {/* {Email Address} */}
+          <div className='form-group'>
+            <label htmlFor='email'>Email Address</label>
+            <input type='email' name='email' value={email} onChange={onChange} />
+          </div>
+          {/* {Password} */}
+          <div className='form-group'>
+            <label htmlFor='password'>password</label>
+            <input
+              type='password'
+              name='password'
+              value={password}
+              onChange={onChange}
+            />
+          </div>
+          {/* {Password for confirm} */}
+          <div className='form-group'>
+            <label htmlFor='password2'>password2</label>
+            <input
+              type='password'
+              name='password2'
+              value={password2}
+              onChange={onChange}
+            />
+          </div>
+          {/* {Code for pass as a APP manager} */}
+          <div className='form-group'>
+            <label htmlFor='CODE'>CODE</label>
+            <input type='password' name='code' value={code} onChange={onChange} />
+          </div>
+          {/* Submit button */}
           <input
-            type='text'
-            name='comName'
-            value={comName}
-            onChange={onChange}
+            type='submit'
+            value='Register'
+            className='btn btn-primary btn-block'
           />
-        </div>
-        {/* {Company name tail, like Co.,Ltd, Ltd, etc.} */}
-        <div className='form-group'>
-          <label htmlFor='comNameTail'>Limited Company</label>
-          <input
-            type='text'
-            name='comNameTail'
-            value={comNameTail}
-            onChange={onChange}
-          />
-        </div>
-        {/* {Company Symbol, the symbol will be used in document numbering} */}
-        <div className='form-group'>
-          <label htmlFor='comSymbol'>ComSymbol</label>
-          <input
-            type='text'
-            name='comSymbol'
-            value={comSymbol}
-            onChange={onChange}
-          />
-        </div>
-        {/* {Email Address} */}
-        <div className='form-group'>
-          <label htmlFor='email'>Email Address</label>
-          <input type='email' name='email' value={email} onChange={onChange} />
-        </div>
-        {/* {Password} */}
-        <div className='form-group'>
-          <label htmlFor='password'>password</label>
-          <input
-            type='password'
-            name='password'
-            value={password}
-            onChange={onChange}
-          />
-        </div>
-        {/* {Password for confirm} */}
-        <div className='form-group'>
-          <label htmlFor='password2'>password2</label>
-          <input
-            type='password'
-            name='password2'
-            value={password2}
-            onChange={onChange}
-          />
-        </div>
-        {/* {Code for pass as a APP manager} */}
-        <div className='form-group'>
-          <label htmlFor='CODE'>CODE</label>
-          <input type='password' name='code' value={code} onChange={onChange} />
-        </div>
-        {/* Submit button */}
-        <input
-          type='submit'
-          value='Register'
-          className='btn btn-primary btn-block'
-        />
-      </form>
-    </div>
+        </form>
+      </div>
+
+    </Fragment>
   );
 };
 

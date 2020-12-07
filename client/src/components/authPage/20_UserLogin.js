@@ -1,10 +1,11 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, Fragment } from 'react';
 import AlertContext from '../../context/alert/alertContext';
 import AuthUserContext from '../../context/authUser/authUserContext';
 import TestCodeBtn from '../elements/btns/TestCodeBtn';
 
 //Alert
 import Alerts from '../layout/Alerts';
+import Navbar from '../layout/Navbar';
 
 const UserLogin = (props) => {
   const alertContext = useContext(AlertContext);
@@ -50,63 +51,67 @@ const UserLogin = (props) => {
     console.log('Login submit');
   };
   return (
-    <div className='form-container'>
-      <div className='mb-3'>
-        <h1>
-          User <span>Lo</span>
-          <span className='fc-cp-2'>g</span>
-          <span >i</span>
-          <span className='fc-gray-5'>n</span>
-        </h1>
+    <Fragment>
+
+      <Navbar />
+      <div className='form-container'>
+        <div className='mb-3'>
+          <h1>
+            User <span>Lo</span>
+            <span className='fc-cp-2'>g</span>
+            <span >i</span>
+            <span className='fc-gray-5'>n</span>
+          </h1>
+        </div>
+
+        <form onSubmit={onSubmit}>
+          {/* {Email Address} */}
+          <div>
+            <input
+              id='userEmail'
+              type='email'
+              name='email'
+              value={email}
+              onChange={onChange}
+              placeholder='.'
+              className='MPH-input'
+              maxLength='100'
+              required
+            />
+            <label htmlFor='userEmail' className='MPH-input-label'>
+              Email Address
+          </label>
+          </div>
+          {/* {Password} */}
+          <div>
+            <input
+              id='userPassword'
+              type='password'
+              name='password'
+              value={password}
+              onChange={onChange}
+              placeholder='.'
+              className='MPH-input'
+              maxLength='50'
+              required
+            />
+            <label htmlFor='userPassword' className='MPH-input-label'>
+              Password
+          </label>
+          </div>
+
+          {/* Submit button */}
+          <input
+            type='submit'
+            value='Login'
+            className='btn  btn-block mb-05'
+            style={{ height: '2rem' }}
+          />
+          {/* <TestCodeBtn /> */}
+          <Alerts />
+        </form>
       </div>
-
-      <form onSubmit={onSubmit}>
-        {/* {Email Address} */}
-        <div>
-          <input
-            id='userEmail'
-            type='email'
-            name='email'
-            value={email}
-            onChange={onChange}
-            placeholder='.'
-            className='MPH-input'
-            maxLength='100'
-            required
-          />
-          <label htmlFor='userEmail' className='MPH-input-label'>
-            Email Address
-          </label>
-        </div>
-        {/* {Password} */}
-        <div>
-          <input
-            id='userPassword'
-            type='password'
-            name='password'
-            value={password}
-            onChange={onChange}
-            placeholder='.'
-            className='MPH-input'
-            maxLength='50'
-            required
-          />
-          <label htmlFor='userPassword' className='MPH-input-label'>
-            Password
-          </label>
-        </div>
-
-        {/* Submit button */}
-        <input
-          type='submit'
-          value='Login'
-          className='btn  btn-block mb-05'
-          style={{ height: '2rem' }}
-        />
-        {/* <TestCodeBtn /> */}
-        <Alerts />
-      </form>
-    </div>
+    </Fragment>
   );
 };
 
