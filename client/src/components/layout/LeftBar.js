@@ -919,7 +919,7 @@ const LeftBar = ({ currentPath }) => {
         {/* @Quotation Set */}
         {quotateFor === 'material' ? (
           <div className='round-area bd-light mt-1'>
-            <i className='fas fa-folder-plus mb-05'> % of Margin </i>
+            <i className='fas fa-dollar-sign mb-05'> Margin %</i>
             <input
               type='number'
               className='mb-05'
@@ -931,7 +931,7 @@ const LeftBar = ({ currentPath }) => {
               name='isEditingCase'
               onClick={onClickApplyingQuoMargin}
             >
-              Applying
+              Apply to all prices
             </button>
           </div>
         ) : null}
