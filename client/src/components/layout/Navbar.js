@@ -62,9 +62,9 @@ const Navbar = (props) => {
       onLogout()
       console.log("hte timeout", props)
       // props.history.push('/multipleloging');
-    }, 36000)
+    }, 36000000)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [au.isAuthenticated])
 
   const onLogout = () => {
     acom.logoutCom();
