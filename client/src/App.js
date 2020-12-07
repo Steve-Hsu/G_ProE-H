@@ -47,7 +47,7 @@ if (localStorage.token) {
   setAuthToken(localStorage.token);
 }
 
-const App = () => {
+const App = (props) => {
   return (
     <AuthComState>
       <ComState>
@@ -63,7 +63,7 @@ const App = () => {
                           <PopoverState>
                             <Router>
                               <Fragment>
-                                <Navbar />
+                                {/* <Navbar /> */}
                                 <div>
                                   <Switch>
                                     <Route

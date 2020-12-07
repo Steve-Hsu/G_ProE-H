@@ -12,6 +12,7 @@ import DeletePopover from '../../components/layout/DeletePopover';
 import OsSelector from '../../components/50_po/50_02_osSelector';
 import OrderSummary from '../50_po/50_03_orderSummary';
 import CompleteSetPage from '../60_completeSet/60_01_completeSetPage'
+import Navbar from '../layout/Navbar';
 
 const CompleteSet = (props) => {
    const currentPath = props.location.pathname;
@@ -60,6 +61,7 @@ const CompleteSet = (props) => {
 
    return (
       <Fragment >
+         <Navbar />
          {popover === true || isLoading === true || csError !== null ? <DeletePopover key='cspopover' current={current} props={props} /> : null}
          <form id='updateCompleteSet' onSubmit={submit}></form>
          {csPage === 'osSelector' ? (

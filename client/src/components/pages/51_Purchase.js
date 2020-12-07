@@ -13,6 +13,7 @@ import GoBackBtn from '../elements/btns/GoBackBtn';
 import PurContext from '../../context/pur/purContext';
 import DeletePopover from '../../components/layout/DeletePopover';
 import PopoverContext from '../../context/popover/popoverContext';
+import Navbar from '../layout/Navbar';
 
 const Purchase = (props) => {
   const purContext = useContext(PurContext);
@@ -71,6 +72,7 @@ const Purchase = (props) => {
 
   return (
     <Fragment>
+      <Navbar />
       {/* Grid-1 */}
       {openPage === 'caseSelector' ? (
         <div className='grid-1-4'>

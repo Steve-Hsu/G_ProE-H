@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { Fragment } from 'react';
+import Navbar from '../layout/Navbar'
 
 export const NotFound = () => {
   return (
-    <div className='container container-with-navbar'>
-      <h1>Not Found</h1>
-      <p className='lead'>The page you are looking for dose not exist.</p>
-    </div>
+    <Fragment>
+      <Navbar />
+      <div className='container container-with-navbar'>
+        <h1>Not Found</h1>
+        <p className='lead'>The page you are looking for dose not exist.</p>
+      </div>
+    </Fragment>
+
   );
 };
 

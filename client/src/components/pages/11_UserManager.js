@@ -3,6 +3,7 @@ import Users from '../10_users/Users';
 import UserForm from '../10_users/UserForm';
 import UserFilter from '../10_users/UserFilter';
 import UserLossSetting from '../10_users/UserLossSetting';
+import Navbar from '../layout/Navbar'
 
 //Alerts
 import Alerts from '../layout/Alerts';
@@ -10,6 +11,7 @@ import Alerts from '../layout/Alerts';
 export const UserManager = () => {
   return (
     <Fragment>
+      <Navbar />
       <div className='h-center-content'>
         <div className='w-80 px-1 container-with-navbar flexBox h-100vh'>
           {/* <div className='grid-2'> */}

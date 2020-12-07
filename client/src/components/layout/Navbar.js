@@ -38,6 +38,9 @@ const Navbar = (props) => {
   const cs = completeSetContext;
 
 
+  // const currentPath = props.location
+  // console.log("the props of navbar", props)
+
   useEffect(() => {
     if (c.isUpdated && sm.isUpdated) {
       // Turn the isUpdated in cases and srMtrl false 3 seconds later
@@ -59,7 +62,7 @@ const Navbar = (props) => {
       onLogout()
       console.log("hte timeout", props)
       // props.history.push('/multipleloging');
-    }, 3000)
+    }, 36000)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -135,6 +138,7 @@ const Navbar = (props) => {
         ? updateNotice('Upload succeed')
         : null} */}
 
+      {/* {currentPath === '/' ? null : ( */}
       <ul>
         {acom.isAuthenticated !== true && au.isAuthenticated !== true
           ? guestLinks
@@ -142,6 +146,8 @@ const Navbar = (props) => {
         {acom.isAuthenticated ? authComLinks : null}
         {au.isAuthenticated ? authUserLinks : null}
       </ul>
+      {/* // )} */}
+
     </div>
   );
 };

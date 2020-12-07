@@ -10,6 +10,7 @@ import QuoContext from '../../context/quo/quoContext';
 import PurContext from '../../context/pur/purContext';
 import CompleteSetContext from '../../context/completeSet/completeSetContext';
 import PopoverContext from '../../context/popover/popoverContext';
+import Navbar from '../layout/Navbar';
 
 
 export const Director = (props) => {
@@ -126,6 +127,7 @@ export const Director = (props) => {
 
   return (
     <Fragment>
+      <Navbar />
       {/* content */}
       <div className='h-center-content h-100vh '>
         <div className='container container-with-navbar w-100 overflow-auto'>

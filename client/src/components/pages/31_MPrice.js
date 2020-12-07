@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, Fragment } from 'react';
 
 // Components
 import LeftBar from '../layout/LeftBar';
@@ -9,6 +9,7 @@ import ItemSelector from '../itemSelector/ItemSelector';
 import SrMtrlContext from '../../context/srMtrl/srMtrlContext';
 // import DeletePopover from '../layout/DeletePopover';
 import PopoverContext from '../../context/popover/popoverContext';
+import Navbar from '../layout/Navbar';
 
 export const MPrice = (props) => {
   const srMtrlContext = useContext(SrMtrlContext);
@@ -43,27 +44,32 @@ export const MPrice = (props) => {
   }
 
   return (
-    <div className='grid-1-4'>
-      {/* Grid-1 */}
-      <LeftBar currentPath={currentPath} />
+    <Fragment>
+      <Navbar />
+      <div className='grid-1-4'>
+        {/* Grid-1 */}
+        <LeftBar currentPath={currentPath} />
 
-      {/* Grid-2 */}
-      {currentSrPage === null ? (
-        <form id='srMtrlForm' onSubmit={onSubmitSrMtrl}>
-          {' '}
-          <ItemSelector
-            purpose='srMtrlSelector'
-            props={props}
-            currentPath={currentPath}
-          />
-        </form>
-      ) : (
-          <div className='container container-with-navbar whenPrint pb-1'>
-            <GoBackBtn onClick={goBack} />
-            <InquiryForm />
-          </div>
-        )}
-    </div>
+        {/* Grid-2 */}
+        {currentSrPage === null ? (
+          <form id='srMtrlForm' onSubmit={onSubmitSrMtrl}>
+            {' '}
+            <ItemSelector
+              purpose='srMtrlSelector'
+              props={props}
+              currentPath={currentPath}
+            />
+          </form>
+        ) : (
+            <div className='container container-with-navbar whenPrint pb-1'>
+              <GoBackBtn onClick={goBack} />
+              <InquiryForm />
+            </div>
+          )}
+      </div>
+
+    </Fragment>
+
   );
 };
 
