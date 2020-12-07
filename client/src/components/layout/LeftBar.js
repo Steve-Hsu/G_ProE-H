@@ -1004,9 +1004,9 @@ const LeftBar = ({ currentPath }) => {
                     className='mb-05'
                     name='transitTime'
                     onChange={onChangeApplyingQuoMargin}
-                    value={currentPo.transitTime || ''}
+                    value={currentPo.newTransitTime || ''}
                   />) : (
-                      <div>{currentPo.transitTime}</div>
+                      <div>{currentPo.newTransitTime}</div>
                     )}
                   {currentPo.poConfirmDate === null ? (
                     <button

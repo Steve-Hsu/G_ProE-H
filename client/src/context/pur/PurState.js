@@ -141,6 +141,7 @@ const PurState = (props) => {
         break;
       case 'purchaseOrder':
         const subject = value2;
+        subject.newTransitTime = subject.transitTime
         dispatch({ type: PURPAGE_SWITCH, payload: value });
         dispatch({ type: PO_CURRENT, payload: subject });
         break;
@@ -303,11 +304,12 @@ const PurState = (props) => {
         const transitTime = num <= 0 ?
           0 : num > 1000 ?
             999 : num
-        subject[nameOfTarget] = transitTime;
+        // subject[nameOfTarget] = transitTime;
+        subject.newTransitTime = transitTime;
         break;
       default:
     }
-
+    // subject.newTransitTime = subject.transitTime
     dispatch({ type: PO_CURRENT, payload: subject });
   };
 
@@ -349,6 +351,7 @@ const PurState = (props) => {
         console.log('Upload condition succeed');
         const theSuppliers = res.data.suppliers;
         const subject = theSuppliers.find(({ _id }) => _id === currentPoId);
+        subject.newTransitTime = subject.transitTime
         dispatch({ type: UPDATE_SUPPLIERS, payload: theSuppliers });
         dispatch({ type: PO_CURRENT, payload: subject });
         dispatch({ type: OS_CURRENT, payload: res.data });
@@ -367,7 +370,7 @@ const PurState = (props) => {
       var date = Date.now();
       subject.poConfirmDate = date;
     }
-
+    subject.newTransitTime = subject.transitTime
     dispatch({ type: PO_CURRENT, payload: subject });
   };
 
@@ -433,6 +436,7 @@ const PurState = (props) => {
       const totalFigure = result[0];
       const subject = currentPo;
       subject.poTotalFigure = totalFigure;
+      subject.newTransitTime = subject.transitTime
       dispatch({ type: PO_CURRENT, payload: subject });
     });
   };

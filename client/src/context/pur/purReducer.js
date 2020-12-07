@@ -72,10 +72,20 @@ export default (state, action) => {
         currentOrderSummary: action.payload,
       };
     case PO_CURRENT:
+      console.log(action.payload)
+      console.log(typeof action.payload)
+      console.log(action.payload ? action.payload.transitTime : 'no payload')
       return {
         ...state,
         currentPo: action.payload,
       };
+    // return {
+    //   ...state,
+    //   currentPo: {
+    //     ...action.payload,
+    //     // newTransitTime: action.payload.transitTime
+    //   },
+    // };
     case PO_CURRENT_MTRLPRICE:
       return {
         ...state,
