@@ -61,7 +61,7 @@ const LeftBar = ({ currentPath }) => {
     currentQuoForm,
     downLoadmtrlPrice,
   } = quoContext;
-  const { openPage, togglePoConfirmDate, currentPo, selectedCases, osList, } = purContext;
+  const { openPage, togglePoConfirmDate, currentPo, selectedCases, osList, updatePOInform } = purContext;
   const { csPage, setNewCsOrder, newCsOrder, csError } = completeSetContext;
   const { toggleLoading } = popoverContext;
 
@@ -715,6 +715,11 @@ const LeftBar = ({ currentPath }) => {
     applyMarginOfMtrl()
   }
 
+  const onChangeApplyingQuoMargin = (e) => {
+    e.preventDefault()
+    // e.target.name = 'transitTime'
+    updatePOInform(e)
+  }
 
   return (
     <div
@@ -917,24 +922,25 @@ const LeftBar = ({ currentPath }) => {
             )
             : null}
         {/* @Quotation Set */}
-        {quotateFor === 'material' ? (
-          <div className='round-area bd-light mt-1'>
-            <i className='fas fa-dollar-sign mb-05'> Margin %</i>
-            <input
-              type='number'
-              className='mb-05'
-              onChange={onChangeQuoMtrlMargin}
-              value={quoMarginOfMtrl || ''}
-            />
-            <button
-              className='btn bg-cp-2 btn-block bd-radius-s bd-light'
-              name='isEditingCase'
-              onClick={onClickApplyingQuoMargin}
-            >
-              Apply to all prices
+        {currentPage ===
+          'quotation' && quotateFor === 'material' ? (
+            <div className='round-area bd-light mt-1'>
+              <i className='fas fa-dollar-sign mb-05'> Margin %</i>
+              <input
+                type='number'
+                className='mb-05'
+                onChange={onChangeApplyingQuoMargin}
+                value={quoMarginOfMtrl || ''}
+              />
+              <button
+                className='btn bg-cp-2 btn-block bd-radius-s bd-light'
+                // name='isEditingCase'
+                onClick={onClickApplyingQuoMargin}
+              >
+                Apply to all prices
             </button>
-          </div>
-        ) : null}
+            </div>
+          ) : null}
         {
           (currentPage ===
             'quotation' && quotateFor === 'garment' ? (
@@ -990,6 +996,30 @@ const LeftBar = ({ currentPath }) => {
           (currentPath === '/api/purchase' && openPage === 'oSMtrlList') ? (
             <Fragment>
               {printOutElement()}
+              {openPage === 'purchaseOrder' ? (
+                <div className='round-area bd-light mt-1 mb-05'>
+                  <i className='fas fa-dolly-flatbed mb-05'> {` Transit Time (day)`}</i>
+                  {currentPo.poConfirmDate === null ? (<input
+                    type='number'
+                    className='mb-05'
+                    name='transitTime'
+                    onChange={onChangeApplyingQuoMargin}
+                    value={currentPo.transitTime || ''}
+                  />) : (
+                      <div>{currentPo.transitTime}</div>
+                    )}
+                  {currentPo.poConfirmDate === null ? (
+                    <button
+                      className='btn bg-cp-2 btn-block bd-radius-s bd-light'
+                      name='trainsitTime'
+                      onClick={null}
+                    >
+                      Update
+                    </button>
+                  ) : null}
+
+                </div>
+              ) : null}
               {openPage === 'purchaseOrder' ?
                 confirmArea('Confrim the PO', 'PO Has Confirmed', 'Not Confirmed', currentPo.poConfirmDate, togglePoConfirmDate)
                 : null}

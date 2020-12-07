@@ -60,6 +60,10 @@ const OSSchema = mongoose.Schema({
         type: Date,
         default: null,
       },
+      transitTime: {
+        type: Number,
+        default: 2
+      }
     },
   ],
   caseMtrls: [

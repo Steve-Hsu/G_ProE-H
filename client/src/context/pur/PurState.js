@@ -298,6 +298,13 @@ const PurState = (props) => {
       case 'tel':
         subject[nameOfTarget] = value;
         break;
+      case 'transitTime':
+        const num = Number(value)
+        const transitTime = num <= 0 ?
+          0 : num > 1000 ?
+            999 : num
+        subject[nameOfTarget] = transitTime;
+        break;
       default:
     }
 
