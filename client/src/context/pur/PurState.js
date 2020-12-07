@@ -334,6 +334,9 @@ const PurState = (props) => {
       priceList: priceList,
       inputCaseMtrls: inputCaseMtrls,
     };
+
+
+
     try {
       const res = await axios.post(
         `/api/purchase/purchaseorder/${osId}`,
