@@ -10,6 +10,13 @@ const Entrance = (props) => {
         <div className='container-with-navbar backgroundImg h-100vh w-100vw  '>
             <div className='grid-2'>
                 <div>
+                    <div style={{ position: 'absolute', top: '0.5rem', left: '2.2rem' }}>
+                        <h1 className='syen-regular'>
+                            <span className='fc-cp-2'>G</span><span >-Pro</span>
+                            <span className='fc-gray-5 '>E</span>
+                        </h1>
+                    </div>
+
                 </div>
                 <div style={{ display: 'grid', placeItems: 'center start', opacity: '1' }} className='h-80vh'>
                     <div className='fs-lead' style={{ lineHeight: '200%' }}>
