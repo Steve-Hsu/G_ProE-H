@@ -19,14 +19,14 @@ const Entrance = (props) => {
 
                 </div>
                 <div style={{ display: 'grid', placeItems: 'center start', opacity: '1' }} className='h-80vh'>
-                    <div className='fs-lead bg-blurGlass round-area' style={{ lineHeight: '200%' }}>
+                    <div className='fs-lead bg-blurGlass round-area' style={{ lineHeight: '200%', padding: '10px 20px' }}>
                         {/* A shortcut from making BOM to order summary. */}
                         <div className='fs-small'>App for garment industry</div>
                         <div className='fs-large fw-bold syen-regular'>
                             Simplify the process from BOM to PO.
                         </div>
                         <div>
-                            <a onClick={goDirector} className='cursor'>
+                            <a onClick={goDirector} className='cursor hover-shadow'>
                                 <i className='fas fa-sign-out-alt'></i>{' '}
                                 <span className='hide-lg'>Get Start</span>
                             </a>
