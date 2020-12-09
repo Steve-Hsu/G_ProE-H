@@ -21,7 +21,7 @@ const Entrance = (props) => {
                 <div style={{ display: 'grid', placeItems: 'center start', opacity: '1' }} className='h-80vh'>
                     <div className='fs-lead' style={{ lineHeight: '200%' }}>
                         {/* A shortcut from making BOM to order summary. */}
-
+                        <div className='fs-small'>App for garment industry</div>
                         <div className='fs-large fw-bold syen-regular'>
                             Simplify the process from BOM to PO.
                         </div>
