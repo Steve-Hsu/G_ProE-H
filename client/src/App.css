@@ -1330,6 +1330,17 @@ input[type='submit']:focus {
   overflow-y: auto;
 }
 
+/* The scrollbar for OverFlow */
+::-webkit-scrollbar {
+  width: 2px;
+}
+::-webkit-scrollbar-track {
+}
+::-webkit-scrollbar-thumb {
+}
+::-webkit-scrollbar-thumb-hover {
+}
+
 /* @Position */
 /* .center {
   position: absolute;
