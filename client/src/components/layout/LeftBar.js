@@ -367,15 +367,15 @@ const LeftBar = ({ currentPath }) => {
             className='h-center-content'
           />
         ) : (
-            <LockedBadge
-              labels={[notConfirmedLabel]}
-              style={{
-                background: 'var(--fade-color)',
-                marginTop: '0.5rem',
-              }}
-              className='h-center-content'
-            />
-          )}
+          <LockedBadge
+            labels={[notConfirmedLabel]}
+            style={{
+              background: 'var(--fade-color)',
+              marginTop: '0.5rem',
+            }}
+            className='h-center-content'
+          />
+        )}
         <div className='h-scatter-content mt-05'>
           <div></div>
           <SqBtnLarge onClick={onClick} label='Confirme' />
@@ -748,14 +748,14 @@ const LeftBar = ({ currentPath }) => {
           caseConfirmDate === null &&
           showMtrlCard === false &&
           isEditingCase === true ? (
-              normalSummitBtn()
-            ) : currentPage === 'case' &&
-              osNo === null &&
-              merchandiser === userName &&
-              showMtrlCard === false &&
-              isEditingCase === true ? (
-                normalSummitBtn()
-              ) : null}
+          normalSummitBtn()
+        ) : currentPage === 'case' &&
+          osNo === null &&
+          merchandiser === userName &&
+          showMtrlCard === false &&
+          isEditingCase === true ? (
+          normalSummitBtn()
+        ) : null}
         {/*Submit BTN srMtr Set */}
         {currentPage === 'mprice' && currentSrPage === null ? normalSummitBtn() : null}
         {/*Submit BTN quotation Set */}
@@ -783,72 +783,72 @@ const LeftBar = ({ currentPath }) => {
             {showMtrlCard ? (
               printOutElement()
             ) : (
-                <div>
-                  {' '}
-                  {osNo || caseConfirmDate ? null : (
-                    <div>
-                      {currentPage === 'case' ? (
-                        isImportedExcel ? (
-                          <div className='btn-block bd-radius-s bg-cp-2-light-c center-content mt-1'>
-                            Have imported Style from Excel
-                          </div>
-                        ) : (
-                            <div className='round-area bg-cp-3 mt-1'>
-                              <i className='fas fa-table fc-cp-1'>
-                                {' '}
+              <div>
+                {' '}
+                {osNo || caseConfirmDate ? null : (
+                  <div>
+                    {currentPage === 'case' ? (
+                      isImportedExcel ? (
+                        <div className='btn-block bd-radius-s bg-cp-2-light-c center-content mt-1'>
+                          Have imported Style from Excel
+                        </div>
+                      ) : (
+                        <div className='round-area bg-cp-3 mt-1'>
+                          <i className='fas fa-table fc-cp-1'>
+                            {' '}
                             Read Bom from Excel
                           </i>
-                              <label className='btn btn-block mt-05 bd-radius-s bd-light bg-cp-1 fs-small'>
-                                <input
-                                  type='file'
-                                  id='upload-excel'
-                                  name='inputFileName'
-                                  accept='.xls, .xlsx'
-                                  style={{
-                                    position: 'fixed',
-                                    right: '100%',
-                                    bottom: '100%',
-                                  }}
-                                  onChange={labelOfReadExcel}
-                                />
-                                {excelName.length > 0 ? String(excelName) : null}
-                                {inputFileName}
-                              </label>
-                              {inputFileName == 'Select a File...' ? null : (
-                                <button
-                                  className='btn btn-block mt-05 h-100 bd-radius-s bd-light bg-cp-2'
-                                  onClick={readExcel}
-                                >
-                                  Read
-                                </button>
-                              )}
-                            </div>
-                          )
-                      ) : null}
-                      <div className='h-scatter-content mt-1'>
-                        <div> Color Way</div>
-                        <SqBtnLarge
-                          label={<i className='fas fa-swatchbook'> Color ＋</i>}
-                          onClick={addcWay}
-                        />
-                      </div>
-                      <div className='h-scatter-content mt-05'>
-                        <div>Size </div>
-                        <SqBtnLarge
-                          label={<i className='fas fa-ruler'> Size ＋</i>}
-                          onClick={addSize}
-                        />
-                      </div>
-                      <div className='h-scatter-content mt-05'>
-                        <div>Material</div>
-                        <SqBtnLarge
-                          label={<i className='fab fa-buffer '> Item ＋</i>}
-                          onClick={addMtrl}
-                        />
-                      </div>
+                          <label className='btn btn-block mt-05 bd-radius-s bd-light bg-cp-1 fs-small'>
+                            <input
+                              type='file'
+                              id='upload-excel'
+                              name='inputFileName'
+                              accept='.xls, .xlsx'
+                              style={{
+                                position: 'fixed',
+                                right: '100%',
+                                bottom: '100%',
+                              }}
+                              onChange={labelOfReadExcel}
+                            />
+                            {excelName.length > 0 ? String(excelName) : null}
+                            {inputFileName}
+                          </label>
+                          {inputFileName == 'Select a File...' ? null : (
+                            <button
+                              className='btn btn-block mt-05 h-100 bd-radius-s bd-light bg-cp-2'
+                              onClick={readExcel}
+                            >
+                              Read
+                            </button>
+                          )}
+                        </div>
+                      )
+                    ) : null}
+                    <div className='h-scatter-content mt-1'>
+                      <div> Color Way</div>
+                      <SqBtnLarge
+                        label={<i className='fas fa-swatchbook'> Color ＋</i>}
+                        onClick={addcWay}
+                      />
                     </div>
-                  )}
-                  {/* <div>
+                    <div className='h-scatter-content mt-05'>
+                      <div>Size </div>
+                      <SqBtnLarge
+                        label={<i className='fas fa-ruler'> Size ＋</i>}
+                        onClick={addSize}
+                      />
+                    </div>
+                    <div className='h-scatter-content mt-05'>
+                      <div>Material</div>
+                      <SqBtnLarge
+                        label={<i className='fab fa-buffer '> Item ＋</i>}
+                        onClick={addMtrl}
+                      />
+                    </div>
+                  </div>
+                )}
+                {/* <div>
                   {cNo === null ? null : (
                     <input
                       type='submit'
@@ -859,33 +859,33 @@ const LeftBar = ({ currentPath }) => {
                     />
                   )}
                 </div> */}
-                  {/* <div> */}
-                  {cNo === null ? null : (
+                {/* <div> */}
+                {cNo === null ? null : (
 
-                    <div>
-                      {merchandiser === userName ? osNo === null ? (<div className='mt-1'>
-                        {confirmArea('Confirm the Case', 'Case is Confirmed', 'Not Confirmed', caseConfirmDate, toggleCaseConfirmDate)}
-                      </div>) : null : null}
+                  <div>
+                    {merchandiser === userName ? osNo === null ? (<div className='mt-1'>
+                      {confirmArea('Confirm the Case', 'Case is Confirmed', 'Not Confirmed', caseConfirmDate, toggleCaseConfirmDate)}
+                    </div>) : null : null}
 
-                      <input
-                        type='submit'
-                        // form='caseForm'
-                        className='btn btn-block bg-cp-1 mt-1 hover-cp-2'
-                        value='Material Card'
-                        onClick={onClick2}
-                      />
-                      <input
-                        type='submit'
-                        // form='caseForm'
-                        className='btn btn-block bg-cp-1 mt-1 hover-cp-2'
-                        value='Copy this case as a new Case'
-                        onClick={onClick}
-                      />
-                    </div>
-                  )}
-                  {/* </div> */}
-                </div>
-              )}
+                    <input
+                      type='submit'
+                      // form='caseForm'
+                      className='btn btn-block bg-cp-1 mt-1 hover-cp-2'
+                      value='Material Card'
+                      onClick={onClick2}
+                    />
+                    <input
+                      type='submit'
+                      // form='caseForm'
+                      className='btn btn-block bg-cp-1 mt-1 hover-cp-2'
+                      value='Copy this case as a new Case'
+                      onClick={onClick}
+                    />
+                  </div>
+                )}
+                {/* </div> */}
+              </div>
+            )}
           </>
         ) : null}
         {/* @SrMtrl Set */}
@@ -911,139 +911,139 @@ const LeftBar = ({ currentPath }) => {
             </div>
           ) : currentPage ===
             'mprice' && currentSrPage === 'inquiryPage' ? (
-              <Fragment>
-                {printOutElement()}
-                <div className='w-100 round-area bd-light'>
-                  <TopLabelTiny label='Show All Prices' />
-                  <ToggleSwitch checked={listWholePrice} onChange={togglePricingList} onLabel='On' offLabel='Off' />
-                </div>
+            <Fragment>
+              {printOutElement()}
+              <div className='w-100 round-area bd-light'>
+                <TopLabelTiny label='Show All Prices' />
+                <ToggleSwitch checked={listWholePrice} onChange={togglePricingList} onLabel='On' offLabel='Off' />
+              </div>
 
-              </Fragment>
-            )
+            </Fragment>
+          )
             : null}
         {/* @Quotation Set */}
         {currentPage ===
           'quotation' && quotateFor === 'material' ? (
-            <div className='round-area bd-light mt-1'>
-              <i className='fas fa-dollar-sign mb-05'> Margin %</i>
-              <input
-                type='number'
-                className='mb-05'
-                onChange={onChangeApplyingQuoMargin}
-                value={quoMarginOfMtrl || ''}
-              />
-              <button
-                className='btn bg-cp-2 btn-block bd-radius-s bd-light'
-                // name='isEditingCase'
-                onClick={onClickApplyingQuoMargin}
-              >
-                Apply to all prices
+          <div className='round-area bd-light mt-1'>
+            <i className='fas fa-dollar-sign mb-05'> Margin %</i>
+            <input
+              type='number'
+              className='mb-05'
+              onChange={onChangeQuoMtrlMargin}
+              value={quoMarginOfMtrl || ''}
+            />
+            <button
+              className='btn bg-cp-2 btn-block bd-radius-s bd-light'
+              // name='isEditingCase'
+              onClick={onClickApplyingQuoMargin}
+            >
+              Apply to all prices
             </button>
-            </div>
-          ) : null}
+          </div>
+        ) : null}
         {
           (currentPage ===
             'quotation' && quotateFor === 'garment' ? (
-              isQuotating === null || openQuoForm === null ? null : (
-                <div>
-                  {' '}
-                  {printOutElement()}
-                  <div className='round-area bd-light bg-cp-3 noPrint mb-05'>
-                    <i className='fas fa-calculator fc-cp-1 mb-05'>
-                      {' '}
+            isQuotating === null || openQuoForm === null ? null : (
+              <div>
+                {' '}
+                {printOutElement()}
+                <div className='round-area bd-light bg-cp-3 noPrint mb-05'>
+                  <i className='fas fa-calculator fc-cp-1 mb-05'>
+                    {' '}
                       Get the suggested Price
                     </i>
-                    <div className='round-area bd-light bg-cp-1 mb-05'>
-                      Select Size
+                  <div className='round-area bd-light bg-cp-1 mb-05'>
+                    Select Size
                       {theCase ? (
-                        <SizeSelector
-                          sizes={theCase.sizes ? theCase.sizes : []}
-                          className='noPrint'
-                        />
-                      ) : null}
-                    </div>
-                    <div className='round-area bd-light bg-cp-1 mb-05'>
-                      Select color Way
+                      <SizeSelector
+                        sizes={theCase.sizes ? theCase.sizes : []}
+                        className='noPrint'
+                      />
+                    ) : null}
+                  </div>
+                  <div className='round-area bd-light bg-cp-1 mb-05'>
+                    Select color Way
                       {theCase ? (
-                        <CWaySelector
-                          cWays={theCase.cWays ? theCase.cWays : []}
-                          className='noPrint'
-                        />
-                      ) : null}
-                    </div>
-                    <button
-                      name='quotationBtn'
-                      value={currentQuoForm._id}
-                      onClick={onClickQuo}
-                      className='btn bg-cp-2 btn-block bd-radius-s bd-light'
-                    >
-                      Price suggestion
+                      <CWaySelector
+                        cWays={theCase.cWays ? theCase.cWays : []}
+                        className='noPrint'
+                      />
+                    ) : null}
+                  </div>
+                  <button
+                    name='quotationBtn'
+                    value={currentQuoForm._id}
+                    onClick={onClickQuo}
+                    className='btn bg-cp-2 btn-block bd-radius-s bd-light'
+                  >
+                    Price suggestion
                     </button>
-                    {/* <SqBtnLarge
+                  {/* <SqBtnLarge
                       name='quotationBtn'
                       value={currentQuoForm._id}
                       onClick={onClickQuo}
                       label='Price suggestion'
                       className='noPrint w-15vw mb-05 '
                     /> */}
-                  </div>
                 </div>
-              )
-            ) : null)
+              </div>
+            )
+          ) : null)
         }
         {/* @Purchase Set */}
         {(currentPath === '/api/purchase' && openPage === 'purchaseOrder') ||
           (currentPath === '/api/purchase' && openPage === 'oSMtrlList') ? (
-            <Fragment>
-              {printOutElement()}
-              {openPage === 'purchaseOrder' ? (
-                <div className='round-area bd-light mt-1 mb-05'>
-                  <i className='fas fa-dolly-flatbed mb-05'> {` Transit Time (day)`}</i>
-                  {currentPo.poConfirmDate === null ? (<input
-                    type='number'
-                    className='mb-05'
-                    name='transitTime'
-                    onChange={onChangeApplyingQuoMargin}
-                    value={currentPo.newTransitTime || ''}
-                  />) : (
-                      <div>{currentPo.newTransitTime}</div>
-                    )}
-                  {currentPo.poConfirmDate === null ? (
-                    <button
-                      className='btn bg-cp-2 btn-block bd-radius-s bd-light'
-                      name='trainsitTime'
-                      onClick={null}
-                    >
-                      Update
-                    </button>
-                  ) : null}
+          <Fragment>
+            {printOutElement()}
+            {openPage === 'purchaseOrder' ? (
+              <div className='round-area bd-light mt-1 mb-05'>
+                <i className='fas fa-dolly-flatbed mb-05'> {` Transit Time (day)`}</i>
+                {currentPo.poConfirmDate === null ? (<input
+                  type='number'
+                  className='mb-05'
+                  name='transitTime'
+                  onChange={onChangeApplyingQuoMargin}
+                  value={currentPo.newTransitTime || ''}
+                />) : (
+                  <div>{currentPo.newTransitTime}</div>
+                )}
+                {currentPo.poConfirmDate === null ? (
+                  <button
+                    className='btn bg-cp-2 btn-block bd-radius-s bd-light'
+                    name='trainsitTime'
+                    onClick={null}
+                  >
+                    Update
+                  </button>
+                ) : null}
 
-                </div>
-              ) : null}
-              {openPage === 'purchaseOrder' ?
-                confirmArea('Confrim the PO', 'PO Has Confirmed', 'Not Confirmed', currentPo.poConfirmDate, togglePoConfirmDate)
-                : null}
-            </Fragment>
-          ) : (currentPath === '/api/purchase' && openPage === 'caseSelector') ? (
-            <section className='round-area bd-light bg-cp-1 mt-1'>
-              <div className='fw-bold'>
-                {selectedCases.length === 0 ?
-                  <i className="fas fa-exclamation-circle"> Click and select case</i> :
-                  <i className="fas fa-check"> Selected Case : </i>}
               </div>
-              {selectedCases.length === 0 ? null : selectedCases.map((sc) => {
-                return (<div className='center-content fs-small' key={`selectedCaseId${sc}`}>{sc}</div>)
-              })}
-            </section>
-          ) : (currentPath === '/api/purchase' && openPage === 'osSelector' && osList.length === 0) ?
-              (<section className='round-area bd-light bg-cp-1 mt-1'>
-                <i className="fas fa-exclamation-circle"> No order summary found.</i>
-                <div className='fs-small'>
-                  Please go back to page "Select case, Make order summary", make an order summary first.
-                </div>
-              </section>
-              )
+            ) : null}
+            {openPage === 'purchaseOrder' ?
+              confirmArea('Confrim the PO', 'PO Has Confirmed', 'Not Confirmed', currentPo.poConfirmDate, togglePoConfirmDate)
               : null}
+          </Fragment>
+        ) : (currentPath === '/api/purchase' && openPage === 'caseSelector') ? (
+          <section className='round-area bd-light bg-cp-1 mt-1'>
+            <div className='fw-bold'>
+              {selectedCases.length === 0 ?
+                <i className="fas fa-exclamation-circle"> Click and select case</i> :
+                <i className="fas fa-check"> Selected Case : </i>}
+            </div>
+            {selectedCases.length === 0 ? null : selectedCases.map((sc) => {
+              return (<div className='center-content fs-small' key={`selectedCaseId${sc}`}>{sc}</div>)
+            })}
+          </section>
+        ) : (currentPath === '/api/purchase' && openPage === 'osSelector' && osList.length === 0) ?
+          (<section className='round-area bd-light bg-cp-1 mt-1'>
+            <i className="fas fa-exclamation-circle"> No order summary found.</i>
+            <div className='fs-small'>
+              Please go back to page "Select case, Make order summary", make an order summary first.
+                </div>
+          </section>
+          )
+          : null}
         {/* @CompleteSet Set */}
         {(currentPath === '/api/completeset' && csPage === 'completeSetSelector') ? (
           <section className='round-area bd-light bg-cp-1 mt-1'>
