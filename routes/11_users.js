@@ -76,7 +76,7 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { name, email, password, cases, mtrl, cspt, mp, quo, po } = req.body;
+    const { name, email, password, cases, mtrl, cspt, mp, quo, po, lanquage } = req.body;
 
     try {
       let user = await User.findOne({ email });
@@ -206,6 +206,7 @@ router.post(
         quo,
         po,
         loss: loss,
+        lanquage,
         sKey: null,
       });
 

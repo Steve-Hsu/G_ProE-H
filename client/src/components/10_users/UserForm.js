@@ -1,7 +1,8 @@
 import React, { useState, useContext, useEffect, Fragment } from 'react';
 import UserContext from '../../context/user/userContext';
 import AlertContext from '../../context/alert/alertContext';
-import SqBtnLarge from '../elements/btns/SqBtnLarge';
+import UserLanSelector from '../10_users/UserLanSelector';
+// import SqBtnLarge from '../elements/btns/SqBtnLarge';
 
 const UserForm = () => {
   const userContext = useContext(UserContext);
@@ -43,19 +44,20 @@ const UserForm = () => {
     mp: false,
     quo: false,
     po: false,
+    lanquage: 'English',
   });
 
   const {
-    name,
-    email,
+    // name,
+    // email,
     password,
     password2,
-    cases,
-    mtrl,
-    cspt,
-    mp,
-    quo,
-    po,
+    // cases,
+    // mtrl,
+    // cspt,
+    // mp,
+    // quo,
+    // po,
   } = user;
 
   const onChange = (e) =>
@@ -79,6 +81,10 @@ const UserForm = () => {
     // const { name, checked } = e.target;
     setUser({ ...user, [e.target.name]: e.target.checked ? true : false });
   };
+
+  const selectLanquage = (e) => {
+    setUser({ ...user, lanquage: e.target.value });
+  }
 
   const onSubmit = (e) => {
     // Prevent renew all the variables on browser(client), the userState and UserForm.state
@@ -122,12 +128,12 @@ const UserForm = () => {
                     {i === 'name'
                       ? 'Name'
                       : i === 'email'
-                      ? 'Email'
-                      : i === 'password'
-                      ? 'Password'
-                      : i === 'password2'
-                      ? 'Password check'
-                      : null}
+                        ? 'Email'
+                        : i === 'password'
+                          ? 'Password'
+                          : i === 'password2'
+                            ? 'Password check'
+                            : null}
                   </div>
                   <div style={{ flex: '1 1' }}>
                     <input
@@ -156,26 +162,40 @@ const UserForm = () => {
                     //Setting default when the box is checked, means the state.cases is true.
                     checked={user[i] === true}
                     onChange={onChangeCB}
-                    className='w-10'
+                    className='w-1rem'
                   />
                   <div className='px-05'>
                     {i === 'cases'
                       ? 'Cases'
                       : i === 'mtrl'
-                      ? ' Material'
-                      : i === 'cspt'
-                      ? ' Cunsumption'
-                      : i === 'mp'
-                      ? ' Material Price'
-                      : i === 'quo'
-                      ? ' Quotation'
-                      : i === 'po'
-                      ? ' Purchase order'
-                      : null}
+                        ? ' Material'
+                        : i === 'cspt'
+                          ? ' Cunsumption'
+                          : i === 'mp'
+                            ? ' Material Price'
+                            : i === 'quo'
+                              ? ' Quotation'
+                              : i === 'po'
+                                ? ' Purchase order'
+                                : null}
                   </div>
                 </div>
               );
             })}
+          </div>
+          {/* @ UserLanSelector */}
+          <div className='round-area bd-light bg-cp-1-light m-05 w-100'>
+            <div>Please select your gender:</div>
+            <div className='grid-2 w-100'>
+              {['english', 'vietnamese', 'japanese', 'chinese'].map((i) => {
+                return (
+                  <div className='v-center-content  w-100'>
+                    <input className='w-1rem mr-05' type="radio" name="lanquage" value={i} onChange={selectLanquage} />
+                    <div>{i.charAt(0).toUpperCase() + i.slice(1)}</div>
+                  </div>
+                )
+              })}
+            </div>
           </div>
           <div>
             <input

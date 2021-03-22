@@ -11,8 +11,6 @@ import {
   USER_ERROR,
   COM_GET_USERS,
   CLEAR_USERS_STATE,
-  // CONFIRM_DELETE_USER,
-  // CLEAR_CONFIRM_DELETE,
   TOGGLE_LOSS_SET,
   TOGGLE_LOSS_CATEGORY,
   UPDATE_LOSS,
@@ -54,30 +52,13 @@ const UserState = (props) => {
     try {
       await axios.post('/api/users', user, config);
       getUsers();
-      // dispatch({ type: ADD_USER, payload: res.data });
     } catch (err) {
       dispatch({
         type: USER_ERROR,
-        // payload: err.response.msg,
         payload: 'add user err',
       });
     }
   };
-
-  //@ Confirm Delete User
-  // Before delete User check again with the name of the user
-  // const confirmDeleteUser = (name) => {
-  //   dispatch({
-  //     type: CONFIRM_DELETE_USER,
-  //     payload: name,
-  //   });
-  // };
-
-  // const clearConfirmDelete = () => {
-  //   dispatch({
-  //     type: CLEAR_CONFIRM_DELETE,
-  //   });
-  // };
 
   //@ Delete USER
   const deleteUser = async (id) => {
@@ -112,14 +93,14 @@ const UserState = (props) => {
   };
 
   //@ Update USER
-  const updateUser = async (subject) => {
+  const updateUser = async (user) => {
     const config = {
       header: {
         'Content-Type:': 'application/json',
       },
     };
     try {
-      const res = await axios.put(`/api/users/${subject._id}`, subject, config);
+      const res = await axios.put(`/api/users/${user._id}`, user, config);
       getUsers();
     } catch (err) {
       dispatch({

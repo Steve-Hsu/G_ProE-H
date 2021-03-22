@@ -73,7 +73,11 @@ const UserSchema = mongoose.Schema({
   loss: {
     type: Object,
   },
-
+  lanquage: {
+    // Default is english, japanese, chinese, vietnamese
+    type: String,
+    default: 'English',
+  },
   // Date
   date: {
     type: Date,

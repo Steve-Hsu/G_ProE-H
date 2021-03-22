@@ -1,5 +1,5 @@
 /* Import google font */
-@import url('https://fonts.googleapis.com/css?family=Roboto');
+@import url("https://fonts.googleapis.com/css?family=Roboto");
 /* Steve Hsu */
 /* This sheet is based by App.css from Brad Traversy */
 /* I customized some features of this sheet */
@@ -90,7 +90,7 @@ body,
 }
 
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 1rem;
   line-height: 1.6;
   background-color: #fff;
@@ -116,7 +116,7 @@ img {
 }
 
 .backgroundImg {
-  background-image: url('../src/imgs/ilya-lix-_HQdgqULdAQ-unsplash.jpg');
+  background-image: url("../src/imgs/ilya-lix-_HQdgqULdAQ-unsplash.jpg");
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
@@ -580,7 +580,7 @@ img {
 .slider:before,
 .slider-cp-1:before {
   position: absolute;
-  content: '';
+  content: "";
   height: 22px;
   width: 23px;
   left: 2px;
@@ -664,7 +664,7 @@ img {
 /* The circle in the toggle switch */
 .sq-slider:before {
   position: absolute;
-  content: '';
+  content: "";
   height: 36px;
   width: 96px;
   left: 2px;
@@ -752,14 +752,14 @@ textarea {
   height: 2.2rem;
 }
 
-input[type='checkbox'] {
+input[type="checkbox"] {
   height: 1.5rem;
 }
 
 /*  Input in type 'date' */
 ::-webkit-datetime-edit {
   /* font-size: 1rem; */
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   padding: 0.3rem;
 }
 ::-webkit-datetime-edit-fields-wrapper {
@@ -811,10 +811,10 @@ select:focus {
   outline: none;
   transition: all 0.5s;
 }
-input[type='checkbox']:hover,
-input[type='checkbox']:focus,
-input[type='submit']:hover,
-input[type='submit']:focus {
+input[type="checkbox"]:hover,
+input[type="checkbox"]:focus,
+input[type="submit"]:hover,
+input[type="submit"]:focus {
   box-shadow: none;
 }
 
@@ -911,7 +911,7 @@ input[type='submit']:focus {
 }
 
 /* customised input */
-.item-input[type='text'] {
+.item-input[type="text"] {
   background: rgba(255, 255, 255, 0);
   height: 3.5rem;
   position: relative;
@@ -1179,22 +1179,22 @@ input[type='submit']:focus {
 /* syne-regular - latin */
 /* syne-regular - latin */
 @font-face {
-  font-family: 'Syne';
+  font-family: "Syne";
   font-style: normal;
   font-weight: 400;
-  src: url('./fonts/syne-v1-latin-regular.eot'); /* IE9 Compat Modes */
-  src: local(''),
-    url('./fonts/syne-v1-latin-regular.eot?#iefix') format('embedded-opentype'),
-    /* IE6-IE8 */ url('./fonts/syne-v1-latin-regular.woff2') format('woff2'),
-    /* Super Modern Browsers */ url('./fonts/syne-v1-latin-regular.woff')
-      format('woff'),
-    /* Modern Browsers */ url('./fonts/syne-v1-latin-regular.ttf')
-      format('truetype'),
-    /* Safari, Android, iOS */ url('./fonts/syne-v1-latin-regular.svg#Syne')
-      format('svg'); /* Legacy iOS */
+  src: url("./fonts/syne-v1-latin-regular.eot"); /* IE9 Compat Modes */
+  src: local(""),
+    url("./fonts/syne-v1-latin-regular.eot?#iefix") format("embedded-opentype"),
+    /* IE6-IE8 */ url("./fonts/syne-v1-latin-regular.woff2") format("woff2"),
+    /* Super Modern Browsers */ url("./fonts/syne-v1-latin-regular.woff")
+      format("woff"),
+    /* Modern Browsers */ url("./fonts/syne-v1-latin-regular.ttf")
+      format("truetype"),
+    /* Safari, Android, iOS */ url("./fonts/syne-v1-latin-regular.svg#Syne")
+      format("svg"); /* Legacy iOS */
 }
 .syen-regular {
-  font-family: 'Syne';
+  font-family: "Syne";
   font-style: normal;
   font-weight: 400;
 }
@@ -1810,6 +1810,9 @@ input[type='submit']:focus {
 }
 
 /* width */
+.w-1rem {
+  width: 1rem;
+}
 .w-3rem {
   width: 3rem;
 }
