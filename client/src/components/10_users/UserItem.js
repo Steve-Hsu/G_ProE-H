@@ -14,7 +14,18 @@ const UserItem = ({ user }) => {
     setCurrent,
     clearCurrent,
   } = userContext;
-  const { _id, name, email, cases, mtrl, cspt, mp, quo, po } = user;
+  const {
+    _id,
+    name,
+    email,
+    language,
+    // cases, 
+    // mtrl, 
+    // cspt, 
+    // mp, 
+    // quo, 
+    // po 
+  } = user;
   const popoverContext = useContext(PopoverContext);
   const { popover, togglePopover } = popoverContext;
 
@@ -31,7 +42,7 @@ const UserItem = ({ user }) => {
         <div className='h-scatter-content mb-05'>
           <div className='fs-lead'>
             {' '}
-            <i className='fas fa-user'> {name}</i>
+            <i className='fas fa-user'> {name.charAt(0).toUpperCase() + name.slice(1)}</i>
           </div>
           <div>
             <DeleteBtnSmall
@@ -44,7 +55,9 @@ const UserItem = ({ user }) => {
         </div>
 
         {/* Child element of grid - 1 */}
-
+        <div className='mb-05'>
+          <i class="fas fa-language"> Language : {language.charAt(0).toUpperCase() + language.slice(1)}</i>
+        </div>
         <div className='mb-05'>
           <i className='fas fa-envelope-open'> E-mail : {email}</i>
         </div>

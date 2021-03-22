@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect, Fragment } from 'react';
 import UserContext from '../../context/user/userContext';
 import AlertContext from '../../context/alert/alertContext';
-import UserLanSelector from '../10_users/UserLanSelector';
 // import SqBtnLarge from '../elements/btns/SqBtnLarge';
 
 const UserForm = () => {
@@ -44,7 +43,7 @@ const UserForm = () => {
     mp: false,
     quo: false,
     po: false,
-    lanquage: 'English',
+    language: 'english',
   });
 
   const {
@@ -83,7 +82,7 @@ const UserForm = () => {
   };
 
   const selectLanquage = (e) => {
-    setUser({ ...user, lanquage: e.target.value });
+    setUser({ ...user, language: e.target.value });
   }
 
   const onSubmit = (e) => {
@@ -183,20 +182,23 @@ const UserForm = () => {
               );
             })}
           </div>
+
           {/* @ UserLanSelector */}
-          <div className='round-area bd-light bg-cp-1-light m-05 w-100'>
+          <div className='round-area bd-light bg-cp-1-light w-100 '>
             <div>Please select your gender:</div>
             <div className='grid-2 w-100'>
               {['english', 'vietnamese', 'japanese', 'chinese'].map((i) => {
                 return (
-                  <div className='v-center-content  w-100'>
-                    <input className='w-1rem mr-05' type="radio" name="lanquage" value={i} onChange={selectLanquage} />
+                  <div key={`langauge${i}`} className='v-center-content  w-100'>
+                    <input className='w-1rem mr-05' type="radio" name="language" value={i} onChange={selectLanquage} checked={user.language === i} />
                     <div>{i.charAt(0).toUpperCase() + i.slice(1)}</div>
                   </div>
                 )
               })}
             </div>
           </div>
+
+          {/* Submit btn for user form */}
           <div>
             <input
               type='submit'

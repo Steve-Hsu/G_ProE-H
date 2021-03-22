@@ -76,11 +76,11 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { name, email, password, cases, mtrl, cspt, mp, quo, po, lanquage } = req.body;
+    const { name, email, password, cases, mtrl, cspt, mp, quo, po, language } = req.body;
 
     try {
+      const theLanquage = language === 'english' || 'vietnamese' || 'japanese' || 'chinese' ? language : 'english';
       let user = await User.findOne({ email });
-
       if (user) {
         console.log('User already exist');
         return res.status(400).json({ msg: 'User already exists' });
@@ -192,6 +192,7 @@ router.post(
         loss = existingUser.loss;
       }
 
+
       user = new User({
         name: name.toLowerCase(),
         email: email.toLowerCase(),
@@ -206,7 +207,7 @@ router.post(
         quo,
         po,
         loss: loss,
-        lanquage,
+        language: theLanquage,
         sKey: null,
       });
 

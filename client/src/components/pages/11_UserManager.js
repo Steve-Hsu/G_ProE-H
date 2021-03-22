@@ -25,7 +25,7 @@ export const UserManager = () => {
           </div>
           <div
             className='ml-05 round-area bg-cp-1 bd-light overflow-auto-y '
-            style={{ flex: '1 1 0', height: '90vh' }}
+            style={{ flex: '1 1 0', height: '91vh' }}
           >
             <div className='fs-lead'>Users</div>
             <UserFilter />

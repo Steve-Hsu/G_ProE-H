@@ -1,4 +1,4 @@
-import React, { Fragment, useContext } from 'react';
+import React, { useContext } from 'react';
 import SqBtnLarge from '../../components/elements/btns/SqBtnLarge';
 import UserContext from '../../context/user/userContext';
 import GoBackBtnSpinSmall from '../elements/btns/GoBackBtnSpinSmall';
@@ -56,7 +56,7 @@ const UserLossSetting = ({ style }) => {
   };
 
   return (
-    <div className='round-area bd-light bg-cp-1 mt-1' style={style}>
+    <div className='round-area bd-light bg-cp-1 mt-1 mb-1' style={style}>
       <div className='text-primary fs-lead'>Setting loss</div>
       <div className='flexBox'>
         <GoBackBtnSpinSmall onClick={onClickLossSets} />
@@ -108,7 +108,7 @@ const UserLossSetting = ({ style }) => {
             : null}
         </div>
       ) : null}
-      <div className='text-primary fs-lead'>Loss Category</div>
+      <div className='text-primary fs-lead mt-1'>Loss Category</div>
       {[
         'Fabric',
         'Woven',
