@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, Fragment } from 'react';
+import React, { useContext, useRef, useEffect, Fragment, useState } from 'react';
 
 // Context
 import CaseContext from '../../context/cases/casesContext';
@@ -32,12 +32,14 @@ export const ItemSelector = ({ props, purpose, currentPath }) => {
   const { selectCase, selectedCases, switchPage, currentOrderSummary, openMtrlLeadTime, editingLeadTime, } = purContext;
   const { isLoading, toggleLoading, popover } = popoverContext;
   useEffect(() => {
+    console.log('rendered');
     switch (purpose) {
       case 'srMtrlSelector':
       case 'quoSrMtrlSelector':
         toggleLoading(true);
         getSrMtrls().then(() => {
           toggleLoading(false);
+          // setSubject(data);
         });
         break;
       case 'CaseSelector':
@@ -46,6 +48,7 @@ export const ItemSelector = ({ props, purpose, currentPath }) => {
         toggleLoading(true);
         getCaseList().then(() => {
           toggleLoading(false);
+          // setSubject(data);
         });
         break;
       default:
@@ -53,10 +56,16 @@ export const ItemSelector = ({ props, purpose, currentPath }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  let subjects = null;
+
+
+  const searchKeyWord = useRef('');
+  // let searchKeyWord = '';
+  let data = [];
   let attributes = null;
   let goBack = null;
   let displayTitles = [];
+  const [subjects, setSubject] = useState(null);
+  // let subjects = [];
 
   switch (purpose) {
     case 'CaseSelector':
@@ -73,7 +82,7 @@ export const ItemSelector = ({ props, purpose, currentPath }) => {
       ];
       switch (purpose) {
         case 'CaseSelector':
-          subjects = caseList;
+          data = caseList;
           const aFunc = async (id) => {
             toggleLoading(true);
             await downloadCase(id).then(() => {
@@ -86,7 +95,7 @@ export const ItemSelector = ({ props, purpose, currentPath }) => {
           };
           break;
         case 'quoCaseSelector':
-          subjects = caseList;
+          data = caseList;
           const quoFunc = async (cNo) => {
             console.log('hit hit ');
             toggleLoading(true);
@@ -100,7 +109,7 @@ export const ItemSelector = ({ props, purpose, currentPath }) => {
           };
           break;
         case 'purCaseSelector':
-          subjects = caseList.filter((i) => i.caseConfirmDate !== null);
+          data = caseList.filter((i) => i.caseConfirmDate !== null);
           attributes = [selectCase, selectedCases];
           goBack = () => {
             props.history.push('/api/case/director');
@@ -111,7 +120,7 @@ export const ItemSelector = ({ props, purpose, currentPath }) => {
       break;
     case 'srMtrlSelector':
     case 'quoSrMtrlSelector':
-      subjects = srMtrls;
+      data = srMtrls;
       attributes = [openSrMtrl, editingList];
       displayTitles = [{ supplier: true }, { ref_no: true }, { prices: true }, { complete: true }];
       goBack = () => {
@@ -119,7 +128,7 @@ export const ItemSelector = ({ props, purpose, currentPath }) => {
       };
       break;
     case 'quoFormSelector':
-      subjects = quotation.quoForms;
+      data = quotation.quoForms;
       attributes = switchQuoForm;
       displayTitles = [
         {
@@ -137,7 +146,7 @@ export const ItemSelector = ({ props, purpose, currentPath }) => {
       };
       break;
     case 'leadTimePage':
-      subjects = currentOrderSummary.caseMtrls;
+      data = currentOrderSummary.caseMtrls;
       attributes = [openMtrlLeadTime, editingLeadTime];
       displayTitles = [
         {
@@ -158,6 +167,37 @@ export const ItemSelector = ({ props, purpose, currentPath }) => {
     default:
   }
 
+  // Fileter funcs
+  const searchAndFilter = (keywords) => {
+    if (!data) {
+      return;
+    }
+    const filteredResult = data.filter((target) => {
+      const regex = new RegExp(`${keywords}`, 'gi');
+      return target.cNo?.match(regex) ||
+        target.client?.match(regex) ||
+        target.style?.match(regex) ||
+        target.item?.match(regex) ||
+        target.merchandiser?.match(regex) ||
+        target.supplier?.match(regex);
+    });
+    setSubject(filteredResult);
+  }
+
+  const cleanFilter = () => {
+    setSubject(data)
+    // subjects = data;
+    console.log('clearFilter', subjects);
+  }
+
+  const searchBarOnchange = (e) => {
+    if (e.target.value !== '') {
+      searchAndFilter(e.target.value);
+    } else {
+      cleanFilter();
+    }
+  }
+
   return (
     <Fragment>
       {caseError !== null || srMtrlError !== null || isLoading === true || popover === true ? (
@@ -170,6 +210,19 @@ export const ItemSelector = ({ props, purpose, currentPath }) => {
       >
         <div className='grid-6'>
           <GoBackBtn onClick={goBack} />
+          <div id='itemSearchBar' className='v-center-content' style={{ marginLeft: '-3vw' }}>
+            <div className='mr-05 center-content'>
+              <i className='fas fa-search'></i>
+            </div>
+            <div style={{ flex: '1 1' }}>
+              <input
+                ref={searchKeyWord}
+                type='text'
+                placeholder='Search...'
+                onChange={searchBarOnchange}
+              />
+            </div>
+          </div>
           <SqToggleSwitchL
             name='isBoardMode'
             checked={isBoardMode}
@@ -181,20 +234,20 @@ export const ItemSelector = ({ props, purpose, currentPath }) => {
         {isBoardMode === true ? (
           <Board
             purpose={purpose}
-            subjects={subjects}
+            subjects={subjects || data}
             displayTitles={displayTitles}
             toggleItemAttributes={attributes}
             currentPath={currentPath}
           />
         ) : (
-            <Table
-              purpose={purpose}
-              subjects={subjects}
-              displayTitles={displayTitles}
-              toggleItemAttributes={attributes}
-              currentPath={currentPath}
-            />
-          )}
+          <Table
+            purpose={purpose}
+            subjects={subjects || data}
+            displayTitles={displayTitles}
+            toggleItemAttributes={attributes}
+            currentPath={currentPath}
+          />
+        )}
         {/* </div> */}
       </div>
     </Fragment>

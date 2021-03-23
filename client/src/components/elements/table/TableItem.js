@@ -1,4 +1,4 @@
-import React, { useContext, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 // import PopoverContext from '../../../context/popover/popoverContext';
 import SrMtrl from '../../30_srMtrl/30_01_srMtrl';
@@ -100,133 +100,133 @@ const TableItem = ({
         <Mtrl key={subject.id} mtrl={subject} />
       ) : purpose === 'srMtrlSelector' && checkSrMtrlId(id) ||
         purpose === 'quoSrMtrlSelector' && checkSrMtrlId(id) ? (
-            <SrMtrl srMtrl={subject} currentPath={currentPath} idx={idx} />
-          ) : purpose === 'leadTimePage' && checkSrMtrlId(id) ? (
-            <MtrlLeadTime caseMtrl={subject} idx={idx} />
-          ) : purpose === 'purCaseSelector' && subject.poDate !== null ? null : (
-            <div
-              className='flexBox bd-light bd-no-t bg-cp-elem hover-moveUp hover-pointer fs-small'
-              onClick={onClick}
-              style={selectedBackGround()}
-            // style={{ background: 'red' }}
-            >
-              <div style={cellStyle('no')} className='fs-small'>{idx + 1}</div>
-              {purpose === '1_CaseForm' ? (
-                <div style={cellStyle('item')}>{subject.item}</div>
-              ) : null}
-              {displayTitles.map((title) => {
-                if (title[Object.keys(title)[0]]) {
-                  //   console.log('the length of dispalytitles', trueInDisplayTitles); // Test Code
-                  const theTitle = Object.keys(title)[0]
-                  switch (theTitle) {
-                    case 'descriptions':
-                      return (
+        <SrMtrl srMtrl={subject} currentPath={currentPath} idx={idx} />
+      ) : purpose === 'leadTimePage' && checkSrMtrlId(id) ? (
+        <MtrlLeadTime caseMtrl={subject} idx={idx} />
+      ) : purpose === 'purCaseSelector' && subject.poDate !== null ? null : (
+        <div
+          className='flexBox bd-light bd-no-t bg-cp-elem hover-moveUp hover-pointer fs-small'
+          onClick={onClick}
+          style={selectedBackGround()}
+        // style={{ background: 'red' }}
+        >
+          <div style={cellStyle('no')} className='fs-small'>{idx + 1}</div>
+          {purpose === '1_CaseForm' ? (
+            <div style={cellStyle('item')}>{subject.item}</div>
+          ) : null}
+          {displayTitles.map((title) => {
+            if (title[Object.keys(title)[0]]) {
+              //   console.log('the length of dispalytitles', trueInDisplayTitles); // Test Code
+              const theTitle = Object.keys(title)[0]
+              switch (theTitle) {
+                case 'descriptions':
+                  return (
+                    <div
+                      style={cellStyle(
+                        Object.keys(title)[0],
+                        trueInDisplayTitles
+                      )}
+                      key={`${Object.keys(title)[0]}${subject.id}`}
+                    >
+                      {subject[Object.keys(title)[0]].map((des, idx) => (
                         <div
-                          style={cellStyle(
-                            Object.keys(title)[0],
-                            trueInDisplayTitles
-                          )}
-                          key={`${Object.keys(title)[0]}${subject.id}`}
+                          key={`${des}OfNum${idx}Of${subject.id}`}
+                          className='mr-1'
+                          style={{
+                            whiteSpace: 'nowrap',
+                          }}
                         >
-                          {subject[Object.keys(title)[0]].map((des, idx) => (
-                            <div
-                              key={`${des}OfNum${idx}Of${subject.id}`}
-                              className='mr-1'
-                              style={{
-                                whiteSpace: 'nowrap',
-                              }}
-                            >
-                              <div> {des}</div>
-                            </div>
-                          ))}
+                          <div> {des}</div>
                         </div>
-                      )
-                    case 'poConfirmed':
-                      const PoConfirmed = subject.price ? true : false;
-                      return (
-                        <div className='center-content' style={cellStyle(
-                          Object.keys(title)[0],
-                          trueInDisplayTitles
-                        )} key={`${Object.keys(title)[0]}${subject.id}`}>
-                          {PoConfirmed ? (<i className="fas fa-check-circle fc-success"></i>) : <span className='fc-danger'>Not Confirmed</span>}
+                      ))}
+                    </div>
+                  )
+                case 'poConfirmed':
+                  const PoConfirmed = subject.price ? true : false;
+                  return (
+                    <div className='center-content' style={cellStyle(
+                      Object.keys(title)[0],
+                      trueInDisplayTitles
+                    )} key={`${Object.keys(title)[0]}${subject.id}`}>
+                      {PoConfirmed ? (<i className="fas fa-check-circle fc-success"></i>) : <span className='fc-danger'>Not Confirmed</span>}
 
-                        </div>
-                      )
-                    case 'leadTimeSetUp':
-                      const LeadTimesSetUp = subject.leadTimes ? true : false;
-                      let resultDiv = (<span className='fc-danger'>Not finished</span>)
-                      if (LeadTimesSetUp) {
-                        const totalMtrlQty = subject.purchaseQtySumUp + subject.purchaseLossQtySumUp + subject.purchaseMoqQty;
-                        const leadTimeQty = subject.leadTimes.reduce((x, curr) => {
-                          return x += curr.qty
-                        }, 0)
-                        if (totalMtrlQty == leadTimeQty) {
-                          resultDiv = (<i className="fas fa-check-circle fc-success"></i>)
-                        }
-                      }
-                      return (
-                        <div className='center-content' style={cellStyle(
-                          Object.keys(title)[0],
-                          trueInDisplayTitles
-                        )} key={`${Object.keys(title)[0]}${subject.id}`}>
-                          {resultDiv}
-                        </div>
-                      )
-                    case 'prices':
-                      const mPricesNumber = subject.mPrices ? subject.mPrices.length : 0;
-                      return (
-                        <div className='center-content' style={cellStyle(
-                          Object.keys(title)[0],
-                          trueInDisplayTitles
-                        )} key={`${Object.keys(title)[0]}${subject.id}`}>
-                          {mPricesNumber ? mPricesNumber : null}
-                        </div>
-                      )
-                    case 'complete':
-                      const mPId = subject.mainPrice
-                      const theMainPrice = () => {
-                        if (subject.mainPrice) {
-                          const theMainPriceNotEquolToZero = subject.mPrices.find(({ id }) => id === mPId).mPrice > 0 ? true : false;
-                          const noMPriceEquolToZero = subject.mPrices.filter((mP) => mP.mPrice <= 0).length === 0 ? true : false;
-                          if (theMainPriceNotEquolToZero && noMPriceEquolToZero) {
-                            return true
-                          } else {
-                            return false
-                          }
-                        } else {
-                          return false
-                        }
-                      }
-                      const complete = subject.mPrices.filter((mP) => mP.mPrice > 0).length === subject.mtrlColors.length * subject.sizeSPECs.length ||
-                        theMainPrice() ? true : false;
-                      return (
-                        <div className='center-content' style={cellStyle(
-                          Object.keys(title)[0],
-                          trueInDisplayTitles
-                        )} key={`${Object.keys(title)[0]}${subject.id}`}>
-                          {complete ? (<i className="fas fa-check-circle fc-success"></i>) : null}
-                        </div>
-                      )
-
-                    default:
-                      return (
-                        <div
-                          style={cellStyle(
-                            Object.keys(title)[0],
-                            trueInDisplayTitles
-                          )}
-                          key={`${Object.keys(title)[0]}${subject.id}`}
-                        >
-                          {subject[Object.keys(title)[0]]}
-                        </div>
-                      );
+                    </div>
+                  )
+                case 'leadTimeSetUp':
+                  const LeadTimesSetUp = subject.leadTimes ? true : false;
+                  let resultDiv = (<span className='fc-danger'>Not finished</span>)
+                  if (LeadTimesSetUp) {
+                    const totalMtrlQty = subject.purchaseQtySumUp + subject.purchaseLossQtySumUp + subject.purchaseMoqQty;
+                    const leadTimeQty = subject.leadTimes.reduce((x, curr) => {
+                      return x += curr.qty
+                    }, 0)
+                    if (totalMtrlQty == leadTimeQty) {
+                      resultDiv = (<i className="fas fa-check-circle fc-success"></i>)
+                    }
                   }
-                } else {
-                  return null;
-                }
-              })}
-            </div>
-          )}
+                  return (
+                    <div className='center-content' style={cellStyle(
+                      Object.keys(title)[0],
+                      trueInDisplayTitles
+                    )} key={`${Object.keys(title)[0]}${subject.id}`}>
+                      {resultDiv}
+                    </div>
+                  )
+                case 'prices':
+                  const mPricesNumber = subject.mPrices ? subject.mPrices.length : 0;
+                  return (
+                    <div className='center-content' style={cellStyle(
+                      Object.keys(title)[0],
+                      trueInDisplayTitles
+                    )} key={`${Object.keys(title)[0]}${subject.id}`}>
+                      {mPricesNumber ? mPricesNumber : null}
+                    </div>
+                  )
+                case 'complete':
+                  const mPId = subject.mainPrice
+                  const theMainPrice = () => {
+                    if (subject.mainPrice) {
+                      const theMainPriceNotEquolToZero = subject.mPrices.find(({ id }) => id === mPId).mPrice > 0 ? true : false;
+                      const noMPriceEquolToZero = subject.mPrices.filter((mP) => mP.mPrice <= 0).length === 0 ? true : false;
+                      if (theMainPriceNotEquolToZero && noMPriceEquolToZero) {
+                        return true
+                      } else {
+                        return false
+                      }
+                    } else {
+                      return false
+                    }
+                  }
+                  const complete = subject.mPrices.filter((mP) => mP.mPrice > 0).length === subject.mtrlColors.length * subject.sizeSPECs.length ||
+                    theMainPrice() ? true : false;
+                  return (
+                    <div className='center-content' style={cellStyle(
+                      Object.keys(title)[0],
+                      trueInDisplayTitles
+                    )} key={`${Object.keys(title)[0]}${subject.id}`}>
+                      {complete ? (<i className="fas fa-check-circle fc-success"></i>) : null}
+                    </div>
+                  )
+
+                default:
+                  return (
+                    <div
+                      style={cellStyle(
+                        Object.keys(title)[0],
+                        trueInDisplayTitles
+                      )}
+                      key={`${Object.keys(title)[0]}${subject.id}`}
+                    >
+                      {subject[Object.keys(title)[0]]}
+                    </div>
+                  );
+              }
+            } else {
+              return null;
+            }
+          })}
+        </div>
+      )}
     </Fragment>
   );
 };
