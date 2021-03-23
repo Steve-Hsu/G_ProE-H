@@ -3,9 +3,9 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const authUser = require('../middleware/authUser');
 // Not set up yet, for check the value entered by user at the some specific column
-const { check, validationResult, Result } = require('express-validator');
-const { v4: uuidv4 } = require('uuid');
-const myModule = require('../myModule/myModule');
+// const { check, validationResult, Result } = require('express-validator');
+// const { v4: uuidv4 } = require('uuid');
+// const myModule = require('../myModule/myModule');
 
 const User = require('../models/10_User');
 const Case = require('../models/20_Case');
