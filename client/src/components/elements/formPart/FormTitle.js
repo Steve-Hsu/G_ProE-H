@@ -5,7 +5,7 @@ const FormTitle = ({ title }) => {
   const authUserContext = useContext(AuthUserContext);
   const { comName, comNameTail, comAddress } = authUserContext;
   return (
-    <section className='h-20 w-100 mt-05 mb-3' id='formTitle'>
+    <section className='h-20vh w-100 mt-05 mb-3' id='formTitle'>
       <div className='fs-large h-center-content'>{title}</div>
       <div className='fs-lead h-center-content '>
         {comName} {comNameTail}
