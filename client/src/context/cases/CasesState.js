@@ -1101,9 +1101,9 @@ const CasesState = (props) => {
       const newSizes = result[1];
       const newgQtys = result[2];
 
-      console.log('newColorWays,', newColorWays);
-      console.log('newSize', newSizes);
-      console.log('newgQtys', newgQtys);
+      // console.log('newColorWays,', newColorWays);
+      // console.log('newSize', newSizes);
+      // console.log('newgQtys', newgQtys);
       const MtrlPart = new Promise((resolve) => {
         if (mtrls.length > 0) {
           mtrls.map((mtrl, mtrlIdx) => {
@@ -1133,9 +1133,13 @@ const CasesState = (props) => {
             const mtrlgQtyPart = new Promise((resolve) => {
               mtrl.cspts.map((cspt, idx) => {
                 cspt.id = uuidv4() + generateId();
-                cspt.cWay = newgQtys[idx].cWay;
-                cspt.size = newgQtys[idx].size;
-                cspt.gQty = newgQtys[idx].id;
+                const cWayId = newColorWays.find(({ gClr }) => gClr.toUpperCase() === cspt.gClr.toUpperCase()).id;
+                const sizeId = newSizes.find(({ gSize }) => gSize.toUpperCase() === cspt.gSize.toUpperCase()).id;
+                const gQtyId = newgQtys.filter((i) => i.cWay === cWayId && i.size === sizeId)[0].id;
+
+                cspt.cWay = cWayId;
+                cspt.size = sizeId;
+                cspt.gQty = gQtyId;
                 cspt.mtrl = mtrl.id;
                 if (idx + 1 === newgQtys.length) {
                   resolve();
