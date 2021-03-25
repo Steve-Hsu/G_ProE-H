@@ -62,7 +62,7 @@ const LeftBar = ({ currentPath }) => {
     downLoadmtrlPrice,
   } = quoContext;
   const { openPage, togglePoConfirmDate, currentPo, selectedCases, osList, updatePOInform } = purContext;
-  const { csPage, setNewCsOrder, newCsOrder, csError } = completeSetContext;
+  const { csPage, setNewCsOrder, newCsOrder } = completeSetContext;
   const { toggleLoading } = popoverContext;
 
 

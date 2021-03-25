@@ -191,10 +191,11 @@ export default (state, action) => {
         mtrls: action.payload.mtrls,
         cNo: null,
         osNo: null,
-        poData: null,
+        poDate: null,
         isImportedExcel: false,
         showMtrlCard: false,
         caseError: null,
+        caseConfirmDate: null,
       };
     case TOGGLE_ISUPDATE:
       return {
