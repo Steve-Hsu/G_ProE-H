@@ -75,7 +75,8 @@ router.get('/', authUser, async (req, res) => {
       if (caseList.length === 0) {
         return res.json([])
       } else {
-        console.log('caseList is sent out', caseList);
+        // console.log('caseList is sent out', caseList);
+        console.log('caseList is sent out');
         return res.json(caseList);
       }
     });

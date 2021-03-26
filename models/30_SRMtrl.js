@@ -31,9 +31,8 @@ const SRMtrlSchema = mongoose.Schema({
   currency: {
     type: String,
   },
-  caseUnit: {
-    // Unit from case, for purchase unit in mPrice to reference
-    type: String,
+  caseUnits: {
+    type: Array,
   },
   purchaseUnit: {
     // the unit for purchasing material
