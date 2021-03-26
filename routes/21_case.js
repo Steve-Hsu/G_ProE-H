@@ -777,6 +777,7 @@ router.delete('/:id', authUser, async (req, res) => {
         $pull: {
           'mtrlColors.$[].refs': { caseId: caseId },
           'sizeSPECs.$[].refs': { caseId: caseId },
+          'caseUnits.$[].refs': { caseId: caseId },
         },
       }
     );
@@ -787,6 +788,7 @@ router.delete('/:id', authUser, async (req, res) => {
         $pull: {
           mtrlColors: { refs: { $size: 0 } },
           sizeSPECs: { refs: { $size: 0 } },
+          caseUnits: { refs: { $size: 0 } },
         },
       }
     );
@@ -795,6 +797,7 @@ router.delete('/:id', authUser, async (req, res) => {
       company: comId,
       mtrlColors: { $size: 0 },
       sizeSPECs: { $size: 0 },
+      caseUnits: { $size: 0 },
     });
 
     res.json({

@@ -320,16 +320,18 @@ router.put('/:caseId', authUser, async (req, res) => {
             CSRIC: newCSRIC,
             mtrlColors: [],
             sizeSPECs: [],
-            caseUnits: {
-              caseUnit: mtrl.unit,
-              unitConvertRatio: 1,
-              refs: [
-                {
-                  caseId: cases._id,
-                  mtrlId: mtrl.id,
-                },
-              ],
-            },
+            caseUnits: [
+              {
+                caseUnit: mtrl.unit,
+                unitConvertRatio: 1,
+                refs: [
+                  {
+                    caseId: cases._id,
+                    mtrlId: mtrl.id,
+                  },
+                ],
+              }
+            ],
             purchaseUnit: mtrl.unit,
             mPrices: [],
             company: cases.company,
@@ -520,6 +522,91 @@ router.put('/:caseId', authUser, async (req, res) => {
               resolve();
             } else {
               // If the srMtrl exists
+              // Check the caseUnit, 
+              const checkCaseUnit = new Promise(async (resolve) => {
+                await SRMtrl.findOne(
+                  {
+                    company: comId,
+                    CSRIC: mList.CSRIC,
+                    'caseUnits.caseUnit': mList.caseUnits[0].caseUnit,
+                  },
+                ).then(async (srMtrl) => {
+                  // Clear the old ref first
+                  const caseId = mList.caseUnits[0].refs[0].caseId;
+                  const mtrlId = mList.caseUnits[0].refs[0].mtrlId;
+                  await SRMtrl.updateOne(
+                    {
+                      company: comId,
+                      CSRIC: mList.CSRIC,
+                      caseUnits: {
+                        $elemMatch: {
+                          // mColor: mtrlColor.mColor,
+                          refs: {
+                            caseId: caseId,
+                            mtrlId: mtrlId,
+                          },
+                        },
+                      },
+                    },
+                    {
+                      $pull: {
+                        'caseUnits.$.refs': {
+                          caseId: caseId,
+                          mtrlId: mtrlId,
+                        },
+                      },
+                    }
+                  )
+                  // Add new data;
+                  if (srMtrl === null) {
+                    // If the caseUnit is new, add an caseUnit object to caseUnits.
+                    await SRMtrl.updateOne(
+                      {
+                        company: comId,
+                        CSRIC: mList.CSRIC,
+                      },
+                      {
+                        $addToSet: {
+                          caseUnits: mList.caseUnits[0],
+                        },
+                      }
+                    );
+                    console.log(
+                      `the caseUnit of ${mList.CSRIC} is inserted`
+                    );
+                  } else {
+                    // If the caseUnit exists, update only the ref
+                    await SRMtrl.updateOne(
+                      {
+                        company: comId,
+                        CSRIC: mList.CSRIC,
+                        'caseUnits.caseUnit': mList.caseUnits[0].caseUnit,
+                      },
+                      {
+                        $addToSet: {
+                          'caseUnits.$.refs': mList.caseUnits[0].refs[0],
+                        },
+                      }
+                    );
+                  }
+                  // Delete the caseUnit that has 0 refs
+                  await SRMtrl.updateMany(
+                    {
+                      company: comId,
+                      CSRIC: mList.CSRIC,
+                      // 'caseUnits.caseUnit': mList.caseUnits[0].caseUnit,
+                    },
+                    {
+                      $pull: {
+                        caseUnits: { refs: { $size: 0 } },
+                      },
+                    }
+                  );
+                  resolve()
+                })
+              })
+
+
               //@_step_1 Insert mtrlColor
               const insertMtrlColor = mList.mtrlColors.map((mtrlColor) => {
                 return new Promise(async (resolve) => {
@@ -581,7 +668,7 @@ router.put('/:caseId', authUser, async (req, res) => {
 
               //@_step_2 Clear the extra refs in mColor
               const clearColorRef = new Promise((resolve, reject) => {
-                Promise.all(insertMtrlColor).then(async () => {
+                Promise.all([...insertMtrlColor, checkCaseUnit]).then(async () => {
                   // console.log('This should be 2 start', mList.CSRIC);
                   await SRMtrl.findOne(
                     { company: comId, CSRIC: mList.CSRIC },
