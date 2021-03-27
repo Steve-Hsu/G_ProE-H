@@ -6,11 +6,12 @@ import SqBtnLarge from '../elements/btns/SqBtnLarge';
 import GoBackBtnSpinSmall from '../elements/btns/GoBackBtnSpinSmall';
 import PopoverContext from '../../context/popover/popoverContext';
 import TopLabelTiny from '../elements/Label/TopLabelTiny';
+import Select from '../elements/select/Select'
 
 const SrMtrl = ({ srMtrl, currentPath, idx }) => {
   const srMtrlContext = useContext(SrMtrlContext);
   const popoverContext = useContext(PopoverContext);
-  const { addMPrice, openSrMtrl, updateItemAndUnitConvertRation } = srMtrlContext;
+  const { addMPrice, openSrMtrl, updateUnitCurrencyAndUnitConvertRation } = srMtrlContext;
   const { togglePopover } = popoverContext;
   const onClick = (e) => {
     e.preventDefault();
@@ -35,7 +36,7 @@ const SrMtrl = ({ srMtrl, currentPath, idx }) => {
 
   const onChange = (e) => {
     e.preventDefault();
-    updateItemAndUnitConvertRation(e)
+    updateUnitCurrencyAndUnitConvertRation(e);
   }
 
   return (
@@ -82,6 +83,48 @@ const SrMtrl = ({ srMtrl, currentPath, idx }) => {
                 All color and SPEC are listed
               </div>
             ) : null}
+          </div>
+          <div className='mr-1'>
+            {currentPath === '/api/case/mprice' ? (
+              <div>
+                <TopLabelTiny label='Currency' />
+                <Select
+                  subject={srMtrl}
+                  id={srMtrl._id}
+                  purpose='currency'
+                  name='currency'
+                  selectedOption={srMtrl.currency}
+                  onChange={onChange} />
+              </div>
+            ) : (
+              <div>
+                <TopLabelTiny label='Currency' />
+                <div className='fs-large'>
+                  {srMtrl.currency}
+                </div>
+              </div>
+            )}
+          </div>
+          <div className='mr-1'>
+            {currentPath === '/api/case/mprice' ? (
+              <div>
+                <TopLabelTiny label='Purcase Unit' />
+                <Select
+                  subject={srMtrl}
+                  id={srMtrl._id}
+                  purpose='unit'
+                  name='purchaseUnit'
+                  selectedOption={srMtrl.purchaseUnit}
+                  onChange={onChange} />
+              </div>
+            ) : (
+              <div>
+                <TopLabelTiny label='Purchase Unit' />
+                <div className='fs-large'>
+                  {srMtrl.purchaseUnit}
+                </div>
+              </div>
+            )}
           </div>
           <div>
 

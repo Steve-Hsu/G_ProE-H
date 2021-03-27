@@ -173,8 +173,8 @@ const MPrice = ({
             {mainPrice === mPrice.id ? (
               <i className='fas fa-magnet'></i>
             ) : (
-                <div>{idx + 1}</div>
-              )}
+              <div>{idx + 1}</div>
+            )}
           </div>
         </div>
         {mPriceList().map((m) => {
@@ -230,44 +230,36 @@ const MPrice = ({
                 );
 
               case 'currency':
+              case 'unit':
                 return (
-                  <div key={`div${m}${mPrice.id}`} className='ml-05'>
+                  <div key={`div${m}${mPrice.id}`} className='ml-05' >
                     <TopLabelTiny label={labels(m)} />
-                    <Select
-                      key={`${m}${mPrice.id}`}
-                      id={`${m}${mPrice.id}`}
-                      purpose={m}
-                      subject={mPrice}
-                      onChange={onChange}
-                      required={true}
-                      selectedOption={mPrice[m]}
-                    />
+                    <div className='content-center pl-06 pt-03' style={{ height: '2.2rem' }}>{mPrice[m]}</div>
                   </div>
                 );
-              case 'unit':
-                if (srMtrl.item === 'Thread') {
-                  return (
-                    <div key={`div${m}${mPrice.id}`} className='ml-05' >
-                      <TopLabelTiny label={labels(m)} />
-                      <div className='content-center pl-06 pt-03' style={{ height: '2.2rem' }}>{mPrice[m]}</div>
-                    </div>
-                  )
-                } else {
-                  return (
-                    <div key={`div${m}${mPrice.id}`
-                    } className='ml-05' >
-                      <TopLabelTiny label={labels(m)} />
-                      <Select
-                        key={`${m}${mPrice.id}`}
-                        id={`${m}${mPrice.id}`}
-                        purpose={m}
-                        subject={mPrice}
-                        onChange={onChange}
-                        required={true}
-                        selectedOption={mPrice[m]}
-                      />
-                    </div>)
-                }
+              // if (srMtrl.item === 'Thread') {
+              //   return (
+              //     <div key={`div${m}${mPrice.id}`} className='ml-05' >
+              //       <TopLabelTiny label={labels(m)} />
+              //       <div className='content-center pl-06 pt-03' style={{ height: '2.2rem' }}>{mPrice[m]}</div>
+              //     </div>
+              //   )
+              // } else {
+              //   return (
+              //     <div key={`div${m}${mPrice.id}`
+              //     } className='ml-05' >
+              //       <TopLabelTiny label={labels(m)} />
+              //       <Select
+              //         key={`${m}${mPrice.id}`}
+              //         id={`${m}${mPrice.id}`}
+              //         purpose={m}
+              //         subject={mPrice}
+              //         onChange={onChange}
+              //         required={true}
+              //         selectedOption={mPrice[m]}
+              //       />
+              //     </div>)
+              // }
 
               default:
                 return (

@@ -29,6 +29,8 @@ export const MPrice = (props) => {
         mainPrice: srMtrl.mainPrice,
         mPrices: srMtrl.mPrices,
         item: srMtrl.item,
+        currency: srMtrl.currency,
+        purchaseUnit: srMtrl.purchaseUnit,
         unitConvertRatio: srMtrl.unitConvertRatio,
       });
     });

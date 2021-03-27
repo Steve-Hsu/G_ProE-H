@@ -238,18 +238,29 @@ const SrMtrlState = (props) => {
   };
 
   // Basically update the value of item and unitConvertRatio for srMtrl
-  const updateItemAndUnitConvertRation = (e) => {
+  const updateUnitCurrencyAndUnitConvertRation = (e) => {
     let srMaterials = srMtrls;
     const srMtrlId = e.target.id
     let srMaterial = srMaterials.find(({ _id }) => _id === srMtrlId);
-    srMaterial[e.target.name] = e.target.value
-    if (e.target.name === 'item' && e.target.value === 'Thread') {
-      if (srMaterial.mPrices.length > 0) {
-        srMaterial.mPrices.map((mP) => {
-          mP.unit = 'pcs'
-        })
+    srMaterial[e.target.name] = e.target.value;
+
+
+    if (srMaterial.mPrices.length > 0) {
+      switch (e.target.name) {
+        case 'purchaseUnit':
+          srMaterial.mPrices.map((mP) => {
+            mP.unit = e.target.value;
+          })
+          break;
+        case 'currency':
+          srMaterial.mPrices.map((mP) => {
+            mP.currency = e.target.value;
+          })
+          break;
+        default:
       }
     }
+
     dispatch({
       type: SRMTRL_UPDATE,
       payload: srMaterials,
@@ -469,7 +480,7 @@ const SrMtrlState = (props) => {
         turnSrMtrlIsUpdatedFalse,
         addMPrice,
         deleteSrMtrlPrice,
-        updateItemAndUnitConvertRation,
+        updateUnitCurrencyAndUnitConvertRation,
         addSrMtrlValue,
         updateMPrices,
         updateMPricesQuotation,

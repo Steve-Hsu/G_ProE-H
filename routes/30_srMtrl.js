@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const authUser = require('../middleware/authUser');
 // Not set up yet, for check the value entered by user at the some specific column
-const { check, validationResult } = require('express-validator');
+// const { check, validationResult } = require('express-validator');
 const { v4: uuidv4 } = require('uuid');
 const myModule = require('../myModule/myModule');
 
@@ -333,6 +333,7 @@ router.put('/:caseId', authUser, async (req, res) => {
               }
             ],
             purchaseUnit: mtrl.unit,
+            currency: 'USD',
             mPrices: [],
             company: cases.company,
             mainPrice: null,
@@ -987,6 +988,8 @@ router.put('/update/mpricevalues', authUser, async (req, res) => {
         {
           $set: {
             item: srMtrl.item,
+            currency: srMtrl.currency,
+            purchaseUnit: srMtrl.purchaseUnit,
             unitConvertRatio: srMtrl.unitConvertRatio,
             mainPrice: mainPrice,
           },
@@ -996,7 +999,7 @@ router.put('/update/mpricevalues', authUser, async (req, res) => {
       // console.log('No mPrice'); // Test Code
     } else {
       srMtrl.mPrices.map(async (mPrice) => {
-        let checkID = await SRMtrl.find({
+        let checkMPrice = await SRMtrl.find({
           _id: srMtrl.id,
           company: comId,
           mPrices: {
@@ -1006,10 +1009,9 @@ router.put('/update/mpricevalues', authUser, async (req, res) => {
           },
         });
 
-        if (checkID.length > 0) {
+        if (checkMPrice.length > 0) {
           // If the mPrice is existing One, update it.
-          // For Thread force the unit in mPrice to be 'pcs'
-          const mPriceUnit = srMtrl.item === 'Thread' ? 'pcs' : mPrice.unit.trim();
+          const mPriceUnit = srMtrl.purchaseUnit;
           await SRMtrl.updateOne(
             {
               _id: srMtrl.id,
@@ -1023,12 +1025,14 @@ router.put('/update/mpricevalues', authUser, async (req, res) => {
             {
               $set: {
                 item: srMtrl.item,
+                currency: srMtrl.currency,
+                purchaseUnit: srMtrl.purchaseUnit,
                 unitConvertRatio: srMtrl.unitConvertRatio,
                 mainPrice: mainPrice,
                 'mPrices.$.mColor': mPrice.mColor.trim(),
                 'mPrices.$.sizeSPEC': mPrice.sizeSPEC.trim(),
                 'mPrices.$.unit': mPriceUnit,
-                'mPrices.$.currency': mPrice.currency.trim(),
+                'mPrices.$.currency': srMtrl.currency,
                 'mPrices.$.mPrice': Number(mPrice.mPrice),
                 'mPrices.$.moq': Number(mPrice.moq),
                 'mPrices.$.moqPrice': Number(mPrice.moqPrice),
@@ -1044,6 +1048,8 @@ router.put('/update/mpricevalues', authUser, async (req, res) => {
             },
             {
               item: srMtrl.item,
+              currency: srMtrl.currency,
+              purchaseUnit: srMtrl.purchaseUnit,
               unitConvertRatio: srMtrl.unitConvertRatio,
               $push: { mPrices: mPrice },
             }
