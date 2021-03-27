@@ -979,6 +979,7 @@ router.put('/update/mpricevalues', authUser, async (req, res) => {
 
   await srMtrlList.map(async (srMtrl) => {
     const mainPrice = srMtrl.mainPrice;
+    const caseUnits = srMtrl.caseUnits;
     console.log('The mainPrice', mainPrice); // Test Code
     if (srMtrl.mPrices.length == 0) {
       await SRMtrl.updateOne(
@@ -990,8 +991,8 @@ router.put('/update/mpricevalues', authUser, async (req, res) => {
             item: srMtrl.item,
             currency: srMtrl.currency,
             purchaseUnit: srMtrl.purchaseUnit,
-            unitConvertRatio: srMtrl.unitConvertRatio,
             mainPrice: mainPrice,
+            caseUnits: caseUnits,
           },
         }
       );
@@ -1027,8 +1028,8 @@ router.put('/update/mpricevalues', authUser, async (req, res) => {
                 item: srMtrl.item,
                 currency: srMtrl.currency,
                 purchaseUnit: srMtrl.purchaseUnit,
-                unitConvertRatio: srMtrl.unitConvertRatio,
                 mainPrice: mainPrice,
+                caseUnits: caseUnits,
                 'mPrices.$.mColor': mPrice.mColor.trim(),
                 'mPrices.$.sizeSPEC': mPrice.sizeSPEC.trim(),
                 'mPrices.$.unit': mPriceUnit,
@@ -1050,7 +1051,7 @@ router.put('/update/mpricevalues', authUser, async (req, res) => {
               item: srMtrl.item,
               currency: srMtrl.currency,
               purchaseUnit: srMtrl.purchaseUnit,
-              unitConvertRatio: srMtrl.unitConvertRatio,
+              caseUnits: caseUnits,
               $push: { mPrices: mPrice },
             }
           );

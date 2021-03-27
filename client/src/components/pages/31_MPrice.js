@@ -19,7 +19,7 @@ export const MPrice = (props) => {
   const { toggleLoading } = popoverContext;
 
   const onSubmitSrMtrl = async (e) => {
-    console.log('yes the submit is hit');
+    // console.log('yes the submit is hit');
     e.preventDefault();
     toggleLoading(true);
     const body = [];
@@ -28,6 +28,7 @@ export const MPrice = (props) => {
         id: srMtrl._id,
         mainPrice: srMtrl.mainPrice,
         mPrices: srMtrl.mPrices,
+        caseUnits: srMtrl.caseUnits,
         item: srMtrl.item,
         currency: srMtrl.currency,
         purchaseUnit: srMtrl.purchaseUnit,

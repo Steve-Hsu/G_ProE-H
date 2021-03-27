@@ -237,29 +237,56 @@ const SrMtrlState = (props) => {
     });
   };
 
-  // Basically update the value of item and unitConvertRatio for srMtrl
-  const updateUnitCurrencyAndUnitConvertRation = (e) => {
+  // Basically update the value of purchaseUnit and currency of srMTrl
+  const updateUnitAndCurrency = (e) => {
     let srMaterials = srMtrls;
     const srMtrlId = e.target.id
     let srMaterial = srMaterials.find(({ _id }) => _id === srMtrlId);
-    srMaterial[e.target.name] = e.target.value;
 
+    if (e.target.name === 'unitConvertRatio') {
+      console.log(e.target);
+      srMaterial.caseUnits.map((caseUnit) => {
+        if (caseUnit.caseUnit === e.target.id) {
+          caseUnit[e.target.name] = e.target.value;
+        }
+      })
+    } else {
+      srMaterial[e.target.name] = e.target.value;
 
-    if (srMaterial.mPrices.length > 0) {
-      switch (e.target.name) {
-        case 'purchaseUnit':
-          srMaterial.mPrices.map((mP) => {
-            mP.unit = e.target.value;
-          })
-          break;
-        case 'currency':
-          srMaterial.mPrices.map((mP) => {
-            mP.currency = e.target.value;
-          })
-          break;
-        default:
+      if (srMaterial.mPrices.length > 0) {
+        switch (e.target.name) {
+          case 'purchaseUnit':
+            srMaterial.mPrices.map((mP) => {
+              mP.unit = e.target.value;
+            })
+            break;
+          case 'currency':
+            srMaterial.mPrices.map((mP) => {
+              mP.currency = e.target.value;
+            })
+            break;
+          default:
+        }
       }
     }
+
+
+    dispatch({
+      type: SRMTRL_UPDATE,
+      payload: srMaterials,
+    });
+  }
+  // Basically update the value of unitConvertRatio in caseUnits of srMtrl
+  const updateUnitConverRatio = (e) => {
+    let srMaterials = srMtrls;
+    const srMtrlId = e.target.id
+    let srMaterial = srMaterials.find(({ _id }) => _id === srMtrlId);
+
+    srMaterial.caseUnits.map((caseUnit) => {
+      if (caseUnit.caseUnit === e.target.name) {
+        caseUnit.unitConvertRatio = Number(e.target.value);
+      }
+    })
 
     dispatch({
       type: SRMTRL_UPDATE,
@@ -480,7 +507,8 @@ const SrMtrlState = (props) => {
         turnSrMtrlIsUpdatedFalse,
         addMPrice,
         deleteSrMtrlPrice,
-        updateUnitCurrencyAndUnitConvertRation,
+        updateUnitAndCurrency,
+        updateUnitConverRatio,
         addSrMtrlValue,
         updateMPrices,
         updateMPricesQuotation,

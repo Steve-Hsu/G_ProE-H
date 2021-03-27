@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import SrMtrlContext from '../../context/srMtrl/srMtrlContext';
 import MPrice from './30_01_01_mPrice';
+import ConvertRatio from './30_01_02_convertRatio';
 import PropTypes from 'prop-types';
 import SqBtnLarge from '../elements/btns/SqBtnLarge';
 import GoBackBtnSpinSmall from '../elements/btns/GoBackBtnSpinSmall';
@@ -11,7 +12,7 @@ import Select from '../elements/select/Select'
 const SrMtrl = ({ srMtrl, currentPath, idx }) => {
   const srMtrlContext = useContext(SrMtrlContext);
   const popoverContext = useContext(PopoverContext);
-  const { addMPrice, openSrMtrl, updateUnitCurrencyAndUnitConvertRation } = srMtrlContext;
+  const { addMPrice, openSrMtrl, updateUnitAndCurrency, updateUnitConverRatio } = srMtrlContext;
   const { togglePopover } = popoverContext;
   const onClick = (e) => {
     e.preventDefault();
@@ -36,7 +37,11 @@ const SrMtrl = ({ srMtrl, currentPath, idx }) => {
 
   const onChange = (e) => {
     e.preventDefault();
-    updateUnitCurrencyAndUnitConvertRation(e);
+    updateUnitAndCurrency(e);
+  }
+
+  const onChangeUnitRatio = (e) => {
+    updateUnitConverRatio(e)
   }
 
   return (
@@ -116,6 +121,18 @@ const SrMtrl = ({ srMtrl, currentPath, idx }) => {
                   name='purchaseUnit'
                   selectedOption={srMtrl.purchaseUnit}
                   onChange={onChange} />
+                {srMtrl.caseUnits.map((caseUnit) => {
+                  return (
+                    <ConvertRatio
+                      key={`convertRatio${srMtrl._id}${caseUnit.caseUnit}`}
+                      purpose='mPrice'
+                      name={caseUnit.caseUnit}
+                      srMtrl={srMtrl}
+                      caseUnit={caseUnit}
+                      onChange={onChangeUnitRatio}
+                    />
+                  )
+                })}
               </div>
             ) : (
               <div>
@@ -123,6 +140,14 @@ const SrMtrl = ({ srMtrl, currentPath, idx }) => {
                 <div className='fs-large'>
                   {srMtrl.purchaseUnit}
                 </div>
+                {srMtrl.caseUnits.map((caseUnit) => {
+                  return (
+                    <ConvertRatio
+                      key={`convertRatio${srMtrl._id}${caseUnit.caseUnit}`}
+                      purpose='quoMtrl' srMtrl={srMtrl}
+                      caseUnit={caseUnit} />
+                  )
+                })}
               </div>
             )}
           </div>
