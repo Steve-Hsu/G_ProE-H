@@ -26,9 +26,10 @@ export const ItemSelector = ({ props, purpose, currentPath }) => {
     caseList,
     isBoardMode,
     caseError,
+    defaultCase,
   } = caseContext;
-  const { srMtrls, getSrMtrls, openSrMtrl, editingList, srMtrlError } = srMtrlContext;
-  const { switchQuoFormSelector, quotation, switchQuoForm } = quoContext;
+  const { srMtrls, getSrMtrls, openSrMtrl, editingList, srMtrlError, clearSrMtrl } = srMtrlContext;
+  const { switchQuoFormSelector, quotation, switchQuoForm, } = quoContext;
   const { selectCase, selectedCases, switchPage, currentOrderSummary, openMtrlLeadTime, editingLeadTime, } = purContext;
   const { isLoading, toggleLoading, popover } = popoverContext;
   useEffect(() => {
@@ -91,6 +92,7 @@ export const ItemSelector = ({ props, purpose, currentPath }) => {
           };
           attributes = [aFunc, addCaseValue];
           goBack = () => {
+            defaultCase();
             props.history.push('/api/case/director');
           };
           break;
@@ -105,6 +107,7 @@ export const ItemSelector = ({ props, purpose, currentPath }) => {
           };
           attributes = quoFunc;
           goBack = () => {
+            defaultCase();
             props.history.push('/api/case/director');
           };
           break;
@@ -112,6 +115,7 @@ export const ItemSelector = ({ props, purpose, currentPath }) => {
           data = caseList.filter((i) => i.caseConfirmDate !== null);
           attributes = [selectCase, selectedCases];
           goBack = () => {
+            defaultCase();
             props.history.push('/api/case/director');
           };
           break;
@@ -124,6 +128,7 @@ export const ItemSelector = ({ props, purpose, currentPath }) => {
       attributes = [openSrMtrl, editingList];
       displayTitles = [{ supplier: true }, { ref_no: true }, { prices: true }, { complete: true }];
       goBack = () => {
+        clearSrMtrl();
         props.history.push('/api/case/director');
       };
       break;

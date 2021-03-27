@@ -9,7 +9,7 @@ import LeftBar from '../layout/LeftBar';
 import QuoFormSelector from '../../components/40_quo/40_02_quoFormSelector';
 import QuoForm from '../../components/40_quo/40_03_quoForm';
 import ItemSelector from '../itemSelector/ItemSelector';
-import Table from '../elements/table/Table';
+// import Table from '../elements/table/Table';
 import DeletePopover from '../../components/layout/DeletePopover';
 import Navbar from '../layout/Navbar'
 // import GoBackBtn from '../elements/btns/GoBackBtn';
@@ -62,7 +62,6 @@ const Quotation = (props) => {
   return (
     <Fragment>
       <Navbar />
-      {popover === true || isLoading === true || quoError !== null ? <DeletePopover key='quotationpopover' current={current} props={props} /> : null}
       <div className='grid-1-4'>
         {/* Grid-1 */}
         <LeftBar currentPath={currentPath} />
@@ -82,10 +81,11 @@ const Quotation = (props) => {
             {isQuotating === null ? (
               <ItemSelector props={props} purpose='quoCaseSelector' />
             ) : (
-                <div>
-                  {openQuoForm === null ? <QuoFormSelector /> : <QuoForm />}
-                </div>
-              )}
+              <div>
+                {popover === true || isLoading === true || quoError !== null ? <DeletePopover key='quotationpopover' current={current} props={props} /> : null}
+                {openQuoForm === null ? <QuoFormSelector /> : <QuoForm />}
+              </div>
+            )}
           </div>
         ) : null}
       </div>

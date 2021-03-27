@@ -38,10 +38,6 @@ const SRMtrlSchema = mongoose.Schema({
     // the unit for purchasing material
     type: String,
   },
-  unitConvertRatio: {
-    type: Number,
-    default: 0,
-  },
   mPrices: {
     type: Array,
   },

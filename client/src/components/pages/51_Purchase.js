@@ -24,6 +24,7 @@ const Purchase = (props) => {
     createOrderSummary,
     osError,
     uploadCaseMtrl,
+    defaultPurState,
   } = purContext;
   const currentPath = props.location.pathname;
 
@@ -31,6 +32,7 @@ const Purchase = (props) => {
   const { popover, current, toggleLoading, isLoading, } = popoverContext;
 
   const goBack = () => {
+    defaultPurState()
     props.history.push('/api/case/director');
   };
 
