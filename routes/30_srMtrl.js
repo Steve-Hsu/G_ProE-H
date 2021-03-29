@@ -138,7 +138,7 @@ router.put('/:caseId', authUser, async (req, res) => {
           });
 
           if (existingMtrlColorRef.length === 0) {
-            console.log("No delete the refs in mtrlColor of the mtrl - ", idx)
+            console.log("No duplicated the refs in mtrlColor of the mtrl - ", idx)
             return resolve();
           }
 
@@ -177,7 +177,7 @@ router.put('/:caseId', authUser, async (req, res) => {
           });
 
           if (existingSizeSPECRef.length === 0) {
-            console.log("No delete the refs in spec of the srMtrl - ", idx);
+            console.log("No duplicated the refs in spec of the srMtrl - ", idx);
             return resolve();
           }
 
@@ -303,15 +303,11 @@ router.put('/:caseId', authUser, async (req, res) => {
         const newCSRIC = (comName + comSymbol + mtrl.supplier + mtrl.ref_no)
           .toLowerCase()
           .replace(/[^\da-z]/gi, '');
-        // console.log('comsymbo', comSymbol); // Test Code
-        // console.log('newCSRIC', newCSRIC); // Test Code
+        let mtrlObj = {};
         let existingSrMtrlObj = mLists.find(({ CSRIC }) => CSRIC === newCSRIC);
+
         //If the srMtrl is not existing in the mLists then generete a new one
         //This line makes sure the mList never contain duplicated srMtrl with same CSRIC
-        // console.log('this is existingSrMtrlObj', existingSrMtrlObj);
-
-        let mtrlObj = {};
-        // console.log('Check the if', !existingSrMtrlObj);
         if (!existingSrMtrlObj) {
           mtrlObj = {
             supplier: mtrl.supplier,
@@ -339,7 +335,36 @@ router.put('/:caseId', authUser, async (req, res) => {
             mainPrice: null,
           };
         } else {
-          mtrlObj = existingSrMtrlObj;
+          // If the srMtrl is exist, then check if the caseUnit is a new,?
+          console.log('the existingSrMtrlObj ---> ', existingSrMtrlObj.caseUnits[0])
+          const isTheUnitExist = existingSrMtrlObj.caseUnits.find(({ caseUnit }) => caseUnit === mtrl.unit);
+          if (isTheUnitExist) {
+            // If the mtrl with same RSIC and also has a same unit, push the ref to the existingSrMtrlObj
+            const newCaseUnits = existingSrMtrlObj.caseUnits.map((caseUnit) => {
+              if (caseUnit.caseUnit === mtrl.unit) {
+                caseUnit.refs.push({
+                  caseId: cases._id,
+                  mtrlId: mtrl.id,
+                })
+              }
+              return caseUnit
+            })
+            existingSrMtrlObj.caseUnits = newCaseUnits
+            mtrlObj = existingSrMtrlObj;
+          } else {
+            // If the mtrl with same RSIC but has a new unit, then push a new caseUnit the array caseUnits.
+            existingSrMtrlObj.caseUnits.push({
+              caseUnit: mtrl.unit,
+              unitConvertRatio: 1,
+              refs: [
+                {
+                  caseId: cases._id,
+                  mtrlId: mtrl.id,
+                },
+              ]
+            })
+            mtrlObj = existingSrMtrlObj;
+          }
         }
 
         // Insert mtrlColors to newSrMtrlObj
@@ -352,7 +377,7 @@ router.put('/:caseId', authUser, async (req, res) => {
               .indexOf(mtrlColor.mColor);
             if (idx !== index) {
               // Here means the mColor is duplicated. It appears more than once.
-              resolve()
+              resolve();
             } else {
               //@ New CSRIC mtrl
               if (!existingSrMtrlObj) {
@@ -366,7 +391,7 @@ router.put('/:caseId', authUser, async (req, res) => {
                     },
                   ],
                 });
-                resolve()
+                resolve();
               } else {
                 //@ Old CSRIC
                 let mtrlObjHaveTheColor = await mtrlObj.mtrlColors.find(
@@ -501,15 +526,18 @@ router.put('/:caseId', authUser, async (req, res) => {
   // Compare with the existing List
 
   Promise.all(makeMLists).then(async () => {
-    // console.log("the mLists - in promise makeMLists", mLists) 
+
     console.log("after mLists is made, start treat newSrMtrlObj")
+    let mtrlNum = 0; // Test variables
     const loopMLists = mLists.map(async (mList, mListIdx) => {
+      mtrlNum = mtrlNum + 1 // Test Variables
+      console.log("the mList - in promise makeMLists -----!!!", mList.caseUnits[0].refs.length, "unit is ", mList.caseUnits[0].caseUnit);
       return new Promise(async (resolve) => {
         if (mList.CSRIC === '' || mList.CSRIC === null || mList.mtrlColors.length === 0 || mList.sizeSPECs.length === 0) {
-          // console.log('do nothing');
+          console.log('do nothing');
           //IF thie mList dosen't have CSRIC, then do nothing.
           // reolve for promise : "loopMLists"
-          resolve()
+          resolve();
         } else {
           //Check if any item in mtrl is matched to refs in the srMtrl database
           await SRMtrl.findOne({
@@ -525,13 +553,15 @@ router.put('/:caseId', authUser, async (req, res) => {
               // If the srMtrl exists
               // Check the caseUnit, 
               const checkCaseUnit = new Promise(async (resolve) => {
-                await SRMtrl.findOne(
-                  {
-                    company: comId,
-                    CSRIC: mList.CSRIC,
-                    'caseUnits.caseUnit': mList.caseUnits[0].caseUnit,
-                  },
-                ).then(async (srMtrl) => {
+                mList.caseUnits.map(async (caseUnit, idx) => {
+                  const duplicatedCaseUnit = await SRMtrl.findOne(
+                    {
+                      company: comId,
+                      CSRIC: mList.CSRIC,
+                      'caseUnits.caseUnit': caseUnit.caseUnit,
+                    },
+                  )
+
                   // Clear the old ref first
                   const caseId = mList.caseUnits[0].refs[0].caseId;
                   const mtrlId = mList.caseUnits[0].refs[0].mtrlId;
@@ -558,8 +588,9 @@ router.put('/:caseId', authUser, async (req, res) => {
                       },
                     }
                   )
+
                   // Add new data;
-                  if (srMtrl === null) {
+                  if (!duplicatedCaseUnit) {
                     // If the caseUnit is new, add an caseUnit object to caseUnits.
                     await SRMtrl.updateOne(
                       {
@@ -568,7 +599,7 @@ router.put('/:caseId', authUser, async (req, res) => {
                       },
                       {
                         $addToSet: {
-                          caseUnits: mList.caseUnits[0],
+                          caseUnits: caseUnit.caseUnit,
                         },
                       }
                     );
@@ -581,15 +612,17 @@ router.put('/:caseId', authUser, async (req, res) => {
                       {
                         company: comId,
                         CSRIC: mList.CSRIC,
-                        'caseUnits.caseUnit': mList.caseUnits[0].caseUnit,
+                        'caseUnits.caseUnit': caseUnit.caseUnit,
                       },
                       {
                         $addToSet: {
-                          'caseUnits.$.refs': mList.caseUnits[0].refs[0],
+                          'caseUnits.$.refs': { $each: [...caseUnit.refs] }
+                          ,
                         },
                       }
                     );
                   }
+
                   // Delete the caseUnit that has 0 refs
                   await SRMtrl.updateMany(
                     {
@@ -603,8 +636,92 @@ router.put('/:caseId', authUser, async (req, res) => {
                       },
                     }
                   );
-                  resolve()
+
+                  if (idx + 1 === mList.caseUnits.length) resolve();
+
                 })
+
+
+                //   await SRMtrl.findOne(
+                //     {
+                //       company: comId,
+                //       CSRIC: mList.CSRIC,
+                //       'caseUnits.caseUnit': mList.caseUnits[0].caseUnit,
+                //     },
+                //   ).then(async (srMtrl) => {
+                //     // Clear the old ref first
+                //     const caseId = mList.caseUnits[0].refs[0].caseId;
+                //     const mtrlId = mList.caseUnits[0].refs[0].mtrlId;
+                //     await SRMtrl.updateOne(
+                //       {
+                //         company: comId,
+                //         CSRIC: mList.CSRIC,
+                //         caseUnits: {
+                //           $elemMatch: {
+                //             // mColor: mtrlColor.mColor,
+                //             refs: {
+                //               caseId: caseId,
+                //               mtrlId: mtrlId,
+                //             },
+                //           },
+                //         },
+                //       },
+                //       {
+                //         $pull: {
+                //           'caseUnits.$.refs': {
+                //             caseId: caseId,
+                //             mtrlId: mtrlId,
+                //           },
+                //         },
+                //       }
+                //     )
+                //     // Add new data;
+                //     if (srMtrl === null) {
+                //       // If the caseUnit is new, add an caseUnit object to caseUnits.
+                //       await SRMtrl.updateOne(
+                //         {
+                //           company: comId,
+                //           CSRIC: mList.CSRIC,
+                //         },
+                //         {
+                //           $addToSet: {
+                //             caseUnits: mList.caseUnits[0],
+                //           },
+                //         }
+                //       );
+                //       console.log(
+                //         `the caseUnit of ${mList.CSRIC} is inserted`
+                //       );
+                //     } else {
+                //       // If the caseUnit exists, update only the ref
+                //       await SRMtrl.updateOne(
+                //         {
+                //           company: comId,
+                //           CSRIC: mList.CSRIC,
+                //           'caseUnits.caseUnit': mList.caseUnits[0].caseUnit,
+                //         },
+                //         {
+                //           $addToSet: {
+                //             'caseUnits.$.refs': mList.caseUnits[0].refs[0],
+                //           },
+                //         }
+                //       );
+                //     }
+                //     // Delete the caseUnit that has 0 refs
+                //     await SRMtrl.updateMany(
+                //       {
+                //         company: comId,
+                //         CSRIC: mList.CSRIC,
+                //         // 'caseUnits.caseUnit': mList.caseUnits[0].caseUnit,
+                //       },
+                //       {
+                //         $pull: {
+                //           caseUnits: { refs: { $size: 0 } },
+                //         },
+                //       }
+                //     );
+                //     resolve()
+                //   })
               })
 
 
@@ -767,7 +884,7 @@ router.put('/:caseId', authUser, async (req, res) => {
               //@_step_1 Inser SizeSPECS
               const insertMtrlSPEC = new Promise((resolve, reject) => {
                 Promise.all([deleteExtraMtrlColor]).then(() => {
-                  console.log("th promise insertMtrlSPEC, in the mLists loop", mListIdx) // Test code
+                  // console.log("th promise insertMtrlSPEC, in the mLists loop", mListIdx) // Test code
                   // console.log('SPEC 1 start', mList.CSRIC);
                   const loopSizeSPEC = mList.sizeSPECs.map(async (sizeSPEC) => {
                     return new Promise(async (resolve) => {
@@ -933,7 +1050,9 @@ router.put('/:caseId', authUser, async (req, res) => {
     });
 
     Promise.all(loopMLists).then(() => {
-      console.log("The srMtrl is updated")
+      console.log("the length of the mList", mLists.length);
+      console.log("The srMtrl is updated", "the mtrl num", mtrlNum);
+
 
       return res.json({ msg: 'srMtrl is updated' });
     }).catch((err) => {
@@ -1120,6 +1239,40 @@ router.put('/:caseId/deletesrmtrl', authUser, async (req, res) => {
         // });
       } else {
         //@_step_1 Delete the ref from srMtrl.mtrlColors.refs, if more than one matched to the condition of $pull, after my test, this method will delete them all.
+        // Delete refs in srMtrl when delete the mtrl
+        const refUpdatedSrMtrl = await SRMtrl.findOneAndUpdate(
+          {
+            CSRIC: CSRIC,
+            'caseUnits.caseUnit': mtrl.unit,
+          },
+          {
+            $pull: {
+              'caseUnits.$.refs': {
+                caseId: caseId,
+                mtrlId: mtrlId,
+              },
+            },
+          },
+          { new: true }
+        );
+        await refUpdatedSrMtrl.caseUnits.map(async (caseUnit) => {
+          if (caseUnit.refs.length === 0) {
+            await SRMtrl.updateOne(
+              {
+                CSRIC: CSRIC,
+                'caseUnits.caseUnit': mtrl.unit,
+              },
+              {
+                $pull: {
+                  caseUnits: {
+                    caseUnit: caseUnit.caseUnit,
+                  },
+                },
+              },
+            )
+          }
+        })
+
         let clearColorRef = await srMtrl.mtrlColors.map(async (mtrlColor) => {
           await SRMtrl.updateOne(
             {

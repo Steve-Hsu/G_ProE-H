@@ -908,7 +908,6 @@ router.put('/delete/:caseId/:subjectId', authUser, async (req, res) => {
               }
             );
           }
-
           numOfdeleteRef = numOfdeleteRef + 1;
         }
         if (numOfdeleteRef === mtrls.length) {
