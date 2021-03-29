@@ -211,7 +211,8 @@ router.post('/', authUser, async (req, res) => {
           const lowerCasecsr = csr.toLowerCase();
           const CSRIC = lowerCasecsr.replace(/[^\da-z]/gi, ''); // Only read from "0" to "9" & "a" to "z"
           const srMtrl = await SRMtrl.findOne({ CSRIC: CSRIC, })
-          const theConvertRatio = srMtrl.caseUnits.find(({ caseUnit }) => caseUnit === mtrl.unit).unitConvertRatio
+          const theConvertRatio = Number(srMtrl.caseUnits.find(({ caseUnit }) => caseUnit === mtrl.unit).unitConvertRatio) > 0 ?
+            Number(srMtrl.caseUnits.find(({ caseUnit }) => caseUnit === mtrl.unit).unitConvertRatio) : 1;
           return new Promise((resolve) => {
 
             // const mtrlId = mtrl.id;

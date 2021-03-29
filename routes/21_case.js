@@ -756,7 +756,7 @@ router.delete('/:id', authUser, async (req, res) => {
   const comId = req.user.company;
   const caseId = req.params.id;
   const cases = await Case.findById(req.params.id);
-  const mtrls = cases.mtrls;
+  // const mtrls = cases.mtrls;
   // Make sure user owns contact
   if (cases.user.toString() !== req.user.id) {
     return res.status(401).json({ msg: 'Not authorized to delete this case' });
