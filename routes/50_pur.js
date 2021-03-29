@@ -98,6 +98,7 @@ router.post('/', authUser, async (req, res) => {
   }
   const comId = req.user.company;
   const selectedCNos = req.body;
+  const comName = user.comName;
   const comSymbol = user.comSymbol;
   const lossInform = user.loss;
 
@@ -205,7 +206,12 @@ router.post('/', authUser, async (req, res) => {
           caseType: theCase.caseType
         });
         // clientList.push(theCase.clients);
-        const loopMtrls = mtrls.map((mtrl) => {
+        const loopMtrls = mtrls.map(async (mtrl) => {
+          const csr = comName + comSymbol + mtrl.supplier + mtrl.ref_no;
+          const lowerCasecsr = csr.toLowerCase();
+          const CSRIC = lowerCasecsr.replace(/[^\da-z]/gi, ''); // Only read from "0" to "9" & "a" to "z"
+          const srMtrl = await SRMtrl.findOne({ CSRIC: CSRIC, })
+          const theConvertRatio = srMtrl.caseUnits.find(({ caseUnit }) => caseUnit === mtrl.unit).unitConvertRatio
           return new Promise((resolve) => {
 
             // const mtrlId = mtrl.id;
@@ -291,13 +297,20 @@ router.post('/', authUser, async (req, res) => {
                       poConfirmDate: null,
                     });
                   }
+                  // Convert Unit 
+
+                  const unitConvertedRequiredMQty = cspt.requiredMQty / theConvertRatio;
+                  const unitConvertedLossQtySumUp = purchaseLossQtySumUp / theConvertRatio
 
                   // Round it number to 2 decimal
                   // const roundRequiredMQty = Math.round((cspt.requiredMQty + Number.EPSILON) * 100) / 100;
                   // @ 2020/11/04 - I think it is convinent and save cost of time as the purchase number of materials shouldn't have decimal number.
                   // The loss don't allow the decimal ditigal, the smallest number is 1, round up all the decimal number.
-                  const celiedRequiredMQty = Math.ceil(cspt.requiredMQty)
-                  const ceiledLossQtySumUp = Math.ceil(purchaseLossQtySumUp);
+                  // const celiedRequiredMQty = Math.ceil(cspt.requiredMQty);
+                  // const ceiledLossQtySumUp = Math.ceil(purchaseLossQtySumUp);
+
+                  const celiedRequiredMQty = Math.ceil(unitConvertedRequiredMQty);
+                  const ceiledLossQtySumUp = Math.ceil(unitConvertedLossQtySumUp);
 
                   // New caseMtrls
                   caseMtrls.push({
@@ -333,10 +346,11 @@ router.post('/', authUser, async (req, res) => {
                       // caseMtrl.purchaseQtySumUp = Math.round((caseMtrl.purchaseQtySumUp + Number.EPSILON) * 100) / 100;
                       // caseMtrl.purchaseLossQtySumUp = Math.round((caseMtrl.purchaseLossQtySumUp + Number.EPSILON) * 100) / 100;
                       // @ 2020/11/04 - I think it is convinent and save cost of time as the purchase number of materials shouldn't have decimal number.
-                      caseMtrl.purchaseQtySumUp = Math.ceil(caseMtrl.purchaseQtySumUp + cspt.requiredMQty)
-                      // caseMtrl.purchaseQtySumUp = Math.ceil(caseMtrl.purchaseQtySumUp)
-                      caseMtrl.purchaseLossQtySumUp = Math.ceil(caseMtrl.purchaseLossQtySumUp + purchaseLossQtySumUp);
-                      // caseMtrl.purchaseLossQtySumUp = Math.ceil(caseMtrl.purchaseLossQtySumUp);
+                      // Convert Unit 
+                      const unitConvertedRequiredMQty = cspt.requiredMQty / theConvertRatio;
+                      const unitConvertedLossQtySumUp = purchaseLossQtySumUp / theConvertRatio
+                      caseMtrl.purchaseQtySumUp = Math.ceil(caseMtrl.purchaseQtySumUp + unitConvertedRequiredMQty)
+                      caseMtrl.purchaseLossQtySumUp = Math.ceil(caseMtrl.purchaseLossQtySumUp + unitConvertedLossQtySumUp);
                     }
                   });
                   // console.log('csptNum', csptNum, 'csptLength', cspts.length);

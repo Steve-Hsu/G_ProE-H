@@ -336,7 +336,7 @@ router.put('/:caseId', authUser, async (req, res) => {
           };
         } else {
           // If the srMtrl is exist, then check if the caseUnit is a new,?
-          console.log('the existingSrMtrlObj ---> ', existingSrMtrlObj.caseUnits[0])
+          console.log('the existingSrMtrlObj ---> ', existingSrMtrlObj.caseUnits)
           const isTheUnitExist = existingSrMtrlObj.caseUnits.find(({ caseUnit }) => caseUnit === mtrl.unit);
           if (isTheUnitExist) {
             // If the mtrl with same RSIC and also has a same unit, push the ref to the existingSrMtrlObj
@@ -599,7 +599,7 @@ router.put('/:caseId', authUser, async (req, res) => {
                       },
                       {
                         $addToSet: {
-                          caseUnits: caseUnit.caseUnit,
+                          caseUnits: caseUnit,
                         },
                       }
                     );

@@ -187,7 +187,7 @@ const SrMtrlState = (props) => {
         });
       }
       console.log("srMtrl caseUnit", srMaterial.caseUnit,)
-      const theUnit = srMaterial.item === 'Thread' ? 'pcs' : srMaterial.caseUnit;
+      const theUnit = srMaterial.purchaseUnit;
       // console.log(cArr[0]);
       srMaterial.mPrices.push({
         id: uuidv4() + generateId(),
