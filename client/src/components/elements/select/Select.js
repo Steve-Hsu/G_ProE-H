@@ -60,6 +60,7 @@ const Select = ({
         'pcs',
         'set',
         'yds',
+        'rolls'
         // 'print size',
       ];
       break;
