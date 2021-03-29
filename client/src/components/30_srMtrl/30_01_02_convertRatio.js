@@ -1,6 +1,17 @@
 import React from 'react';
 
 const ConvertRatio = ({ srMtrl, caseUnit, onChange, purpose, name }) => {
+  const addNumber = (e) => {
+    e.preventDefault();
+    const Max = 9999;
+    if (e.target.value > Max || String(e.target.value).length > 5) {
+      e.target.value = Max;
+      onChange(e);
+    } else {
+      onChange(e)
+    }
+  };
+
   switch (purpose) {
     case 'mPrice':
       return (
@@ -9,12 +20,14 @@ const ConvertRatio = ({ srMtrl, caseUnit, onChange, purpose, name }) => {
             <input
               type='number'
               id={srMtrl._id}
-              placeholder='.'
               name={name}
-              onChange={onChange}
+              onChange={addNumber}
               className='MPH-input mt-05'
               value={caseUnit.unitConvertRatio || ''}
               style={{ height: '2.2rem' }}
+              min="0"
+              max="9999"
+              step="0.001"
             />
           </div>
           <div className='center-content mt-05'>

@@ -284,7 +284,7 @@ const SrMtrlState = (props) => {
 
     srMaterial.caseUnits.map((caseUnit) => {
       if (caseUnit.caseUnit === e.target.name) {
-        caseUnit.unitConvertRatio = Number(e.target.value);
+        caseUnit.unitConvertRatio = e.target.value
       }
     })
 

@@ -71,11 +71,13 @@ const MPrice = ({
   const addNumber = (e) => {
     e.preventDefault();
 
-    e.target.value = Number(e.target.value)
-    const num = Number(e.target.value);
+    // e.target.value = Number(e.target.value)
+    // const num = Number(e.target.value);
     const list = mPriceList();
     const Max = 9999;
-    if (String(num).length > String(Max).length) {
+
+    // if (String(e.target.value).length > String(Max).length) {
+    if (e.target.value > Max || String(e.target.value).length > 5) {
       e.target.value = Max;
       addSrMtrlValue(e, srMtrlId, list);
     } else {
@@ -191,8 +193,9 @@ const MPrice = ({
                         name={mPrice.id}
                         onChange={addNumber}
                         value={mPrice[`${m}`] || ''}
-                        min='0'
-                        step='.01'
+                        min="0"
+                        max="9999"
+                        step="0.001"
                       />
                     </div>
                   </div>
@@ -276,8 +279,9 @@ const MPrice = ({
                         name={mPrice.id}
                         onChange={addNumber}
                         value={mPrice[`${m}`] || ''}
-                        min='0'
-                        step='.01'
+                        min="0"
+                        max="9999"
+                        step="0.001"
                       />
                     </div>
                   </div>
