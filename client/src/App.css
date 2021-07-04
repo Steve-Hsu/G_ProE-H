@@ -1784,6 +1784,15 @@ input[type="submit"]:focus {
 .h-40 {
   height: 40%;
 }
+.h-40vh {
+  height: 40vh;
+}
+.h-45 {
+  height: 45%;
+}
+.h-45vh {
+  height: 45vh;
+}
 .h-50 {
   height: 50%;
 }
@@ -1793,6 +1802,11 @@ input[type="submit"]:focus {
 .h-70 {
   height: 70%;
 }
+
+.h-70vh {
+  height: 70vh;
+}
+
 .h-80 {
   height: 80%;
 }

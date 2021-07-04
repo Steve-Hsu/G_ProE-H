@@ -907,7 +907,7 @@ const LeftBar = ({ currentPath }) => {
                 onClick={onClickSr}
               >
                 Inquiry form
-            </button>
+              </button>
             </div>
           ) : currentPage ===
             'mprice' && currentSrPage === 'inquiryPage' ? (
@@ -945,17 +945,17 @@ const LeftBar = ({ currentPath }) => {
           (currentPage ===
             'quotation' && quotateFor === 'garment' ? (
             isQuotating === null || openQuoForm === null ? null : (
-              <div>
+              <div className="">
                 {' '}
                 {printOutElement()}
-                <div className='round-area bd-light bg-cp-3 noPrint mb-05'>
+                <div className='round-area bd-light bg-cp-3 noPrint mb-05  overflow-auto-y h-45vh'>
                   <i className='fas fa-calculator fc-cp-1 mb-05'>
                     {' '}
-                      Get the suggested Price
-                    </i>
+                    Get the suggested Price
+                  </i>
                   <div className='round-area bd-light bg-cp-1 mb-05'>
                     Select Size
-                      {theCase ? (
+                    {theCase ? (
                       <SizeSelector
                         sizes={theCase.sizes ? theCase.sizes : []}
                         className='noPrint'
@@ -964,7 +964,7 @@ const LeftBar = ({ currentPath }) => {
                   </div>
                   <div className='round-area bd-light bg-cp-1 mb-05'>
                     Select color Way
-                      {theCase ? (
+                    {theCase ? (
                       <CWaySelector
                         cWays={theCase.cWays ? theCase.cWays : []}
                         className='noPrint'
@@ -978,7 +978,7 @@ const LeftBar = ({ currentPath }) => {
                     className='btn bg-cp-2 btn-block bd-radius-s bd-light'
                   >
                     Price suggestion
-                    </button>
+                  </button>
                   {/* <SqBtnLarge
                       name='quotationBtn'
                       value={currentQuoForm._id}
@@ -1040,7 +1040,7 @@ const LeftBar = ({ currentPath }) => {
             <i className="fas fa-exclamation-circle"> No order summary found.</i>
             <div className='fs-small'>
               Please go back to page "Select case, Make order summary", make an order summary first.
-                </div>
+            </div>
           </section>
           )
           : null}
