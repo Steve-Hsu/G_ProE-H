@@ -1,6 +1,8 @@
 const express = require('express');
 const connectDB = require('./config/db');
 const path = require('path');
+const mongoSanitize = require('express-mongo-sanitize');
+const helmet = require('helmet');
 
 const app = express();
 
@@ -13,6 +15,12 @@ connectDB();
 // app.use(express.json({ extended: false }));
 // Solve the problem by setting the limit
 app.use(express.json({ extended: false, limit: '50mb' }));
+
+// Sanitize data
+app.use(mongoSanitize())
+
+// Set security header
+app.use(helmet());
 
 // // For Cors issue Setting
 // app.use((req, res, next) => {
