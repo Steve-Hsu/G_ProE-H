@@ -3,6 +3,10 @@ const connectDB = require('./config/db');
 const path = require('path');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
+const xss = require('xss-clean');
+const rateLimit = require('express-rate-limit');
+const hpp = require('hpp');
+
 
 const app = express();
 
@@ -21,6 +25,21 @@ app.use(mongoSanitize())
 
 // Set security header
 app.use(helmet());
+
+// Prevent xss attack
+app.use(xss());
+
+// Prevent http parameter pollution
+app.use(hpp());
+
+
+// Rate Limiting
+const limiter = rateLimit({
+  windowMs: 10 * 60 * 1000, // 10mins
+  max: 200 // limitation 200 requests within 10mins
+})
+
+app.use(limiter)
 
 // // For Cors issue Setting
 // app.use((req, res, next) => {
