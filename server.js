@@ -24,7 +24,10 @@ app.use(express.json({ extended: false, limit: '50mb' }));
 app.use(mongoSanitize())
 
 // Set security header
-app.use(helmet());
+// app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: false,
+}));
 
 // Prevent xss attack
 app.use(xss());
@@ -40,6 +43,7 @@ const limiter = rateLimit({
 })
 
 app.use(limiter)
+
 
 // // For Cors issue Setting
 // app.use((req, res, next) => {
