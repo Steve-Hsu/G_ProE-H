@@ -3,12 +3,15 @@ const router = express.Router();
 const { check, body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const config = require('config');
 const authCom = require('../middleware/authCom');
 
 // Schema
 const Company = require('../models/00_Company');
 const User = require('../models/10_User');
+
+// Import for ENV file in node.js
+require('dotenv').config();
+
 
 // @route   GET api/users
 // @desc    Get the list of all user
@@ -228,7 +231,7 @@ router.post(
       // Generate JWT
       jwt.sign(
         payload,
-        config.get('jwtSecret'),
+        process.env.JWTSECRET,
         {
           expiresIn: 36000,
         },

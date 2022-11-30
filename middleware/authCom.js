@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
-const config = require('config');
+// const config = require('config');
+// Import for ENV file in node.js
+require('dotenv').config();
 
 module.exports = function (req, res, next) {
   // Get token from header
@@ -12,7 +14,8 @@ module.exports = function (req, res, next) {
 
   // If token exist then...try
   try {
-    const decoded = jwt.verify(token, config.get('jwtSecret'));
+    // const decoded = jwt.verify(token, config.get('jwtSecret'));
+    const decoded = jwt.verify(token, process.env.JWTSECRET);
     req.company = decoded.company;
     next();
   } catch (err) {

@@ -4,11 +4,14 @@ const router = express.Router();
 const { check, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const config = require('config');
 const authCom = require('../middleware/authCom');
 
 // Schema
 const Company = require('../models/00_Company');
+
+// Import for ENV file in node.js
+require('dotenv').config();
+
 
 // @route   Get api/auth
 // @desc    Get logged in as a company
@@ -63,7 +66,7 @@ router.post(
       // Generate JWT
       jwt.sign(
         payload,
-        config.get('jwtSecret'),
+        process.env.JWTSECRET,
         {
           // The JWT expires in 1 hour
           expiresIn: 36000,
