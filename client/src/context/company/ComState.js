@@ -14,27 +14,7 @@ import {
 
 const ComState = (props) => {
   const initialState = {
-    companies: [
-      // for test
-      // {
-      //   id: 1,
-      //   comName: 'Soluna',
-      //   email: 'steve@soluna.com',
-      //   password: 'soluna123',
-      //   userNumLimit: 5,
-      //   userNum: 0,
-      //   type: 'paid',
-      // },
-      // {
-      //   id: 2,
-      //   comName: 'Infinity',
-      //   email: 'steve@infinity.com',
-      //   password: 'infinity123',
-      //   userNumLimit: 5,
-      //   userNum: 1,
-      //   type: 'unpaid',
-      // },
-    ],
+    companies: [],
     current: null,
     filtered: null,
   };
